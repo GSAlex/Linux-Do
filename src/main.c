@@ -39,6 +39,13 @@ typedef struct _LinuxDoIDE{
 		GtkMenuItem * file;
 
 	}menu;
+	struct{
+		//first group
+		GtkToolButton * new;
+		//other
+		GtkToolButton * buttons[20];
+
+	}toolbaritem;
 
 }LinuxDoIDE;
 
@@ -66,12 +73,11 @@ int main(int argc, char * argv[])
 
 //	GtkWidget * widget_hpanel = gtk_hpaned_new();
 
-	GtkWidget * bt1 = gtk_button_new_with_label("hello1");
+	GtkWidget * bt1 = gtk_button_new_with_label("real area");
 
 
 	gtk_box_pack_start(ide.widget_vbox,GTK_WIDGET(ide.menubar),0,0,0);
 
-	gtk_box_pack_start(ide.widget_vbox,GTK_WIDGET(bt1),1,1,1);
 
 
 	gtk_box_pack_end(ide.widget_vbox,GTK_WIDGET(ide.statusbar),0,0,0);
@@ -81,6 +87,16 @@ int main(int argc, char * argv[])
 	ide.menu.file = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_File")));
 
 	gtk_menu_shell_append(GTK_MENU_SHELL(ide.menubar),GTK_WIDGET(ide.menu.file));
+
+	ide.toolbar = GTK_TOOLBAR(gtk_toolbar_new());
+
+	gtk_box_pack_start(ide.widget_vbox,GTK_WIDGET(ide.toolbar),0,0,0);
+
+	ide.toolbaritem.new = GTK_TOOL_BUTTON(gtk_tool_button_new_from_stock(GTK_STOCK_NEW));
+
+	gtk_toolbar_insert(ide.toolbar,ide.toolbaritem.new,-1);
+
+	gtk_box_pack_start(ide.widget_vbox,GTK_WIDGET(bt1),1,1,1);
 
 //	gtk_paned_add2(GTK_PANED(widget_vpanel),statubar);
 //	gtk_paned_add1(GTK_PANED(widget_vpanel),bt1);
