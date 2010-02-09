@@ -30,7 +30,7 @@ typedef struct _LinuxDoIDE{
 	GtkMenuBar * menubar;
 	GtkStatusbar * statusbar;
 	GtkToolbar * toolbar;
-	GtkHPaned *  mainlayout;
+	GtkBox *  mainlayout;
 	struct{
 
 
@@ -41,9 +41,16 @@ typedef struct _LinuxDoIDE{
 	}menu;
 	struct{
 		//first group
-		GtkToolButton * new;
-		GtkToolButton * open;
-		GtkToolButton * close;
+		GtkToolItem * new;
+		GtkToolItem * open;
+		GtkToolItem * close;
+
+		GtkToolItem * sep1;
+		//second group
+		GtkToolItem * cut;
+		GtkToolItem * copy;
+		GtkToolItem * past;
+
 
 		//other
 		GtkToolButton * buttons[20];
@@ -57,22 +64,17 @@ void build_ui(LinuxDoIDE * ide)
 	//build main window and loop, other window will be build within the create event of main window
 	ide->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
 	ide->widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
+	ide->mainlayout  = GTK_BOX(gtk_hbox_new(0,0));
 
 	gtk_container_add(GTK_CONTAINER(ide->main_window),GTK_WIDGET(ide->widget_vbox));
+
 
 	ide->statusbar = GTK_STATUSBAR(gtk_statusbar_new());
 	ide->menubar = GTK_MENU_BAR(gtk_menu_bar_new());
 
-//	GtkWidget * widget_hpanel = gtk_hpaned_new();
-
-	GtkWidget * bt1 = gtk_button_new_with_label("real area");
-
-
 	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->menubar),0,0,0);
 
-	gtk_box_pack_end(ide->widget_vbox,GTK_WIDGET(ide->statusbar),0,0,0);
-
-	gtk_statusbar_push(ide->statusbar,2,_("Ready"));
+	gtk_statusbar_push(ide->statusbar,0,_("Ready"));
 
 	ide->menu.file = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_File")));
 
@@ -84,17 +86,46 @@ void build_ui(LinuxDoIDE * ide)
 
 	//Tool bar items
 
-	ide->toolbaritem.new = GTK_TOOL_BUTTON(gtk_tool_button_new_from_stock(GTK_STOCK_NEW));
-	ide->toolbaritem.open = GTK_TOOL_BUTTON(gtk_tool_button_new_from_stock(GTK_STOCK_OPEN));
-	ide->toolbaritem.close = GTK_TOOL_BUTTON(gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE));
+	ide->toolbaritem.new = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_NEW));
+	ide->toolbaritem.open = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_OPEN));
+	ide->toolbaritem.close = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE));
+
+	ide->toolbaritem.sep1  = GTK_TOOL_ITEM(gtk_separator_tool_item_new());
+
+	ide->toolbaritem.cut = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_CUT));
+	ide->toolbaritem.copy = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_COPY));
+	ide->toolbaritem.past = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_PASTE));
 
 	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.new),-1);
 	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.open),-1);
 	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.close),-1);
 
-	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(bt1),1,1,1);
+	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.sep1),-1);
 
-	gtk_window_resize(GTK_WIDGET(ide->main_window),500,400);
+	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.cut),-1);
+	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.copy),-1);
+	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.past),-1);
+
+
+//	gtk_toolbar_insert_space(ide->toolbar,-1);
+
+
+	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->mainlayout),1,1,1);
+	gtk_box_pack_end(ide->widget_vbox,GTK_WIDGET(ide->statusbar),0,0,0);
+
+	// main area
+
+	//	GtkWidget * widget_hpanel = gtk_hpaned_new();
+
+	GtkWidget * bt1 = gtk_button_new_with_label("left area");
+	GtkWidget * bt2 = gtk_button_new_with_label("code area");
+	GtkWidget * bt3 = gtk_button_new_with_label("right area");
+
+	gtk_box_pack_start(ide->mainlayout,GTK_WIDGET(bt1),1,1,1);
+	gtk_box_pack_start(ide->mainlayout,GTK_WIDGET(bt2),1,1,1);
+	gtk_box_pack_end(ide->mainlayout,GTK_WIDGET(bt3),1,1,1);
+
+	gtk_window_resize(ide->main_window,500,400);
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
