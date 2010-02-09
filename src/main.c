@@ -42,6 +42,9 @@ typedef struct _LinuxDoIDE{
 	struct{
 		//first group
 		GtkToolButton * new;
+		GtkToolButton * open;
+		GtkToolButton * close;
+
 		//other
 		GtkToolButton * buttons[20];
 
@@ -49,6 +52,10 @@ typedef struct _LinuxDoIDE{
 
 }LinuxDoIDE;
 
+void build_ui(LinuxDoIDE * ide)
+{
+
+}
 
 
 int main(int argc, char * argv[])
