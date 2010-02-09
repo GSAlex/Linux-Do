@@ -54,7 +54,48 @@ typedef struct _LinuxDoIDE{
 
 void build_ui(LinuxDoIDE * ide)
 {
+	//build main window and loop, other window will be build within the create event of main window
+	ide->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
+	ide->widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
 
+	gtk_container_add(GTK_CONTAINER(ide->main_window),GTK_WIDGET(ide->widget_vbox));
+
+	ide->statusbar = GTK_STATUSBAR(gtk_statusbar_new());
+	ide->menubar = GTK_MENU_BAR(gtk_menu_bar_new());
+
+//	GtkWidget * widget_hpanel = gtk_hpaned_new();
+
+	GtkWidget * bt1 = gtk_button_new_with_label("real area");
+
+
+	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->menubar),0,0,0);
+
+	gtk_box_pack_end(ide->widget_vbox,GTK_WIDGET(ide->statusbar),0,0,0);
+
+	gtk_statusbar_push(ide->statusbar,2,_("Ready"));
+
+	ide->menu.file = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_File")));
+
+	gtk_menu_shell_append(GTK_MENU_SHELL(ide->menubar),GTK_WIDGET(ide->menu.file));
+
+	ide->toolbar = GTK_TOOLBAR(gtk_toolbar_new());
+
+	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->toolbar),0,0,0);
+
+	//Tool bar items
+
+	ide->toolbaritem.new = GTK_TOOL_BUTTON(gtk_tool_button_new_from_stock(GTK_STOCK_NEW));
+	ide->toolbaritem.open = GTK_TOOL_BUTTON(gtk_tool_button_new_from_stock(GTK_STOCK_OPEN));
+	ide->toolbaritem.close = GTK_TOOL_BUTTON(gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE));
+
+	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.new),-1);
+	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.open),-1);
+	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.close),-1);
+
+	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(bt1),1,1,1);
+
+	gtk_window_resize(GTK_WIDGET(ide->main_window),500,400);
+	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
 
@@ -69,58 +110,7 @@ int main(int argc, char * argv[])
 
 	printf(_("Linux-DO start up\n"));
 
-	//build main window and loop, other window will be build within the create event of main window
-	ide.main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
-	ide.widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
-
-	gtk_container_add(GTK_CONTAINER(ide.main_window),GTK_WIDGET(ide.widget_vbox));
-
-	ide.statusbar = GTK_STATUSBAR(gtk_statusbar_new());
-	ide.menubar = GTK_MENU_BAR(gtk_menu_bar_new());
-
-//	GtkWidget * widget_hpanel = gtk_hpaned_new();
-
-	GtkWidget * bt1 = gtk_button_new_with_label("real area");
-
-
-	gtk_box_pack_start(ide.widget_vbox,GTK_WIDGET(ide.menubar),0,0,0);
-
-
-
-	gtk_box_pack_end(ide.widget_vbox,GTK_WIDGET(ide.statusbar),0,0,0);
-
-	gtk_statusbar_push(ide.statusbar,2,_("Ready"));
-
-	ide.menu.file = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_File")));
-
-	gtk_menu_shell_append(GTK_MENU_SHELL(ide.menubar),GTK_WIDGET(ide.menu.file));
-
-	ide.toolbar = GTK_TOOLBAR(gtk_toolbar_new());
-
-	gtk_box_pack_start(ide.widget_vbox,GTK_WIDGET(ide.toolbar),0,0,0);
-
-	ide.toolbaritem.new = GTK_TOOL_BUTTON(gtk_tool_button_new_from_stock(GTK_STOCK_NEW));
-
-	gtk_toolbar_insert(ide.toolbar,ide.toolbaritem.new,-1);
-
-	gtk_box_pack_start(ide.widget_vbox,GTK_WIDGET(bt1),1,1,1);
-
-//	gtk_paned_add2(GTK_PANED(widget_vpanel),statubar);
-//	gtk_paned_add1(GTK_PANED(widget_vpanel),bt1);
-
-//	GtkWidget * statubar = gtk_statusbar_new();
-
-
-//	GTK_PANED(widget_vpanel)->child1 = gtk_button_new_with_label("hello1_c1");
-
-//	gtk_container_add(GTK_CONTAINER(GTK_PANED(widget_vpanel)->child1),bt1);
-
-//	gtk_container_add(GTK_CONTAINER(GTK_PANED(widget_vpanel)->child2),bt2);
-
-	//	gtk_container_add(GTK_CONTAINER(widget_main),statubar);
-
-	gtk_widget_show_all(GTK_WIDGET(ide.main_window));
-
+	build_ui(&ide);
 
 	gtk_main();
 	return 0;
