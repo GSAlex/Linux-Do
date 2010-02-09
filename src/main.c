@@ -32,6 +32,12 @@ typedef struct _LinuxDoIDE{
 	GtkToolbar * toolbar;
 	GtkPaned *  mainlayout;
 	struct{
+
+		struct{
+			GtkTreeView * tree;
+
+		}left_layout;
+
 		GtkNotebook  * left;
 		GtkPaned  * right;
 		struct{
@@ -39,6 +45,7 @@ typedef struct _LinuxDoIDE{
 			GtkWidget * support;
 		}mid_layout;
 		GtkPaned* midlayout;
+
 	}main_layout;
 	struct{
 		GtkMenuItem * file;
@@ -118,11 +125,12 @@ void build_ui(LinuxDoIDE * ide)
 	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->mainlayout),1,1,1);
 	gtk_box_pack_end(ide->widget_vbox,GTK_WIDGET(ide->statusbar),0,0,0);
 
+	gtk_window_resize(ide->main_window,500,400);
+
 	//	GtkWidget * widget_hpanel = gtk_hpaned_new();
-	GtkWidget * bt1 = gtk_button_new_with_label("left area");
-	GtkWidget * bt2 = gtk_button_new_with_label("code area");
+	GtkWidget * bt1 = gtk_button_new_with_label("我菜鸟！！！");
+//	GtkWidget * bt2 = gtk_button_new_with_label("code area");
 	GtkWidget * bt3 = gtk_button_new_with_label("right area");
-	GtkWidget * bt4 = gtk_button_new_with_label("test area");
 	GtkWidget * bt5= gtk_button_new_with_label("support area");
 
 	// main area
@@ -147,12 +155,16 @@ void build_ui(LinuxDoIDE * ide)
 	gtk_paned_add2(ide->main_layout.midlayout,bt5);
 
 
-	gtk_notebook_append_page(ide->main_layout.left,bt1,0);
-	gtk_notebook_append_page(ide->main_layout.left,bt4,0);
+	ide->main_layout.left_layout.tree = GTK_TREE_VIEW(gtk_tree_view_new());
 
-	gtk_notebook_append_page(ide->main_layout.mid_layout.code,bt2,0);
 
-	gtk_window_resize(ide->main_window,500,400);
+
+	gtk_notebook_append_page(ide->main_layout.left,GTK_WIDGET(ide->main_layout.left_layout.tree), gtk_label_new_with_mnemonic(_("Explorer")));
+	gtk_notebook_append_page(ide->main_layout.left,bt1,	gtk_label_new_with_mnemonic(("菜鸟视图")));
+
+	gtk_notebook_append_page(ide->main_layout.mid_layout.code,gtk_text_view_new(),gtk_label_new_with_mnemonic(_("Untitled")));
+
+
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
