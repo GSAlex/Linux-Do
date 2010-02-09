@@ -1,5 +1,5 @@
 /*
- * Prtsc - screen cut program written for my wife
+ *  Linux Do - A new IDE for newbee
  *
  * Copyright (c) 2010-2010 microcai  <microcai@fedoraproject.org>
  *
