@@ -49,4 +49,6 @@
 
 #endif
 
+#include <gtk/gtk.h>
+#include <gtksourceview/gtksourceview.h>
 #endif /* PRTSC_H_ */

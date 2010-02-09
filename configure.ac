@@ -44,6 +44,11 @@ PKG_CHECK_MODULES(GTK2, [
     gtk+-2.0 >= 2.10
 ])
 
+PKG_CHECK_MODULES(GTKSOURCEVIEW2, [
+    gtksourceview-2.0
+])
+
+
 AC_DEFINE(MICROCAI_WITHEMAIL,"microcai@fedoraproject.org",[author microcai and his email])
 
 # OUTPUT files
