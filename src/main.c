@@ -32,8 +32,9 @@ typedef struct _LinuxDoIDE{
 	GtkToolbar * toolbar;
 	GtkBox *  mainlayout;
 	struct{
-
-
+		GtkNotebook  * left;
+		GtkWindow  * mid;
+		GtkWindow  * right;
 	}main_layout;
 	struct{
 		GtkMenuItem * file;
@@ -116,12 +117,18 @@ void build_ui(LinuxDoIDE * ide)
 	// main area
 
 	//	GtkWidget * widget_hpanel = gtk_hpaned_new();
-
 	GtkWidget * bt1 = gtk_button_new_with_label("left area");
 	GtkWidget * bt2 = gtk_button_new_with_label("code area");
 	GtkWidget * bt3 = gtk_button_new_with_label("right area");
 
-	gtk_box_pack_start(ide->mainlayout,GTK_WIDGET(bt1),1,1,1);
+	ide->main_layout.left = GTK_NOTEBOOK(gtk_notebook_new());
+
+	gtk_notebook_set_tab_pos(ide->main_layout.left,GTK_POS_BOTTOM);
+
+	gtk_notebook_append_page(ide->main_layout.left,bt1,0);
+
+
+	gtk_box_pack_start(ide->mainlayout,GTK_WIDGET(ide->main_layout.left),1,1,1);
 	gtk_box_pack_start(ide->mainlayout,GTK_WIDGET(bt2),1,1,1);
 	gtk_box_pack_end(ide->mainlayout,GTK_WIDGET(bt3),1,1,1);
 
