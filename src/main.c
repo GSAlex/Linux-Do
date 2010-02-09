@@ -30,11 +30,15 @@ typedef struct _LinuxDoIDE{
 	GtkMenuBar * menubar;
 	GtkStatusbar * statusbar;
 	GtkToolbar * toolbar;
-	GtkBox *  mainlayout;
+	GtkPaned *  mainlayout;
 	struct{
 		GtkNotebook  * left;
-		GtkWindow  * mid;
-		GtkWindow  * right;
+		GtkPaned  * right;
+		struct{
+			GtkNotebook * code;
+			GtkWidget * support;
+		}mid_layout;
+		GtkPaned* midlayout;
 	}main_layout;
 	struct{
 		GtkMenuItem * file;
@@ -65,7 +69,7 @@ void build_ui(LinuxDoIDE * ide)
 	//build main window and loop, other window will be build within the create event of main window
 	ide->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
 	ide->widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
-	ide->mainlayout  = GTK_BOX(gtk_hbox_new(0,0));
+	ide->mainlayout  = GTK_PANED(gtk_hpaned_new());
 
 	gtk_container_add(GTK_CONTAINER(ide->main_window),GTK_WIDGET(ide->widget_vbox));
 
@@ -114,23 +118,39 @@ void build_ui(LinuxDoIDE * ide)
 	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->mainlayout),1,1,1);
 	gtk_box_pack_end(ide->widget_vbox,GTK_WIDGET(ide->statusbar),0,0,0);
 
-	// main area
-
 	//	GtkWidget * widget_hpanel = gtk_hpaned_new();
 	GtkWidget * bt1 = gtk_button_new_with_label("left area");
 	GtkWidget * bt2 = gtk_button_new_with_label("code area");
 	GtkWidget * bt3 = gtk_button_new_with_label("right area");
+	GtkWidget * bt4 = gtk_button_new_with_label("test area");
+	GtkWidget * bt5= gtk_button_new_with_label("support area");
 
+	// main area
 	ide->main_layout.left = GTK_NOTEBOOK(gtk_notebook_new());
-
 	gtk_notebook_set_tab_pos(ide->main_layout.left,GTK_POS_BOTTOM);
 
+	ide->main_layout.right = GTK_PANED(gtk_hpaned_new());
+	gtk_paned_add1(ide->mainlayout,GTK_WIDGET(ide->main_layout.left));
+	gtk_paned_add2(ide->mainlayout,GTK_WIDGET(ide->main_layout.right));
+
+	ide->main_layout.midlayout = GTK_PANED(gtk_vpaned_new());
+
+	gtk_paned_add1(ide->main_layout.right,GTK_WIDGET(ide->main_layout.midlayout));
+	gtk_paned_add2(ide->main_layout.right,bt3);
+
+//	ide->main_layout.mid = GTK_PANED(gtk_vpaned_new());
+//	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_notebook_new());
+
+	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_notebook_new());
+
+	gtk_paned_add1(ide->main_layout.midlayout,GTK_WIDGET(ide->main_layout.mid_layout.code));
+	gtk_paned_add2(ide->main_layout.midlayout,bt5);
+
+
 	gtk_notebook_append_page(ide->main_layout.left,bt1,0);
+	gtk_notebook_append_page(ide->main_layout.left,bt4,0);
 
-
-	gtk_box_pack_start(ide->mainlayout,GTK_WIDGET(ide->main_layout.left),1,1,1);
-	gtk_box_pack_start(ide->mainlayout,GTK_WIDGET(bt2),1,1,1);
-	gtk_box_pack_end(ide->mainlayout,GTK_WIDGET(bt3),1,1,1);
+	gtk_notebook_append_page(ide->main_layout.mid_layout.code,bt2,0);
 
 	gtk_window_resize(ide->main_window,500,400);
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
