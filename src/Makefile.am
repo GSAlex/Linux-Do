@@ -11,4 +11,4 @@ test : $(top_srcdir)/po/LinuxDo.pot $(builddir)/usr/share/locale/
 	$(builddir)/linuxdo 
 
 $(builddir)/usr/share/locale/:
-	cd ../po && $(MAKE) install DESTDIR=$(builddir)
+	cd ../po && $(MAKE) install DESTDIR=$(top_builddir)/src
