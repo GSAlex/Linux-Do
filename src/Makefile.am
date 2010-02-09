@@ -7,6 +7,8 @@ bin_PROGRAMS = linuxdo
 
 linuxdo_SOURCES =  main.c Linuxdo.h
 
-test :
+test : $(top_srcdir)/po/LinuxDo.pot $(builddir)/usr/share/locale/	 
 	$(builddir)/linuxdo 
-	
+
+$(builddir)/usr/share/locale/:
+	cd ../po && $(MAKE) install DESTDIR=$(builddir)

@@ -44,7 +44,7 @@
 #ifdef DEBUG
 #define textdomain(domian) \
 	do { textdomain(domian) ; \
-		bindtextdomain(GETTEXT_PACKAGE, "/tmp/usr/share/locale"); \
+		bindtextdomain(GETTEXT_PACKAGE, "./usr/share/locale"); \
 	}while(0)
 
 #endif
