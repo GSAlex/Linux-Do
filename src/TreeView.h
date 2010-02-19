@@ -32,7 +32,6 @@ struct _TREEVIEW_DIR {
 	GtkTreeView parent;
 	GString * cur_dir; // current dir
 	GtkTreeViewColumn *col;
-	GtkCellRenderer *renderer;
 //	GtkWidget *view;
 };
 

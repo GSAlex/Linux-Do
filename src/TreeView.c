@@ -12,6 +12,9 @@ static void gtk_tree_view_dir_init(TREEVIEW_DIR*);
 static void gtk_tree_view_dir_class_init(TREEVIEW_DIRClass*);
 static void gtk_tree_view_dir_dispose(TREEVIEW_DIR*);
 static void gtk_tree_view_dir_finalize(TREEVIEW_DIR*);
+static void gtk_tree_view_dir_active(GtkTreeView *tree_view,
+										GtkTreePath *path, GtkTreeViewColumn *column,
+										gpointer user_data);
 
 GType gtk_tree_view_dir_get_type()
 {
@@ -31,18 +34,30 @@ GType gtk_tree_view_dir_get_type()
 
 void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 {
+	GtkCellRenderer * renderer_icon, * renderer_text;
+	GtkTreeModel* model;
+
 	obj->cur_dir = g_string_new("");
 	obj->col = gtk_tree_view_column_new();
 	gtk_tree_view_column_set_title(obj->col, _("Project View"));
 	gtk_tree_view_append_column(GTK_TREE_VIEW(obj), obj->col);
 
-	obj->renderer = gtk_cell_renderer_text_new();
-	gtk_tree_view_column_pack_start(obj->col, obj->renderer, TRUE);
-	gtk_tree_view_column_add_attribute(obj->col, obj->renderer, "text", 0);
+	renderer_icon = gtk_cell_renderer_pixbuf_new();
+	renderer_text = gtk_cell_renderer_text_new();
 
-	GtkTreeModel* model = GTK_TREE_MODEL(gtk_tree_store_new(1,GTK_TYPE_STRING));
+
+	gtk_tree_view_column_pack_start(obj->col, renderer_icon, FALSE);
+	gtk_tree_view_column_pack_start(obj->col, renderer_text, FALSE);
+
+	gtk_tree_view_column_add_attribute(obj->col, renderer_icon, "stock-id", 0);
+	gtk_tree_view_column_add_attribute(obj->col, renderer_text, "text", 1);
+
+	model = GTK_TREE_MODEL(gtk_tree_store_new(2,GTK_TYPE_STRING,GTK_TYPE_STRING));
 	gtk_tree_view_set_model(GTK_TREE_VIEW(obj), model);
 	g_object_unref(model);
+
+	g_signal_connect(G_OBJECT (obj),"row-activated",G_CALLBACK(gtk_tree_view_dir_active),obj);
+
 }
 
 
@@ -116,9 +131,14 @@ static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gc
 		filename =	((char **)dirs->data)[i];
 		gtk_tree_store_append(tree,&cur,root);
 
-		gtk_tree_store_set(tree, &cur,0,filename,-1);
-		append_dir_content(tree,&cur,filename);
+		gtk_tree_store_set(tree, &cur,0,GTK_STOCK_DIRECTORY,1,filename,-1);
+
+		gchar * newdir = g_strdup_printf("%s/%s",dirname,filename);
+
 		g_free(filename);
+		append_dir_content(tree,&cur,newdir);
+		g_free(newdir);
+
 	}
 	g_array_free(dirs,TRUE);
 
@@ -127,7 +147,8 @@ static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gc
 	{
 		filename =	((char **)files->data)[i];
 		gtk_tree_store_append(tree,&cur,root);
-		gtk_tree_store_set(tree, &cur,0,filename,-1);
+		gtk_tree_store_set(tree, &cur,0,GTK_STOCK_FILE,1,filename,-1);
+
 		g_free(filename);
 	}
 	g_array_free(files,TRUE);
@@ -142,7 +163,7 @@ gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir)
 
 	GtkTreeStore * tree;
 
-	tree = gtk_tree_store_new(1,G_TYPE_STRING);
+	tree = gtk_tree_store_new(2,G_TYPE_STRING,GTK_TYPE_STRING);
 	//根据设置的pattern加入文件和文件夹 ：）
 	append_dir_content(tree,NULL,dir);
 
@@ -151,3 +172,15 @@ gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir)
 
 }
 
+void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
+{
+	puts(__func__);
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+	char *value;
+
+	puts(gtk_tree_path_to_string(path));
+//	GTK_TREE_STORE(path);
+
+
+}
