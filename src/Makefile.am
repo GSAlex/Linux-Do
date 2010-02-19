@@ -5,4 +5,4 @@ LIBS = @GTK2_LIBS@  @GTKSOURCEVIEW2_LIBS@
 
 bin_PROGRAMS = linuxdo
 
-linuxdo_SOURCES =  main.c Linuxdo.h TreeView.h TreeView.c
+linuxdo_SOURCES =  main.c Linuxdo.h ide.h TreeView.h TreeView.c
