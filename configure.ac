@@ -53,6 +53,11 @@ PKG_CHECK_MODULES(GTKSOURCEVIEW2, [
 
 AC_DEFINE(MICROCAI_WITHEMAIL,"microcai@fedoraproject.org",[author microcai and his email])
 
+AC_SUBST(appicondir,["/usr/share/icons/hicolor/scalable/apps/"])
+AC_DEFINE(APPICONDIR,["/usr/share/icons/hicolor/scalable/apps/"],[the dir hold icon file])
+#AC_SUBST_FILE(iconsdir)
+
+
 # OUTPUT files
 AC_CONFIG_FILES(po/Makefile.in
 src/Makefile
