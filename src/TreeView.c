@@ -36,7 +36,7 @@ void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 	gtk_tree_view_column_set_title(obj->col, _("Project View"));
 	gtk_tree_view_append_column(GTK_TREE_VIEW(obj), obj->col);
 
-	obj->renderer = gtk_cell_renderer_toggle_new();
+	obj->renderer = gtk_cell_renderer_text_new();
 	gtk_tree_view_column_pack_start(obj->col, obj->renderer, TRUE);
 	gtk_tree_view_column_add_attribute(obj->col, obj->renderer, "text", 0);
 
@@ -73,11 +73,81 @@ TREEVIEW_DIR * gtk_tree_view_dir_new()
 	return GTK_TREE_VIEW_DIR(g_object_new(GTK_TYPE_TREE_VIEW_DIR,"enable-tree-lines",TRUE,0));
 }
 
+static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gchar * dirname)
+{
+	const gchar * name ;
+	GDir * dir;
+	GArray * dirs, * files;
+	gchar	*filename;
+	GtkTreeIter cur;
+
+	dir = g_dir_open(dirname,0,NULL);
+
+	g_return_if_fail(dir);
+
+	dirs = g_array_new(TRUE,TRUE,sizeof(gchar*));
+	files = g_array_new(TRUE,TRUE,sizeof(gchar*));
+
+
+	while ((name = g_dir_read_name(dir)))
+	{
+		filename = g_strdup_printf("%s/%s",dirname,name);
+		if (g_file_test(filename, G_FILE_TEST_IS_DIR))
+		{
+			g_free(filename);
+			filename = g_strdup(name);
+			dirs = g_array_append_val(dirs, filename);
+		}else if( g_file_test(filename, G_FILE_TEST_EXISTS))
+		{
+			g_free(filename);
+			filename = g_strdup(name);
+			files = g_array_append_val(files, filename);
+		}
+		else g_free(filename);
+	}
+
+	g_array_sort(dirs,(GCompareFunc)g_strcmp0);
+	g_array_sort(files,(GCompareFunc)g_strcmp0);
+
+	//插入目录先
+	int i;
+	for(i=0;i < dirs->len;++i)
+	{
+		filename =	((char **)dirs->data)[i];
+		gtk_tree_store_append(tree,&cur,root);
+
+		gtk_tree_store_set(tree, &cur,0,filename,-1);
+		append_dir_content(tree,&cur,filename);
+		g_free(filename);
+	}
+	g_array_free(dirs,TRUE);
+
+	//插入文件，吼吼
+	for(i=0;i < files->len;++i)
+	{
+		filename =	((char **)files->data)[i];
+		gtk_tree_store_append(tree,&cur,root);
+		gtk_tree_store_set(tree, &cur,0,filename,-1);
+		g_free(filename);
+	}
+	g_array_free(files,TRUE);
+	closedir(dir);
+}
+
 
 gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir)
 {
 	g_return_val_if_fail(GTK_IS_TREE_VIEW_DIR(obj),FALSE);
 	obj->cur_dir = g_string_assign(obj->cur_dir,dir);
+
+	GtkTreeStore * tree;
+
+	tree = gtk_tree_store_new(1,G_TYPE_STRING);
+	//根据设置的pattern加入文件和文件夹 ：）
+	append_dir_content(tree,NULL,dir);
+
+	gtk_tree_view_set_model(GTK_TREE_VIEW(obj), GTK_TREE_MODEL(tree));
+	g_object_unref(tree);
 
 }
 

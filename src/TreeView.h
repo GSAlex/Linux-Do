@@ -49,5 +49,6 @@ struct _TREEVIEW_DIRClass
 GType gtk_tree_view_dir_get_type() G_GNUC_CONST;
 
 TREEVIEW_DIR * gtk_tree_view_dir_new();
+gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir);
 
 #endif /* TREEVIEW_H_ */

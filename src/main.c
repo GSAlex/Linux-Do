@@ -158,6 +158,8 @@ int main(int argc, char * argv[])
 
 	build_ui(&ide);
 
+	gtk_tree_view_dir_set_dir(ide.main_layout.left_layout.tree,".");
+
 	connect_signals(&ide);
 	gtk_main();
 	return 0;
