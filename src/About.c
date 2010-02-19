@@ -10,10 +10,10 @@
 #include "About.h"
 
 
-void LinuxDoIDE_show_about(GtkWidget * parent)
+void LinuxDoIDE_show_about(gpointer userdata,GtkWidget* parent)
 {
 	static const gchar* authors[3]= { "microcai" , "alex" , 0 } ;
 
-	gtk_show_about_dialog(0 ,"version" , PACKAGE_VERSION , "authors" ,authors  , "website" , "http://github.com/GSAlex/Linux-Do" , NULL ,NULL );
+	gtk_show_about_dialog(GTK_WINDOW(parent) ,"version" , PACKAGE_VERSION , "authors" ,authors  , "website" , "http://github.com/GSAlex/Linux-Do" , NULL ,NULL );
 
 }

@@ -29,6 +29,9 @@
 
 static void build_ui(LinuxDoIDE * ide)
 {
+	//build main window
+	ide->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
+
 
 	GtkItemFactoryEntry entry[] = {
 //			{  _("/_File") , NULL, 0, 0 , "<Branch>" , NULL },
@@ -49,13 +52,11 @@ static void build_ui(LinuxDoIDE * ide)
 			{  _("/_Edit/_Copy") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_COPY },
 			{  _("/_Edit/_Past") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_PASTE },
 
-			{  _("/_Help/_About") , NULL,  LinuxDoIDE_show_about , 0 , "<StockItem>" , GTK_STOCK_ABOUT },
+			{  _("/_Help/_About") , NULL, (GtkItemFactoryCallback) LinuxDoIDE_show_about , (guint)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
 
 	};
 
-
-	//build main window and loop, other window will be build within the create event of main window
-	ide->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
+	//build main layout, other window will be build within the create event of main window
 	ide->widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
 	ide->mainlayout  = GTK_PANED(gtk_hpaned_new());
 
@@ -133,7 +134,7 @@ static void build_ui(LinuxDoIDE * ide)
 
 	ide->main_layout.left_layout.tree = gtk_tree_view_dir_new();
 
-	gtk_scrolled_window_add_with_viewport(ide->main_layout.left_layout.tree_scroll,	ide->main_layout.left_layout.tree);
+	gtk_scrolled_window_add_with_viewport(ide->main_layout.left_layout.tree_scroll, GTK_WIDGET(ide->main_layout.left_layout.tree));
 
 
 	gtk_notebook_append_page(ide->main_layout.left,
@@ -145,6 +146,7 @@ static void build_ui(LinuxDoIDE * ide)
 	gtk_notebook_append_page(ide->main_layout.mid_layout.code,gtk_source_view_new(),gtk_label_new_with_mnemonic(_("Untitled")));
 
 	gtk_window_set_title(ide->main_window,_("Linux-Do"));
+	gtk_window_set_icon_from_file(ide->main_window,APPICONDIR"/LinuxDo.svg",NULL);
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
@@ -185,6 +187,7 @@ int main(int argc, char * argv[])
 	gtk_set_locale();
 	textdomain(GETTEXT_PACKAGE);
 
+	g_set_application_name(_(PACKAGE_NAME));
 
 	printf(_("Linux-DO start up\n"));
 
