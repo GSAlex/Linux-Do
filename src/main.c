@@ -136,6 +136,7 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_scrolled_window_add_with_viewport(ide->main_layout.left_layout.tree_scroll, GTK_WIDGET(ide->main_layout.left_layout.tree));
 
+	gtk_scrolled_window_set_policy(ide->main_layout.left_layout.tree_scroll,GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
 
 	gtk_notebook_append_page(ide->main_layout.left,
 			GTK_WIDGET(ide->main_layout.left_layout.tree_scroll),
@@ -143,7 +144,13 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_notebook_append_page(ide->main_layout.left,bt1,	gtk_label_new_with_mnemonic(("菜鸟视图")));
 
-	gtk_notebook_append_page(ide->main_layout.mid_layout.code,GTK_WIDGET(ide_editor_new()),gtk_label_new_with_mnemonic(_("Untitled")));
+
+	GtkWidget * scroll = gtk_scrolled_window_new(NULL,NULL);
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
+
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), GTK_WIDGET(ide_editor_new()));
+
+	gtk_notebook_append_page(ide->main_layout.mid_layout.code,GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(_("Untitled")));
 
 	gtk_window_set_title(ide->main_window,_("Linux-Do"));
 	gtk_window_set_icon_from_file(ide->main_window,APPICONDIR"/LinuxDo.svg",NULL);
