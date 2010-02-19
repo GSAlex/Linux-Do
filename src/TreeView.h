@@ -38,8 +38,11 @@ struct _TREEVIEW_DIR {
 
 struct _TREEVIEW_DIRClass
 {
-	GtkTreeViewClass	parent_class;
-	gint				signals[TREEVIEW_DIRCLASS_MAXSIGNAL];
+	GtkTreeViewClass parent_class;
+	void (*update_dir)(TREEVIEW_DIR*);
+	void (*dispose)(GObject *object);
+	void (*finalize)(GObject *object);
+//	gint				signals[TREEVIEW_DIRCLASS_MAXSIGNAL];
 
 };
 

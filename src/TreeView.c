@@ -10,6 +10,8 @@
 
 static void gtk_tree_view_dir_init(TREEVIEW_DIR*);
 static void gtk_tree_view_dir_class_init(TREEVIEW_DIRClass*);
+static void gtk_tree_view_dir_dispose(TREEVIEW_DIR*);
+static void gtk_tree_view_dir_finalize(TREEVIEW_DIR*);
 
 GType gtk_tree_view_dir_get_type()
 {
@@ -46,7 +48,24 @@ void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 
 void gtk_tree_view_dir_class_init(TREEVIEW_DIRClass*klass)
 {
+	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
 
+	klass->update_dir = NULL;
+	klass->dispose = gobject_class->dispose;
+	klass->finalize = gobject_class->finalize;
+	gobject_class->dispose = ( void(*)(GObject*) )gtk_tree_view_dir_dispose;
+	gobject_class->finalize = ( void(*)(GObject*) )gtk_tree_view_dir_finalize;
+}
+
+void gtk_tree_view_dir_dispose(TREEVIEW_DIR*obj)
+{
+	GTK_TREE_VIEW_DIR_GET_CLASS(obj)->dispose(G_OBJECT(obj));
+}
+
+void gtk_tree_view_dir_finalize(TREEVIEW_DIR*obj)
+{
+	g_string_free(obj->cur_dir,TRUE);
+	GTK_TREE_VIEW_DIR_GET_CLASS(obj)->finalize(G_OBJECT(obj));
 }
 
 TREEVIEW_DIR * gtk_tree_view_dir_new()
@@ -58,8 +77,7 @@ TREEVIEW_DIR * gtk_tree_view_dir_new()
 gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir)
 {
 	g_return_val_if_fail(GTK_IS_TREE_VIEW_DIR(obj),FALSE);
-
-
+	obj->cur_dir = g_string_assign(obj->cur_dir,dir);
 
 }
 
