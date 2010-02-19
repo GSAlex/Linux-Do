@@ -23,7 +23,7 @@
  */
 
 #include "Linuxdo.h"
-
+#include "TreeView.h"
 
 
 static void build_ui(LinuxDoIDE * ide)
@@ -134,12 +134,17 @@ static gboolean main_window_on_configure(GtkWidget *widget,
 
 }
 
+static void openfile(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
+{
+	puts(item);
+}
+
 void connect_signals(LinuxDoIDE * ide)
 {
 	// resize
 	g_signal_connect(G_OBJECT(ide->main_window),"configure-event",G_CALLBACK(main_window_on_configure),ide);
 	g_signal_connect(G_OBJECT (ide->main_window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-
+	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(openfile), NULL);
 }
 
 int main(int argc, char * argv[])

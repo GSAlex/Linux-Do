@@ -70,6 +70,9 @@ void gtk_tree_view_dir_class_init(TREEVIEW_DIRClass*klass)
 	klass->finalize = gobject_class->finalize;
 	gobject_class->dispose = ( void(*)(GObject*) )gtk_tree_view_dir_dispose;
 	gobject_class->finalize = ( void(*)(GObject*) )gtk_tree_view_dir_finalize;
+	klass->signals[TREEVIEW_DIR_SIGNAL_OPENFILE] = g_signal_new("openfile",
+			GTK_TYPE_TREE_VIEW_DIR, G_SIGNAL_ACTION | G_SIGNAL_RUN_LAST, 0, 0,
+			0, g_cclosure_marshal_VOID__STRING, G_TYPE_NONE, 1 , G_TYPE_STRING , NULL);
 }
 
 void gtk_tree_view_dir_dispose(TREEVIEW_DIR*obj)
@@ -174,13 +177,46 @@ gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir)
 
 void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
+
 	puts(__func__);
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 	char *value;
 
-	puts(gtk_tree_path_to_string(path));
-//	GTK_TREE_STORE(path);
+	GtkTreeModel * mode;
+
+	mode = gtk_tree_view_get_model(tree_view);
+
+	g_return_if_fail(gtk_tree_model_get_iter(mode,&iter,path));
+
+	if(gtk_tree_model_iter_has_child(mode,&iter))
+	{
+		gtk_tree_view_expand_row(tree_view,path,0);
+
+	}else
+	{
+		GString * filepath;
+		filepath  = g_string_new("");
+
+		GtkTreeIter parent = iter;
 
 
+		do {
+
+			iter = parent ;
+
+			gtk_tree_model_get(mode, &iter, 1, &value, -1);
+			if(filepath->len)
+				filepath = g_string_prepend_c(filepath, '/');
+			filepath = g_string_prepend(filepath, value);
+
+		} while (gtk_tree_model_iter_parent(mode, &parent, &iter));
+
+		g_signal_emit(G_OBJECT(user_data),
+				GTK_TREE_VIEW_DIR_GET_CLASS(user_data)->signals[TREEVIEW_DIR_SIGNAL_OPENFILE],
+				0, filepath->str, NULL);
+
+		g_string_free(filepath,TRUE);
+
+	}
 }

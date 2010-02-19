@@ -17,7 +17,16 @@ typedef struct _TREEVIEW_DIR TREEVIEW_DIR;
 typedef struct _TREEVIEW_DIRClass TREEVIEW_DIRClass;
 
 enum{
-	TREEVIEW_DIR_SIGNAL_DBCLICKITEM,
+
+	/*
+	 * TREEVIEW_DIR_SIGNAL_DBCLICKITEM
+	 *
+	 * void openfile (TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
+	 */
+
+	TREEVIEW_DIR_SIGNAL_OPENFILE,
+
+
 	TREEVIEW_DIRCLASS_MAXSIGNAL
 };
 
@@ -41,7 +50,8 @@ struct _TREEVIEW_DIRClass
 	void (*update_dir)(TREEVIEW_DIR*);
 	void (*dispose)(GObject *object);
 	void (*finalize)(GObject *object);
-//	gint				signals[TREEVIEW_DIRCLASS_MAXSIGNAL];
+	gint				signals[TREEVIEW_DIRCLASS_MAXSIGNAL];
+
 
 };
 
