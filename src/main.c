@@ -174,10 +174,6 @@ static void openfile(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
 {
 	LinuxDoIDE * ide = userdata;
 
-//	GtkSourceLanguageManager * lmgr = gtk_source_language_manager_new();
-
-//	lang = gtk_source_language_manager_guess_language(lmgr,item,NULL);
-//
 
 
 

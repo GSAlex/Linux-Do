@@ -56,3 +56,8 @@ IDE_EDITOR* ide_editor_new()
 	return IDE_EDITOR(g_object_new (IDE_TYPE_EDITOR, NULL));
 }
 
+gboolean ide_editor_openfile(IDE_EDITOR * editor, GFile * file)
+{
+
+
+}
