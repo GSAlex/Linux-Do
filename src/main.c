@@ -157,14 +157,14 @@ static void build_ui(LinuxDoIDE * ide)
 	gtk_paned_add2(ide->main_layout.midlayout,bt5);
 
 
-	ide->main_layout.left_layout.tree = GTK_TREE_VIEW(gtk_tree_view_new());
+	ide->main_layout.left_layout.tree = GTK_TREE_VIEW(gtk_tree_view_dir_new());
 
 	gtk_notebook_append_page(ide->main_layout.left,GTK_WIDGET(ide->main_layout.left_layout.tree), gtk_label_new_with_mnemonic(_("Explorer")));
 	gtk_notebook_append_page(ide->main_layout.left,bt1,	gtk_label_new_with_mnemonic(("菜鸟视图")));
 
 	gtk_notebook_append_page(ide->main_layout.mid_layout.code,gtk_source_view_new(),gtk_label_new_with_mnemonic(_("Untitled")));
 
-
+	gtk_window_set_title(ide->main_window,_("Linux-Do"));
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
@@ -185,18 +185,21 @@ void connect_signals(LinuxDoIDE * ide)
 {
 	// resize
 	g_signal_connect(G_OBJECT(ide->main_window),"configure-event",G_CALLBACK(main_window_on_configure),ide);
-	g_signal_connect (G_OBJECT (ide->main_window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
+	g_signal_connect(G_OBJECT (ide->main_window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
 }
 
 int main(int argc, char * argv[])
 {
+	LinuxDoIDE ide;
+
+	g_set_prgname(PACKAGE_NAME);
+
 	gtk_init(&argc, &argv);
 	setlocale(LC_ALL, "");
 	gtk_set_locale();
 	textdomain(GETTEXT_PACKAGE);
 
-	LinuxDoIDE ide;
 
 	printf(_("Linux-DO start up\n"));
 
