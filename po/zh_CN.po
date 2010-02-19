@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-02-19 22:18+0800\n"
+"POT-Creation-Date: 2010-02-19 23:57+0800\n"
 "PO-Revision-Date: 2010-02-19 22:19+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
@@ -15,79 +15,79 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
 
-#: src/main.c:34
+#: src/main.c:38
 msgid "/_File/_New"
 msgstr "/文件(_F)/新建_N)"
 
-#: src/main.c:35
+#: src/main.c:39
 msgid "/_File/_Open"
 msgstr "/文件(_F)/打开(_O)"
 
-#: src/main.c:36 src/main.c:39
+#: src/main.c:40 src/main.c:43
 msgid "/_File/--"
 msgstr "/文件(_F)/--"
 
-#: src/main.c:37
+#: src/main.c:41
 msgid "/_File/_Close"
 msgstr "/文件(_F)/关闭(_C)"
 
-#: src/main.c:38
+#: src/main.c:42
 msgid "/_File/C_lose All"
 msgstr "/文件(_F)/全部关闭(_l)"
 
-#: src/main.c:40
+#: src/main.c:44
 msgid "/_File/_Save"
 msgstr "/文件(_F)/保存(_S)"
 
-#: src/main.c:41
+#: src/main.c:45
 msgid "/_File/Save _As"
 msgstr "/文件(_F)/全部保存(_A)"
 
-#: src/main.c:44
+#: src/main.c:48
 msgid "/_Edit/_Undo"
 msgstr "/编辑(_E)/撤销(_U)"
 
-#: src/main.c:45
+#: src/main.c:49
 msgid "/_Edit/_Redo"
 msgstr "/编辑(_E)/重做(_R)"
 
-#: src/main.c:46
+#: src/main.c:50
 msgid "/_Edit/--"
 msgstr "/编辑(_E)/--"
 
-#: src/main.c:47
+#: src/main.c:51
 msgid "/_Edit/Cu_t"
 msgstr "/编辑(_E)/剪切(_t)"
 
-#: src/main.c:48
+#: src/main.c:52
 msgid "/_Edit/_Copy"
 msgstr "/编辑(_E)/复制(_C)"
 
-#: src/main.c:49
+#: src/main.c:53
 msgid "/_Edit/_Past"
 msgstr "/编辑(_E)/粘帖(_P)"
 
-#: src/main.c:51
+#: src/main.c:55
 msgid "/_Help/_About"
 msgstr "/帮助(_H)/关于(_A)"
 
-#: src/main.c:73
+#: src/main.c:75
 msgid "Ready"
 msgstr "就绪"
 
-#: src/main.c:140
+#: src/main.c:142
 msgid "Explorer"
 msgstr "浏览"
 
-#: src/main.c:144
+#: src/main.c:146
 msgid "Untitled"
 msgstr "未命名"
 
-#: src/main.c:146
+#: src/main.c:148
 msgid "Linux-Do"
 msgstr "LinuxDO集成开发环境"
 
-#: src/main.c:188
+#: src/main.c:192
 #, c-format
 msgid "Linux-DO start up\n"
 msgstr "Linux-DO 启动\n"
