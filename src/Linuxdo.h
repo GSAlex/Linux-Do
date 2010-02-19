@@ -51,6 +51,6 @@
 
 #include <gtk/gtk.h>
 #include <gtksourceview/gtksourceview.h>
-
+#include <gtksourceview/gtksourcelanguagemanager.h>
 
 #endif /* PRTSC_H_ */
