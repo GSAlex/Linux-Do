@@ -17,8 +17,8 @@ typedef struct _TREEVIEW_DIR TREEVIEW_DIR;
 typedef struct _TREEVIEW_DIRClass TREEVIEW_DIRClass;
 
 enum{
-
-TREEVIEW_DIRCLASS_MAXSIGNAL
+	TREEVIEW_DIR_SIGNAL_DBCLICKITEM,
+	TREEVIEW_DIRCLASS_MAXSIGNAL
 };
 
 #define GTK_TYPE_TREE_VIEW_DIR		(gtk_tree_view_dir_get_type ())
@@ -28,11 +28,12 @@ TREEVIEW_DIRCLASS_MAXSIGNAL
 #define GTK_IS_TREE_VIEW_DIR_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_TREE_VIEW_DIR))
 #define GTK_TREE_VIEW_DIR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_TREE_VIEW_DIR, TREEVIEW_DIRClass))
 
-struct _TREEVIEW_DIR{
-	GtkTreeView	parent;
-	GString		* cur_dir; // current dir
-
-
+struct _TREEVIEW_DIR {
+	GtkTreeView parent;
+	GString * cur_dir; // current dir
+	GtkTreeViewColumn *col;
+	GtkCellRenderer *renderer;
+//	GtkWidget *view;
 };
 
 struct _TREEVIEW_DIRClass
@@ -42,7 +43,7 @@ struct _TREEVIEW_DIRClass
 
 };
 
-GType gtk_tree_view_dir_get_type();
+GType gtk_tree_view_dir_get_type() G_GNUC_CONST;
 
 TREEVIEW_DIR * gtk_tree_view_dir_new();
 
