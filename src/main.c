@@ -29,7 +29,6 @@
 
 static void build_ui(LinuxDoIDE * ide)
 {
-	GtkSourceLanguageManager * lmgr;
 	//build main window
 	ide->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
 
@@ -144,16 +143,7 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_notebook_append_page(ide->main_layout.left,bt1,	gtk_label_new_with_mnemonic(("菜鸟视图")));
 
-	lmgr = gtk_source_language_manager_new();
-	GtkSourceLanguage * lang = gtk_source_language_manager_get_language(lmgr,"c");
-	GtkSourceBuffer * buffer ;
-
-	buffer = gtk_source_buffer_new_with_language(lang);
-
-	gtk_notebook_append_page(ide->main_layout.mid_layout.code,gtk_source_view_new_with_buffer(buffer),gtk_label_new_with_mnemonic(_("Untitled")));
-
-	g_object_unref(lmgr);
-	g_object_unref(buffer);
+	gtk_notebook_append_page(ide->main_layout.mid_layout.code,GTK_WIDGET(ide_editor_new()),gtk_label_new_with_mnemonic(_("Untitled")));
 
 	gtk_window_set_title(ide->main_window,_("Linux-Do"));
 	gtk_window_set_icon_from_file(ide->main_window,APPICONDIR"/LinuxDo.svg",NULL);
