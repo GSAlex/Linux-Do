@@ -7,35 +7,43 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-02-10 12:20+0800\n"
-"PO-Revision-Date: 2010-02-10 12:20+0800\n"
+"POT-Creation-Date: 2010-02-19 16:51+0800\n"
+"PO-Revision-Date: 2010-02-19 16:51+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
 
-#: src/main.c:91
+#: src/main.c:44
 msgid "Ready"
 msgstr "就绪"
 
-#: src/main.c:93
+#: src/main.c:46
 msgid "_File"
 msgstr "文件(_F)"
 
-#: src/main.c:94
+#: src/main.c:47
 msgid "_Edit"
 msgstr "编辑(_E)"
 
-#: src/main.c:163
+#: src/main.c:115
 msgid "Explorer"
 msgstr "浏览"
 
-#: src/main.c:166
+#: src/main.c:118
 msgid "Untitled"
 msgstr "未命名"
 
-#: src/main.c:202
+#: src/main.c:120
+msgid "Linux-Do"
+msgstr "LinuxDO集成开发环境"
+
+#: src/main.c:157
 #, c-format
 msgid "Linux-DO start up\n"
 msgstr "Linux-DO 启动\n"
+
+#: src/TreeView.c:34
+msgid "Project View"
+msgstr "项目浏览"
