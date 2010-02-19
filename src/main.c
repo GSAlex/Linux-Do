@@ -24,54 +24,7 @@
 
 #include "Linuxdo.h"
 
-typedef struct _LinuxDoIDE{
-	GtkWindow * main_window;
-	GtkBox  *	widget_vbox;
-	GtkMenuBar * menubar;
-	GtkStatusbar * statusbar;
-	GtkToolbar * toolbar;
-	GtkPaned *  mainlayout;
-	struct{
 
-		struct{
-			GtkTreeView * tree;
-			GtkTreeStore * tree_model;
-
-		}left_layout;
-
-		GtkNotebook  * left;
-		GtkPaned  * right;
-		struct{
-			GtkNotebook * code;
-			GtkWidget * support;
-		}mid_layout;
-		GtkPaned* midlayout;
-
-	}main_layout;
-	struct{
-		GtkMenuItem * file;
-		GtkMenuItem * edit;
-
-	}menu;
-	struct{
-		//first group
-		GtkToolItem * new;
-		GtkToolItem * open;
-		GtkToolItem * close;
-
-		GtkToolItem * sep1;
-		//second group
-		GtkToolItem * cut;
-		GtkToolItem * copy;
-		GtkToolItem * past;
-
-
-		//other
-		GtkToolButton * buttons[20];
-
-	}toolbaritem;
-
-}LinuxDoIDE;
 
 static void build_ui(LinuxDoIDE * ide)
 {
