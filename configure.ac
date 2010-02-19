@@ -21,7 +21,7 @@
 # if not 1, append datestamp to the version number.
 m4_define([package_name], [LinuxDo])
 
-AC_INIT([package_name], [2.6], [ microcaicai@gmail.com ], [package_name])
+AC_INIT([package_name], [0.0.1], [ microcaicai@gmail.com ], [package_name])
 AM_INIT_AUTOMAKE([1.10])
 # AC_GNU_SOURCE
 

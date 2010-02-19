@@ -25,9 +25,35 @@
 #include "Linuxdo.h"
 #include "TreeView.h"
 #include "ide.h"
+#include "About.h"
 
 static void build_ui(LinuxDoIDE * ide)
 {
+
+	GtkItemFactoryEntry entry[] = {
+//			{  _("/_File") , NULL, 0, 0 , "<Branch>" , NULL },
+			{  _("/_File/_New") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_NEW },
+			{  _("/_File/_Open") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_OPEN },
+			{  _("/_File/--") , NULL, 0, 0 , "<Separator>" , NULL },
+			{  _("/_File/_Close") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_CLOSE },
+			{  _("/_File/C_lose All") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_CLOSE},
+			{  _("/_File/--") , NULL, 0, 0 , "<Separator>" , NULL },
+			{  _("/_File/_Save") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE },
+			{  _("/_File/Save _As") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE_AS},
+
+//			{  _("/_Edit") , NULL, 0, 0 , "<Branch>" , NULL },
+			{  _("/_Edit/_Undo") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_UNDO },
+			{  _("/_Edit/_Redo") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_REDO },
+			{  _("/_Edit/--") , NULL, 0, 0 , "<Separator>" , NULL },
+			{  _("/_Edit/Cu_t") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_CUT },
+			{  _("/_Edit/_Copy") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_COPY },
+			{  _("/_Edit/_Past") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_PASTE },
+
+			{  _("/_Help/_About") , NULL,  LinuxDoIDE_show_about , 0 , "<StockItem>" , GTK_STOCK_ABOUT },
+
+	};
+
+
 	//build main window and loop, other window will be build within the create event of main window
 	ide->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
 	ide->widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
@@ -35,19 +61,17 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_container_add(GTK_CONTAINER(ide->main_window),GTK_WIDGET(ide->widget_vbox));
 
-
 	ide->statusbar = GTK_STATUSBAR(gtk_statusbar_new());
-	ide->menubar = GTK_MENU_BAR(gtk_menu_bar_new());
+
+	ide->menu = gtk_item_factory_new(GTK_TYPE_MENU_BAR,"<main>",0);
+
+	gtk_item_factory_create_items(ide->menu, sizeof(entry)/sizeof(GtkItemFactoryEntry) ,entry,0);
+
+	ide->menubar = GTK_WIDGET(gtk_item_factory_get_widget (ide->menu, "<main>")) ;// GTK_MENU_BAR(gtk_menu_bar_new());
 
 	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->menubar),0,0,0);
 
 	gtk_statusbar_push(ide->statusbar,0,_("Ready"));
-
-	ide->menu.file = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_File")));
-	ide->menu.edit = GTK_MENU_ITEM(gtk_menu_item_new_with_mnemonic(_("_Edit")));
-
-	gtk_menu_shell_append(GTK_MENU_SHELL(ide->menubar),GTK_WIDGET(ide->menu.file));
-	gtk_menu_shell_append(GTK_MENU_SHELL(ide->menubar),GTK_WIDGET(ide->menu.edit));
 
 	ide->toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
@@ -81,9 +105,8 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_window_resize(ide->main_window,500,400);
 
-	//	GtkWidget * widget_hpanel = gtk_hpaned_new();
 	GtkWidget * bt1 = gtk_button_new_with_label("我菜鸟！！！");
-//	GtkWidget * bt2 = gtk_button_new_with_label("code area");
+
 	GtkWidget * bt3 = gtk_button_new_with_label("right area");
 	GtkWidget * bt5= gtk_button_new_with_label("support area");
 
@@ -100,19 +123,23 @@ static void build_ui(LinuxDoIDE * ide)
 	gtk_paned_add1(ide->main_layout.right,GTK_WIDGET(ide->main_layout.midlayout));
 	gtk_paned_add2(ide->main_layout.right,bt3);//,FALSE,FALSE);
 
-
-//	ide->main_layout.mid = GTK_PANED(gtk_vpaned_new());
-//	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_notebook_new());
-
 	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_notebook_new());
 
 	gtk_paned_add1(ide->main_layout.midlayout,GTK_WIDGET(ide->main_layout.mid_layout.code));
 	gtk_paned_add2(ide->main_layout.midlayout,bt5);
 
 
+	ide->main_layout.left_layout.tree_scroll = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL,NULL));
+
 	ide->main_layout.left_layout.tree = gtk_tree_view_dir_new();
 
-	gtk_notebook_append_page(ide->main_layout.left,GTK_WIDGET(ide->main_layout.left_layout.tree), gtk_label_new_with_mnemonic(_("Explorer")));
+	gtk_scrolled_window_add_with_viewport(ide->main_layout.left_layout.tree_scroll,	ide->main_layout.left_layout.tree);
+
+
+	gtk_notebook_append_page(ide->main_layout.left,
+			GTK_WIDGET(ide->main_layout.left_layout.tree_scroll),
+			gtk_label_new_with_mnemonic(_("Explorer")));
+
 	gtk_notebook_append_page(ide->main_layout.left,bt1,	gtk_label_new_with_mnemonic(("菜鸟视图")));
 
 	gtk_notebook_append_page(ide->main_layout.mid_layout.code,gtk_source_view_new(),gtk_label_new_with_mnemonic(_("Untitled")));

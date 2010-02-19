@@ -37,9 +37,19 @@ void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 	GtkCellRenderer * renderer_icon, * renderer_text;
 	GtkTreeModel* model;
 
+	GtkWidget * hide_header;
+
 	obj->cur_dir = g_string_new("");
 	obj->col = gtk_tree_view_column_new();
+
 	gtk_tree_view_column_set_title(obj->col, _("Project View"));
+
+//	hide_header = gtk_button_new();
+
+//	gtk_widget_set_size_request(hide_header,0,0);
+
+//	gtk_tree_view_column_set_widget(obj->col,hide_header);
+
 	gtk_tree_view_append_column(GTK_TREE_VIEW(obj), obj->col);
 
 	renderer_icon = gtk_cell_renderer_pixbuf_new();
@@ -207,7 +217,7 @@ void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTree
 
 			gtk_tree_model_get(mode, &iter, 1, &value, -1);
 			if(filepath->len)
-				filepath = g_string_prepend_c(filepath, '/');
+				filepath = g_string_prepend_c(filepath, G_DIR_SEPARATOR);
 			filepath = g_string_prepend(filepath, value);
 
 		} while (gtk_tree_model_iter_parent(mode, &parent, &iter));

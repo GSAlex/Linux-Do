@@ -13,7 +13,7 @@
 typedef struct _LinuxDoIDE{
 	GtkWindow * main_window;
 	GtkBox  *	widget_vbox;
-	GtkMenuBar * menubar;
+	GtkWidget * menubar;
 	GtkStatusbar * statusbar;
 	GtkToolbar * toolbar;
 	GtkPaned *  mainlayout;
@@ -21,7 +21,7 @@ typedef struct _LinuxDoIDE{
 
 		struct{
 			TREEVIEW_DIR * tree;
-			GtkTreeStore * tree_model;
+			GtkScrolledWindow * tree_scroll;
 
 		}left_layout;
 
@@ -34,11 +34,12 @@ typedef struct _LinuxDoIDE{
 		GtkPaned* midlayout;
 
 	}main_layout;
-	struct{
-		GtkMenuItem * file;
-		GtkMenuItem * edit;
-
-	}menu;
+//	struct{
+//		GtkMenuItem * file;
+//		GtkMenuItem * edit;
+//
+//	}menu;
+	GtkItemFactory * menu;
 	struct{
 		//first group
 		GtkToolItem * new;
