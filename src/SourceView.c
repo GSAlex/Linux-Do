@@ -46,7 +46,6 @@ void ide_editor_init(IDE_EDITOR * obj)
 	gtk_text_view_set_buffer(GTK_TEXT_VIEW(obj),GTK_TEXT_BUFFER(buffer));
 
 	g_object_unref(buffer);
-	g_object_unref(lang);
 
 	obj->buffer = GTK_SOURCE_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(obj)));
 
@@ -74,7 +73,6 @@ gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
 	content = g_mapped_file_get_contents(mfile);
 
 	gtk_text_buffer_get_bounds(GTK_TEXT_BUFFER(editor->buffer),&start,&end);
-	
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(editor->buffer),&start,content,content_len);
 
