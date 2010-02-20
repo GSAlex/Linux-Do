@@ -109,16 +109,20 @@ gboolean ide_editor_savefile(IDE_EDITOR * editor, const gchar * url)
 
 	GOutputStream * out = G_OUTPUT_STREAM(g_file_replace(gfile,NULL,TRUE,G_FILE_CREATE_NONE,NULL,NULL));
 
-	int i,linecount = gtk_text_buffer_get_char_count(buffer) - 2;
+	int i,linecount = gtk_text_buffer_get_char_count(buffer) ;
 
-	for(i=0;i < linecount ; ++i)
+	gtk_text_buffer_get_iter_at_line(buffer,&end,0);
+
+	for(i=1;i < linecount ; ++i)
 	{
-		gtk_text_buffer_get_iter_at_line(buffer,&start,i);
-		gtk_text_buffer_get_iter_at_line(buffer,&end,i+1);
-		line = gtk_text_buffer_get_slice(buffer,&start,&end,FALSE);
+		start = end;
+
+		gtk_text_buffer_get_iter_at_line(buffer,&end,i);
+		line = gtk_text_buffer_get_slice(buffer,&start,&end,TRUE);
 		g_output_stream_write(out,(const void*)line,strlen(line),NULL,NULL);
 
-		puts(line);
+	//	g_print("%d line is %s\n",i,line);
+
 	}
 
 	g_output_stream_close(out,NULL,NULL);
