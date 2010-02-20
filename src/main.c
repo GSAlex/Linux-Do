@@ -239,6 +239,12 @@ static void connect_signals(LinuxDoIDE * ide)
 	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(openfile), ide);
 }
 
+static gboolean set_dir(gpointer ptr)
+{
+	gtk_tree_view_dir_set_dir(GTK_TREE_VIEW_DIR(ptr),".");
+	return FALSE;
+}
+
 int main(int argc, char * argv[])
 {
 	LinuxDoIDE ide;
@@ -256,10 +262,10 @@ int main(int argc, char * argv[])
 
 	build_ui(&ide);
 
-	gtk_tree_view_dir_set_dir(ide.main_layout.left_layout.tree,".");
-
-
 	connect_signals(&ide);
+
+	g_idle_add(set_dir,ide.main_layout.left_layout.tree);
+
 	gtk_main();
 	return 0;
 }
