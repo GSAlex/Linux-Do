@@ -171,6 +171,50 @@ static gboolean main_window_on_configure(GtkWidget *widget,
 
 }
 
+
+static void savefile(GtkButton * bt , IDE_EDITOR * editor)
+{
+	ide_editor_savefile(editor,editor->file->str);
+	gtk_notebook_remove_page(editor->note,gtk_notebook_get_current_page(editor->note));
+}
+
+static IDE_EDITOR * ide_notebook_new_page(GtkNotebook* note, const gchar * label)
+{
+	IDE_EDITOR * source_editor;
+
+	source_editor = ide_editor_new();
+
+	source_editor->note = note;
+
+	GtkWidget * scroll = gtk_scrolled_window_new(NULL,NULL);
+
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
+
+	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), GTK_WIDGET(source_editor));
+
+	GtkWidget * title = gtk_hbox_new(0,0);
+
+	GtkWidget * bt = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE));
+
+	gtk_box_pack_start(GTK_BOX(title),gtk_label_new_with_mnemonic(label),TRUE,0,0);
+
+	gtk_box_pack_start(GTK_BOX(title),bt,TRUE,0,0);
+
+	gtk_widget_show_all(title);
+
+	gtk_notebook_append_page(note,GTK_WIDGET(scroll),title);
+
+	gtk_widget_show_all(GTK_WIDGET(source_editor));
+
+	gtk_widget_show_all(GTK_WIDGET(gtk_notebook_get_nth_page(note,gtk_notebook_get_n_pages(note)-1)));
+
+	gtk_notebook_set_current_page(note,gtk_notebook_get_n_pages(note)-1);
+
+	g_signal_connect(G_OBJECT(bt),"clicked",G_CALLBACK(savefile),source_editor);
+
+	return source_editor;
+}
+
 static void openfile(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
 {
 	LinuxDoIDE * ide = userdata;
@@ -178,26 +222,12 @@ static void openfile(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
 
 	GtkNotebook* note = ide->main_layout.mid_layout.code;
 
-	source_editor = ide_editor_new();
-
-	GtkWidget * scroll = gtk_scrolled_window_new(NULL,NULL);
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
-
-	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), GTK_WIDGET(source_editor));
-
-	gtk_notebook_append_page(note,GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(item));
-
-	gtk_widget_show_all(GTK_WIDGET(source_editor));
-
-	gtk_widget_show_all(GTK_WIDGET(gtk_notebook_get_nth_page(note,gtk_notebook_get_n_pages(note)-1)));
-
-	gtk_notebook_set_current_page(note,gtk_notebook_get_n_pages(note)-1);
-	puts(item);
+	source_editor = ide_notebook_new_page(note,item);
 
 	ide_editor_openfile(source_editor,item);
 }
 
-void connect_signals(LinuxDoIDE * ide)
+static void connect_signals(LinuxDoIDE * ide)
 {
 	// resize
 	g_signal_connect(G_OBJECT(ide->main_window),"configure-event",G_CALLBACK(main_window_on_configure),ide);
@@ -229,3 +259,4 @@ int main(int argc, char * argv[])
 	gtk_main();
 	return 0;
 }
+

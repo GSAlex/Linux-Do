@@ -15,12 +15,15 @@
 typedef struct _IDE_EDITOR{
 	GtkSourceView	parent;
 	GtkSourceBuffer * buffer;
-
+	GString			* file; // non-NULL if associate with a file
+	GtkNotebook		* note;
 }IDE_EDITOR;
 
 typedef struct _IDE_EDITORClass{
 	GtkSourceViewClass	parent_class;
 	GtkSourceLanguageManager * lmgr;
+	void (*dispose)(GObject *object);
+	void (*finalize)(GObject *object);
 }IDE_EDITORClass;
 
 #define IDE_TYPE_EDITOR		(ide_editor_get_type ())
@@ -34,4 +37,5 @@ GType ide_editor_get_type() G_GNUC_CONST;
 IDE_EDITOR* ide_editor_new();
 
 gboolean ide_editor_openfile(IDE_EDITOR * ,const gchar * url);
+gboolean ide_editor_savefile(IDE_EDITOR * editor, const gchar * url);
 #endif /* SOURCEVIEW_H_ */

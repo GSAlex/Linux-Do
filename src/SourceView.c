@@ -6,12 +6,12 @@
  */
 
 #include "Linuxdo.h"
-#include <glib/gstdio.h>
+#include <string.h>
 #include "SourceView.h"
 
 static void ide_editor_class_init(IDE_EDITORClass * klass);
-static void ide_editor_class_finalize(IDE_EDITORClass * klass);
 static void ide_editor_init(IDE_EDITOR * obj);
+static void ide_editor_finalize(IDE_EDITOR*);
 
 GType ide_editor_get_type()
 {
@@ -32,6 +32,15 @@ GType ide_editor_get_type()
 void ide_editor_class_init(IDE_EDITORClass * klass)
 {
 	klass->lmgr = gtk_source_language_manager_new();
+	klass->finalize = G_OBJECT_CLASS(klass)->finalize;
+
+	G_OBJECT_CLASS(klass)->finalize = ( void(*)(GObject*) )ide_editor_finalize;
+}
+
+void ide_editor_finalize(IDE_EDITOR*obj)
+{
+	g_string_free(obj->file,TRUE);
+	IDE_EDITOR_CLASS_GET_CLASS(obj)->finalize(G_OBJECT(obj));
 }
 
 void ide_editor_init(IDE_EDITOR * obj)
@@ -51,6 +60,7 @@ void ide_editor_init(IDE_EDITOR * obj)
 
 	gtk_source_view_set_auto_indent(GTK_SOURCE_VIEW(obj),TRUE);
 
+
 }
 
 IDE_EDITOR* ide_editor_new()
@@ -60,7 +70,7 @@ IDE_EDITOR* ide_editor_new()
 
 gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
 {
-	GtkTextIter start,end;
+	GtkTextIter start;
 	guint content_len;
 	gchar * content;
 	GMappedFile * mfile;
@@ -69,12 +79,50 @@ gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
 	
 	g_return_if_fail(mfile);
 
+	editor->file = g_string_new(url);
+
 	content_len = g_mapped_file_get_length(mfile);
 	content = g_mapped_file_get_contents(mfile);
 
-	gtk_text_buffer_get_bounds(GTK_TEXT_BUFFER(editor->buffer),&start,&end);
+	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(editor->buffer),&start);
 
 	gtk_text_buffer_insert(GTK_TEXT_BUFFER(editor->buffer),&start,content,content_len);
 
-	g_mapped_file_unref(mfile);	
+	g_mapped_file_unref(mfile);
+
+	gtk_text_buffer_set_modified(GTK_TEXT_BUFFER(editor->buffer),FALSE);
+}
+
+gboolean ide_editor_savefile(IDE_EDITOR * editor, const gchar * url)
+{
+	GtkTextIter start,end;
+	gchar * line;
+	GtkTextBuffer *  buffer =  GTK_TEXT_BUFFER(editor->buffer);
+
+	if (!gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(editor->buffer)))
+		return FALSE;
+
+	GFile * gfile =  g_file_new_for_commandline_arg(url);
+
+	g_return_val_if_fail(gfile,FALSE);
+
+	GOutputStream * out = G_OUTPUT_STREAM(g_file_replace(gfile,NULL,TRUE,G_FILE_CREATE_NONE,NULL,NULL));
+
+	int i,linecount = gtk_text_buffer_get_char_count(buffer) - 2;
+
+	for(i=0;i < linecount ; ++i)
+	{
+		gtk_text_buffer_get_iter_at_line(buffer,&start,i);
+		gtk_text_buffer_get_iter_at_line(buffer,&end,i+1);
+		line = gtk_text_buffer_get_slice(buffer,&start,&end,FALSE);
+		g_output_stream_write(out,(const void*)line,strlen(line),NULL,NULL);
+
+		puts(line);
+	}
+
+	g_output_stream_close(out,NULL,NULL);
+
+	g_object_unref(gfile);
+
+
 }
