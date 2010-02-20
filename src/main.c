@@ -176,6 +176,8 @@ static void openfile(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
 	LinuxDoIDE * ide = userdata;
 	IDE_EDITOR * source_editor;
 
+	GtkNotebook* note = ide->main_layout.mid_layout.code;
+
 	source_editor = ide_editor_new();
 
 	GtkWidget * scroll = gtk_scrolled_window_new(NULL,NULL);
@@ -183,12 +185,13 @@ static void openfile(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
 
 	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), GTK_WIDGET(source_editor));
 
-	gtk_notebook_append_page(ide->main_layout.mid_layout.code,GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(item));
+	gtk_notebook_append_page(note,GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(item));
 
 	gtk_widget_show_all(GTK_WIDGET(source_editor));
 
-	gtk_widget_show_all(GTK_WIDGET(ide->main_layout.mid_layout.code));
+	gtk_widget_show_all(GTK_WIDGET(gtk_notebook_get_nth_page(note,gtk_notebook_get_n_pages(note)-1)));
 
+	gtk_notebook_set_current_page(note,gtk_notebook_get_n_pages(note)-1);
 	puts(item);
 
 	ide_editor_openfile(source_editor,item);
