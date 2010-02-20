@@ -238,10 +238,11 @@ static void connect_signals(LinuxDoIDE * ide)
 	g_signal_connect(G_OBJECT (ide->main_window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(openfile), ide);
 }
+static gchar	  basedir[255] = ".";
 
 static gboolean set_dir(gpointer ptr)
 {
-	gtk_tree_view_dir_set_dir(GTK_TREE_VIEW_DIR(ptr),".");
+	gtk_tree_view_dir_set_dir(GTK_TREE_VIEW_DIR(ptr),basedir);
 	return FALSE;
 }
 
@@ -249,12 +250,22 @@ int main(int argc, char * argv[])
 {
 	LinuxDoIDE ide;
 
-	g_set_prgname(PACKAGE_NAME);
+	gboolean init_project;
 
-	gtk_init(&argc, &argv);
 	setlocale(LC_ALL, "");
 	gtk_set_locale();
 	textdomain(GETTEXT_PACKAGE);
+
+	GOptionEntry args[] =
+	{
+			{"init-project",0,0,G_OPTION_ARG_NONE,&init_project,_("do git init and build initial dir struct for use with autotools")},
+			{"root",0,0,G_OPTION_ARG_STRING,basedir,_("set project root dir"), N_("dir")},
+			{0}
+	};
+
+	g_set_prgname(PACKAGE_NAME);
+
+	g_assert( gtk_init_with_args(&argc, &argv,PACKAGE_STRING,args,NULL,NULL));
 
 	g_set_application_name(_(PACKAGE_NAME));
 
