@@ -127,6 +127,8 @@ static void build_ui(LinuxDoIDE * ide)
 
 	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_notebook_new());
 
+	gtk_notebook_set_scrollable(ide->main_layout.mid_layout.code,TRUE);
+
 	gtk_paned_add1(ide->main_layout.midlayout,GTK_WIDGET(ide->main_layout.mid_layout.code));
 	gtk_paned_add2(ide->main_layout.midlayout,bt5);
 
@@ -195,6 +197,8 @@ static IDE_EDITOR * ide_notebook_new_page(GtkNotebook* note, const gchar * label
 	GtkWidget * title = gtk_hbox_new(0,0);
 
 	GtkWidget * bt = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE));
+
+	gtk_widget_set_size_request(bt,18,18);
 
 	gtk_box_pack_start(GTK_BOX(title),gtk_label_new_with_mnemonic(label),TRUE,0,0);
 

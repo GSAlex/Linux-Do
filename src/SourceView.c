@@ -39,7 +39,8 @@ void ide_editor_class_init(IDE_EDITORClass * klass)
 
 void ide_editor_finalize(IDE_EDITOR*obj)
 {
-	g_string_free(obj->file,TRUE);
+	if(obj->file)
+		g_string_free(obj->file,TRUE);
 	IDE_EDITOR_CLASS_GET_CLASS(obj)->finalize(G_OBJECT(obj));
 }
 
