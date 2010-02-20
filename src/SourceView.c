@@ -85,9 +85,7 @@ gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
 	content_len = g_mapped_file_get_length(mfile);
 	content = g_mapped_file_get_contents(mfile);
 
-	gtk_text_buffer_get_start_iter(GTK_TEXT_BUFFER(editor->buffer),&start);
-
-	gtk_text_buffer_insert(GTK_TEXT_BUFFER(editor->buffer),&start,content,content_len);
+	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(editor->buffer),content,content_len);
 
 	g_mapped_file_unref(mfile);
 
@@ -103,31 +101,24 @@ gboolean ide_editor_savefile(IDE_EDITOR * editor, const gchar * url)
 	if (!gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(editor->buffer)))
 		return FALSE;
 
+	printf("need save\n");
+
 	GFile * gfile =  g_file_new_for_commandline_arg(url);
 
 	g_return_val_if_fail(gfile,FALSE);
 
 	GOutputStream * out = G_OUTPUT_STREAM(g_file_replace(gfile,NULL,TRUE,G_FILE_CREATE_NONE,NULL,NULL));
 
-	int i,linecount = gtk_text_buffer_get_char_count(buffer) ;
+	gtk_text_buffer_get_bounds(buffer,&start,&end);
 
-	gtk_text_buffer_get_iter_at_line(buffer,&end,0);
+	line = gtk_text_buffer_get_text(buffer,&start,&end,TRUE);
 
-	for(i=1;i < linecount ; ++i)
-	{
-		start = end;
+	g_output_stream_write(out,(const void*)line,strlen(line),NULL,NULL);
 
-		gtk_text_buffer_get_iter_at_line(buffer,&end,i);
-		line = gtk_text_buffer_get_slice(buffer,&start,&end,TRUE);
-		g_output_stream_write(out,(const void*)line,strlen(line),NULL,NULL);
-
-	//	g_print("%d line is %s\n",i,line);
-
-	}
-
+	g_free(line);
 	g_output_stream_close(out,NULL,NULL);
 
 	g_object_unref(gfile);
 
-
+	return 1;
 }
