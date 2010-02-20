@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-02-19 23:57+0800\n"
+"POT-Creation-Date: 2010-02-20 09:13+0800\n"
 "PO-Revision-Date: 2010-02-19 22:19+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
@@ -75,19 +75,19 @@ msgstr "/帮助(_H)/关于(_A)"
 msgid "Ready"
 msgstr "就绪"
 
-#: src/main.c:142
+#: src/main.c:143
 msgid "Explorer"
 msgstr "浏览"
 
-#: src/main.c:146
+#: src/main.c:153
 msgid "Untitled"
 msgstr "未命名"
 
-#: src/main.c:148
+#: src/main.c:155
 msgid "Linux-Do"
 msgstr "LinuxDO集成开发环境"
 
-#: src/main.c:192
+#: src/main.c:204
 #, c-format
 msgid "Linux-DO start up\n"
 msgstr "Linux-DO 启动\n"

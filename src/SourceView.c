@@ -6,6 +6,7 @@
  */
 
 #include "Linuxdo.h"
+#include <glib/gstdio.h>
 #include "SourceView.h"
 
 static void ide_editor_class_init(IDE_EDITORClass * klass);
@@ -47,6 +48,8 @@ void ide_editor_init(IDE_EDITOR * obj)
 	g_object_unref(buffer);
 	g_object_unref(lang);
 
+	obj->buffer = GTK_SOURCE_BUFFER(gtk_text_view_get_buffer(GTK_TEXT_VIEW(obj)));
+
 	gtk_source_view_set_auto_indent(GTK_SOURCE_VIEW(obj),TRUE);
 
 }
@@ -56,8 +59,24 @@ IDE_EDITOR* ide_editor_new()
 	return IDE_EDITOR(g_object_new (IDE_TYPE_EDITOR, NULL));
 }
 
-gboolean ide_editor_openfile(IDE_EDITOR * editor, GFile * file)
+gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
 {
+	GtkTextIter start,end;
+	guint content_len;
+	gchar * content;
+	GMappedFile * mfile;
 
+	mfile = g_mapped_file_new(url,FALSE,NULL);
+	
+	g_return_if_fail(mfile);
 
+	content_len = g_mapped_file_get_length(mfile);
+	content = g_mapped_file_get_contents(mfile);
+
+	gtk_text_buffer_get_bounds(GTK_TEXT_BUFFER(editor->buffer),&start,&end);
+	
+
+	gtk_text_buffer_insert(GTK_TEXT_BUFFER(editor->buffer),&start,content,content_len);
+
+	g_mapped_file_unref(mfile);	
 }

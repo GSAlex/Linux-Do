@@ -33,4 +33,5 @@ typedef struct _IDE_EDITORClass{
 GType ide_editor_get_type() G_GNUC_CONST;
 IDE_EDITOR* ide_editor_new();
 
+gboolean ide_editor_openfile(IDE_EDITOR * ,const gchar * url);
 #endif /* SOURCEVIEW_H_ */
