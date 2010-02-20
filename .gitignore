@@ -28,3 +28,4 @@ debian/files
 debian/Prtsc*
 stamp-h1
 .*
+src/linuxdo
