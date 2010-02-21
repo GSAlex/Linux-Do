@@ -70,7 +70,7 @@ static gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *e
 static void savefile(GtkButton * bt , IDE_EDITOR * editor)
 {
 	ide_editor_savefile(editor,editor->file->str);
-	gtk_notebook_remove_page(editor->note,gtk_notebook_get_current_page(editor->note));
+	gtk_notebook_remove_page(editor->note,gtk_notebook_page_num(editor->note,gtk_widget_get_parent(GTK_WIDGET(editor))));
 }
 
 static IDE_EDITOR * ide_notebook_new_page(GtkNotebook* note, const gchar * label)
