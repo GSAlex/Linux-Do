@@ -33,5 +33,6 @@
 #include "TreeView.h"
 
 void LinuxDoIDE_show_about_menu_callback(gpointer callback_data, guint callback_action);
-
+gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, gpointer user_data);
+void LinuxDoIDE_save_menu_callback(gpointer callback_data, guint callback_action);
 #endif /* CALLBACKS_H_ */

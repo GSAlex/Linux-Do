@@ -34,37 +34,18 @@ static void close_tab(gpointer callback_data, guint callback_action)
 {
 	LinuxDoIDE * ide = callback_data;
 	GtkNotebook * note = ide->main_layout.mid_layout.code ;
-	GList * list;
+
 	IDE_EDITOR * editor;
 
 	if (gtk_notebook_get_n_pages(note) <= 1)
 		return;
 	guint cur = gtk_notebook_get_current_page(note);
 
-	GtkWidget * curpage = gtk_notebook_get_nth_page(note,cur);
-
-	list = gtk_container_get_children(GTK_CONTAINER(curpage));
-
-	editor = IDE_EDITOR(g_list_first(list)->data);
-
-	g_list_free(list);
+	editor = gtk_notebook_get_editor(note,cur);
 
 	ide_editor_savefile(editor,editor->file->str);
 
 	gtk_notebook_remove_page(note,cur);
-
-}
-
-static gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, gpointer user_data)
-{
-//	puts(__func__);
-	LinuxDoIDE * ide = (LinuxDoIDE*) user_data;
-
-	// 吼吼，更复杂都可以的啦
-
-	gtk_paned_set_position(ide->main_layout.right,event->width-220);
-	gtk_paned_set_position(ide->main_layout.midlayout,event->height-140);
-
 }
 
 static void savefile(GtkButton * bt , IDE_EDITOR * editor)
@@ -131,6 +112,42 @@ static void connect_signals(LinuxDoIDE * ide)
 	g_signal_connect(G_OBJECT (ide->main_window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
 	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(openfile), ide);
 }
+
+static gboolean find_project_base_dir(gchar * pathin, gchar * pathout)
+{
+	GFile * file,*of;
+	gchar * path,*ac;
+	//通过指定的文件，自动找到包含 configure.ac 的文件夹，自动设置项目路径到此处。
+	file = g_file_new_for_commandline_arg(pathin);
+	
+	if(!g_file_is_native(file))
+	{
+		g_object_unref(file);
+		return FALSE;
+	}
+	
+	for( of = NULL ; file ; of = file,file = g_file_get_parent(file),g_object_unref(of))
+	{
+		//查找当前目录下是否有 configure.ac 文件
+		 path = g_file_get_path(file);
+		 
+		 ac = g_strdup_printf("%s/configure.ac",path); 
+		 
+		 if(g_file_test(ac,G_FILE_TEST_EXISTS))
+		 {
+			 g_free(ac);
+			 g_object_unref(file);
+			 g_stpcpy(pathout,path);
+			 g_free(path);
+			 return TRUE;			 
+		 }
+		 g_free(ac);
+		 g_free(path);
+	}
+	g_object_unref(file);
+	return FALSE;
+}
+
 static gchar	  basedir[255] = ".";
 
 static gboolean set_dir(gpointer ptr)
@@ -155,10 +172,16 @@ int main(int argc, char * argv[])
 			{"root",0,0,G_OPTION_ARG_STRING,basedir,_("set project root dir"), N_("dir")},
 			{0}
 	};
+	
 
 	g_set_prgname(PACKAGE_NAME);
 
 	g_assert( gtk_init_with_args(&argc, &argv,PACKAGE_STRING,args,NULL,NULL));
+
+	if(argc == 2)
+	{
+		find_project_base_dir(argv[1],basedir);
+	}
 
 	g_set_application_name(_(PACKAGE_NAME));
 
@@ -169,7 +192,13 @@ int main(int argc, char * argv[])
 	connect_signals(&ide);
 
 	g_idle_add(set_dir,ide.main_layout.left_layout.tree);
-
+	
+	if(argc == 2)
+	{
+		//打开文件，吼吼
+		openfile(NULL,argv[1],&ide);
+	}
+	
 	gtk_main();
 	return 0;
 }
@@ -192,7 +221,7 @@ static void build_ui(LinuxDoIDE * ide)
 			{  _("/_File/_Close") , NULL, (GtkItemFactoryCallback)close_tab, 0 , "<StockItem>" , GTK_STOCK_CLOSE },
 			{  _("/_File/C_lose All") , "<control><shift>w", 0, 0 , "<StockItem>" , GTK_STOCK_CLOSE},
 			{  _("/_File/--") , NULL, 0, 0 , "<Separator>" , NULL },
-			{  _("/_File/_Save") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE },
+			{  _("/_File/_Save") , NULL,(GtkItemFactoryCallback)LinuxDoIDE_save_menu_callback, 0 , "<StockItem>" , GTK_STOCK_SAVE },
 			{  _("/_File/Save _As") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE_AS},
 
 			{  _("/_Help/_About") , "<control>h", (GtkItemFactoryCallback) LinuxDoIDE_show_about_menu_callback , (guint)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
@@ -277,8 +306,6 @@ static void build_ui(LinuxDoIDE * ide)
 	ide->main_layout.left_layout.tree_scroll = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL,NULL));
 
 	ide->main_layout.left_layout.tree = gtk_tree_view_dir_new();
-
-//	gtk_scrolled_window_add_with_viewport(ide->main_layout.left_layout.tree_scroll, GTK_WIDGET(ide->main_layout.left_layout.tree));
 
 	gtk_scrolled_window_set_policy(ide->main_layout.left_layout.tree_scroll,GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
 
