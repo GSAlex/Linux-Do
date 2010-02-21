@@ -35,10 +35,13 @@ static void close_tab(gpointer callback_data, guint callback_action)
 	LinuxDoIDE * ide = callback_data;
 	GtkNotebook * note = ide->main_layout.mid_layout.code ;
 
-	if(gtk_notebook_get_n_pages(note) <=1) return;
+	if (gtk_notebook_get_n_pages(note) <= 1)
+		return;
 	guint cur = gtk_notebook_get_current_page(note);
 
 	GtkWidget * curpage = gtk_notebook_get_nth_page(note,cur);
+
+//	printf("type is %s\n",g_type_name_from_instance(G_TYPE_CHECK_INSTANCE(curpage)));
 
 //	gtk_widget_set_window();
 //	gtk_scrolled_window_get_hscrollbar()
@@ -80,7 +83,7 @@ static IDE_EDITOR * ide_notebook_new_page(GtkNotebook* note, const gchar * label
 
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
 
-	gtk_scrolled_window_add_with_viewport(GTK_SCROLLED_WINDOW(scroll), GTK_WIDGET(source_editor));
+	gtk_container_add(GTK_CONTAINER(scroll), GTK_WIDGET(source_editor));
 
 	GtkWidget * title = gtk_hbox_new(0,0);
 
