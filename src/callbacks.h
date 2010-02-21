@@ -19,15 +19,19 @@
  */
 
 /*
- * About.h - include file for about dialog
+ * callbacks.h - call backs for many many widgets
  *
- *  Created on: 2010-2-19
+ *  Created on: 2010-2-21
  *      Author: cai
  */
 
-#ifndef ABOUT_H_
-#define ABOUT_H_
+#ifndef CALLBACKS_H_
+#define CALLBACKS_H_
 
-void LinuxDoIDE_show_about(GtkWidget * parent);
+#include "ide.h"
+#include "SourceView.h"
+#include "TreeView.h"
 
-#endif /* ABOUT_H_ */
+void LinuxDoIDE_show_about_menu_callback(gpointer callback_data, guint callback_action);
+
+#endif /* CALLBACKS_H_ */

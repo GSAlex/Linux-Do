@@ -25,8 +25,8 @@
 #include "Linuxdo.h"
 #include "TreeView.h"
 #include "ide.h"
-#include "About.h"
 #include "SourceView.h"
+#include "callbacks.h"
 
 static void build_ui(LinuxDoIDE * ide);
 
@@ -195,7 +195,7 @@ static void build_ui(LinuxDoIDE * ide)
 			{  _("/_File/_Save") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE },
 			{  _("/_File/Save _As") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE_AS},
 
-			{  _("/_Help/_About") , "<control>h", (GtkItemFactoryCallback) LinuxDoIDE_show_about , (guint)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
+			{  _("/_Help/_About") , "<control>h", (GtkItemFactoryCallback) LinuxDoIDE_show_about_menu_callback , (guint)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
 	};
 
 	//build main layout, other window will be build within the create event of main window

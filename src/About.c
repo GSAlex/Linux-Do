@@ -29,7 +29,7 @@
 #include "About.h"
 
 
-void LinuxDoIDE_show_about(gpointer userdata,GtkWidget* parent)
+void LinuxDoIDE_show_about(GtkWidget* parent)
 {
 	static const gchar* authors[3]= { "microcai" , "alex" , 0 } ;
 

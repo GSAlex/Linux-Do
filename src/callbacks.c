@@ -19,15 +19,18 @@
  */
 
 /*
- * About.h - include file for about dialog
+ * callbacks.c - call backs for many many widgets
  *
- *  Created on: 2010-2-19
+ *  Created on: 2010-2-21
  *      Author: cai
  */
 
-#ifndef ABOUT_H_
-#define ABOUT_H_
+#include "Linuxdo.h"
+#include "callbacks.h"
+#include "About.h"
 
-void LinuxDoIDE_show_about(GtkWidget * parent);
-
-#endif /* ABOUT_H_ */
+void LinuxDoIDE_show_about_menu_callback(gpointer callback_data, guint callback_action)
+{
+	LinuxDoIDE * ide = callback_data;
+	LinuxDoIDE_show_about(GTK_WIDGET(ide->main_window));
+}
