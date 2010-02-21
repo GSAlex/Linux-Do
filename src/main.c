@@ -34,6 +34,8 @@ static void close_tab(gpointer callback_data, guint callback_action)
 {
 	LinuxDoIDE * ide = callback_data;
 	GtkNotebook * note = ide->main_layout.mid_layout.code ;
+	GList * list;
+	IDE_EDITOR * editor;
 
 	if (gtk_notebook_get_n_pages(note) <= 1)
 		return;
@@ -41,19 +43,19 @@ static void close_tab(gpointer callback_data, guint callback_action)
 
 	GtkWidget * curpage = gtk_notebook_get_nth_page(note,cur);
 
-//	printf("type is %s\n",g_type_name_from_instance(G_TYPE_CHECK_INSTANCE(curpage)));
+	list = gtk_container_get_children(GTK_CONTAINER(curpage));
 
-//	gtk_widget_set_window();
-//	gtk_scrolled_window_get_hscrollbar()
-//	gtk_tree_view_get_hadjustment()
+	editor = IDE_EDITOR(g_list_first(list)->data);
 
-//	ide_editor_savefile(editor,editor->file->str);
+	g_list_free(list);
+
+	ide_editor_savefile(editor,editor->file->str);
+
 	gtk_notebook_remove_page(note,cur);
 
 }
 
-static gboolean main_window_on_configure(GtkWidget *widget,
-		GdkEventConfigure *event, gpointer user_data)
+static gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, gpointer user_data)
 {
 //	puts(__func__);
 	LinuxDoIDE * ide = (LinuxDoIDE*) user_data;
@@ -184,7 +186,6 @@ static void build_ui(LinuxDoIDE * ide)
 
 
 	GtkItemFactoryEntry entry[] = {
-//			{  _("/_File") , NULL, 0, 0 , "<Branch>" , NULL },
 			{  _("/_File/_New") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_NEW },
 			{  _("/_File/_Open") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_OPEN },
 			{  _("/_File/--") , NULL, 0, 0 , "<Separator>" , NULL },
@@ -194,16 +195,7 @@ static void build_ui(LinuxDoIDE * ide)
 			{  _("/_File/_Save") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE },
 			{  _("/_File/Save _As") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE_AS},
 
-//			{  _("/_Edit") , NULL, 0, 0 , "<Branch>" , NULL },
-			{  _("/_Edit/_Undo") , "<control>z", 0, 0 , "<StockItem>" , GTK_STOCK_UNDO },
-			{  _("/_Edit/_Redo") , "<control>y", 0, 0 , "<StockItem>" , GTK_STOCK_REDO },
-			{  _("/_Edit/--") , NULL, 0, 0 , "<Separator>" , NULL },
-			{  _("/_Edit/Cu_t") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_CUT },
-			{  _("/_Edit/_Copy") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_COPY },
-			{  _("/_Edit/_Past") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_PASTE },
-
 			{  _("/_Help/_About") , "<control>h", (GtkItemFactoryCallback) LinuxDoIDE_show_about , (guint)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
-
 	};
 
 	//build main layout, other window will be build within the create event of main window
