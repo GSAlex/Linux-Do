@@ -22,16 +22,71 @@
 
 IDE_EDITOR * gtk_notebook_get_editor(GtkNotebook * note, guint nth)
 {
-	GList * list;
-	IDE_EDITOR * editor;
-	
-	GtkWidget * curpage = gtk_notebook_get_nth_page(note,nth);
-	
-	list = gtk_container_get_children(GTK_CONTAINER(curpage));
-	
-	editor = IDE_EDITOR(g_list_first(list)->data);
-	
-	g_list_free(list);
-	
-	return editor;
+    GList * list;
+    IDE_EDITOR * editor;
+
+    GtkWidget * curpage = gtk_notebook_get_nth_page(note,nth);
+
+    list = gtk_container_get_children(GTK_CONTAINER(curpage));
+
+    editor = IDE_EDITOR(g_list_first(list)->data);
+
+    g_list_free(list);
+
+    return editor;
 }
+
+void gtk_widget_disable(GtkWidget * widget)
+{
+    //遍历子窗口。
+    GList * gtk_childs;
+    GList * list;
+
+    gtk_widget_set_sensitive(widget,FALSE);
+
+    if (GTK_IS_CONTAINER(widget))
+    {
+        gtk_childs = gtk_container_get_children(GTK_CONTAINER(widget));
+
+        if (gtk_childs)
+        {
+            for ( list = g_list_first(gtk_childs) ; list ;  list = g_list_next(list) )
+            {
+                if (GTK_IS_WIDGET(list->data))
+                {
+                    gtk_widget_disable(GTK_WIDGET(list->data));
+                }
+            }
+
+            g_list_free(gtk_childs);
+        }
+    }
+}
+
+void gtk_widget_enable(GtkWidget * widget)
+{
+    //遍历子窗口。
+    GList * gtk_childs;
+    GList * list;
+
+    gtk_widget_set_sensitive(widget,TRUE);
+
+    if (GTK_IS_CONTAINER(widget))
+    {
+        gtk_childs = gtk_container_get_children(GTK_CONTAINER(widget));
+
+        if (gtk_childs)
+        {
+            for ( list = g_list_first(gtk_childs) ; list ;  list = g_list_next(list) )
+            {
+                if (GTK_IS_WIDGET(list->data))
+                {
+                    gtk_widget_enable(GTK_WIDGET(list->data));
+                }
+            }
+
+            g_list_free(gtk_childs);
+        }
+    }
+}
+

@@ -23,5 +23,8 @@
 #include "SourceView.h"
 
 IDE_EDITOR * gtk_notebook_get_editor(GtkNotebook * note, guint nth);
+void gtk_widget_disable(GtkWidget * widget);
+void gtk_widget_enable(GtkWidget * widget);
 
 #endif // LinuxDO_COMMON_H
+

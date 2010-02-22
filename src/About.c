@@ -27,12 +27,18 @@
 
 #include "Linuxdo.h"
 #include "About.h"
-
+#include "misc.h"
 
 void LinuxDoIDE_show_about(GtkWidget* parent)
 {
-	static const gchar* authors[3]= { "microcai" , "alex" , 0 } ;
+    static const gchar* authors[3]= { "microcai" , "alex" , 0 } ;
+    GtkWidget * dialog;
 
-	gtk_show_about_dialog(GTK_WINDOW(parent) ,"version" , PACKAGE_VERSION , "authors" ,authors  , "website" , "http://github.com/GSAlex/Linux-Do" , NULL ,NULL );
 
+    gtk_widget_disable(parent);
+    dialog = GTK_WIDGET(g_object_new(GTK_TYPE_ABOUT_DIALOG,"version" , PACKAGE_VERSION , "authors" ,authors  , "website" , "http://github.com/GSAlex/Linux-Do" , NULL ,NULL));
+//	gtk_widget_set_parent(dialog,parent);
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_enable(parent);
+    gtk_widget_destroy(dialog);
 }
