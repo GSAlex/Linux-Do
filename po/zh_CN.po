@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-02-23 00:08+0800\n"
+"POT-Creation-Date: 2010-02-23 02:58+0800\n"
 "PO-Revision-Date: 2010-02-23 00:09+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
@@ -87,6 +87,10 @@ msgstr "项目浏览"
 #: src/About.c:710
 msgid "Linux Do is a IDE designed for use with GNU autotools\n"
 msgstr "LinuxDo 是一个用于autotools的集成开发环境\n"
+
+#: src/About.c:722
+msgid "microcai"
+msgstr ""
 
 #~ msgid "/_Edit/_Undo"
 #~ msgstr "/编辑(_E)/撤销(_U)"
