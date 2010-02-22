@@ -707,6 +707,8 @@ the library.  If this is what you want to do, use the GNU Lesser General\
 Public License instead of this License.  But first, please read\
 <http://www.gnu.org/philosophy/why-not-lgpl.html>.\n\n";
 
+const gchar * comments = N_("Linux Do is a IDE designed for use with GNU autotools\n");
+
 void LinuxDoIDE_show_about(GtkWidget* parent)
 {
     static const gchar* authors[3]= { "microcai" , "alex" , 0 } ;
@@ -718,6 +720,7 @@ void LinuxDoIDE_show_about(GtkWidget* parent)
     g_object_set(G_OBJECT(dialog),"website-label","LinuxDo on Github.com" , NULL);
     gtk_about_dialog_set_wrap_license(GTK_ABOUT_DIALOG(dialog),TRUE);
     gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(dialog),GPLv3);
+	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog),_(comments));
     gtk_window_set_icon(GTK_WINDOW(dialog),gtk_window_get_icon(GTK_WINDOW(parent)));
 //gtk_widget_set_parent(dialog,parent);
     gtk_widget_disable(parent);
