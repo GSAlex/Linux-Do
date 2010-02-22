@@ -34,10 +34,11 @@ void LinuxDoIDE_show_about(GtkWidget* parent)
     static const gchar* authors[3]= { "microcai" , "alex" , 0 } ;
     GtkWidget * dialog;
 
-
-    gtk_widget_disable(parent);
-    dialog = GTK_WIDGET(g_object_new(GTK_TYPE_ABOUT_DIALOG,"version" , PACKAGE_VERSION , "authors" ,authors  , "website" , "http://github.com/GSAlex/Linux-Do" , NULL ,NULL));
+	dialog = gtk_about_dialog_new();
+	g_object_set(G_OBJECT(dialog),"logo",gtk_window_get_icon(GTK_WINDOW(parent)),"version" , PACKAGE_VERSION , "authors" ,authors  , "website" , "http://github.com/GSAlex/Linux-Do" , NULL ,NULL);
+	gtk_window_set_icon(GTK_WINDOW(dialog),gtk_window_get_icon(GTK_WINDOW(parent)));
 //	gtk_widget_set_parent(dialog,parent);
+    gtk_widget_disable(parent);
     gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_enable(parent);
     gtk_widget_destroy(dialog);
