@@ -139,7 +139,7 @@ gboolean ide_editor_savefile(IDE_EDITOR * editor, const gchar * url)
 	gchar * line;
 	GtkTextBuffer *  buffer =  GTK_TEXT_BUFFER(editor->buffer);
 
-	if (!gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(editor->buffer)))
+	if (!gtk_text_buffer_get_modified(GTK_TEXT_BUFFER(editor->buffer)) && !g_strcmp0(url,editor->file->str))
 		return FALSE;
 
 	printf("need save\n");
