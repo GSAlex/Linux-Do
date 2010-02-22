@@ -61,13 +61,13 @@ void ide_editor_finalize(IDE_EDITOR*obj)
 {
 	if(obj->file)
 		g_string_free(obj->file,TRUE);
-	IDE_EDITOR_CLASS_GET_CLASS(obj)->finalize(G_OBJECT(obj));
+	IDE_EDITOR_GET_CLASS(obj)->finalize(G_OBJECT(obj));
 }
 
 void ide_editor_init(IDE_EDITOR * obj)
 {
 	GtkSourceLanguage * lang = gtk_source_language_manager_get_language(
-			IDE_EDITOR_CLASS_GET_CLASS(obj)->lmgr, "c");
+			IDE_EDITOR_GET_CLASS(obj)->lmgr, "c");
 
 	GtkSourceBuffer * buffer ;
 
@@ -100,7 +100,7 @@ gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
     gboolean result_uncertain;
     gchar *content_type;
 
-    lmgr = IDE_EDITOR_CLASS_GET_CLASS(editor)->lmgr;
+    lmgr = IDE_EDITOR_GET_CLASS(editor)->lmgr;
 
     g_assert(lmgr);
 
