@@ -81,7 +81,6 @@ void ide_editor_init(IDE_EDITOR * obj)
 
 	gtk_source_view_set_auto_indent(GTK_SOURCE_VIEW(obj),TRUE);
 
-
 }
 
 IDE_EDITOR* ide_editor_new()
@@ -95,7 +94,13 @@ gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
 	guint content_len;
 	gchar * content;
 	GMappedFile * mfile;
-
+	GtkSourceLanguageManager * lmgr;
+	GtkSourceLanguage * lang;
+	
+	lmgr = IDE_EDITOR_CLASS_GET_CLASS(editor)->lmgr;
+	
+	g_assert(lmgr);
+	
 	mfile = g_mapped_file_new(url,FALSE,NULL);
 	
 	g_return_if_fail(mfile);
@@ -104,7 +109,11 @@ gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
 
 	content_len = g_mapped_file_get_length(mfile);
 	content = g_mapped_file_get_contents(mfile);
+	
+	lang = gtk_source_language_manager_guess_language(lmgr,url,NULL);
 
+	gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(editor->buffer),lang);
+	
 	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(editor->buffer),content,content_len);
 
 	g_mapped_file_unref(mfile);
