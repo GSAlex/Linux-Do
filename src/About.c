@@ -712,15 +712,17 @@ const gchar * comments = N_("Linux Do is a IDE designed for use with GNU autotoo
 void LinuxDoIDE_show_about(GtkWidget* parent)
 {
     static const gchar* authors[3]= { "microcai" , "alex" , 0 } ;
+    static const gchar* artists[3]= { "kiki" , "microcai" , 0 } ;
 
     GtkWidget * dialog;
 
     dialog = gtk_about_dialog_new();
     g_object_set(G_OBJECT(dialog),"logo",gtk_window_get_icon(GTK_WINDOW(parent)),"version" , PACKAGE_VERSION , "authors" ,authors  , "website" , "http://github.com/GSAlex/Linux-Do" , NULL ,NULL);
-    g_object_set(G_OBJECT(dialog),"website-label","LinuxDo on Github.com" , NULL);
+    g_object_set(G_OBJECT(dialog),"website-label","LinuxDo on Github.com" ,"copyright", "Copyright © 2010-2010 microcai (microcaicai AT gmail DOT com)", NULL);
+    g_object_set(G_OBJECT(dialog),"translator-credits", _("microcai") ,"artists", artists , NULL);
     gtk_about_dialog_set_wrap_license(GTK_ABOUT_DIALOG(dialog),TRUE);
     gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(dialog),GPLv3);
-	gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog),_(comments));
+    gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog),_(comments));
     gtk_window_set_icon(GTK_WINDOW(dialog),gtk_window_get_icon(GTK_WINDOW(parent)));
 //gtk_widget_set_parent(dialog,parent);
     gtk_widget_disable(parent);
