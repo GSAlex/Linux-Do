@@ -27,6 +27,7 @@
 #include "ide.h"
 #include "SourceView.h"
 #include "callbacks.h"
+#include "misc.h"
 
 static void build_ui(LinuxDoIDE * ide);
 
