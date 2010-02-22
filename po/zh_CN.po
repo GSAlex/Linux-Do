@@ -7,106 +7,104 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-02-20 23:39+0800\n"
-"PO-Revision-Date: 2010-02-20 23:39+0800\n"
+"POT-Creation-Date: 2010-02-23 00:08+0800\n"
+"PO-Revision-Date: 2010-02-23 00:09+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
 
-#: src/main.c:39
-msgid "/_File/_New"
-msgstr "/文件(_F)/新建_N)"
-
-#: src/main.c:40
-msgid "/_File/_Open"
-msgstr "/文件(_F)/打开(_O)"
-
-#: src/main.c:41 src/main.c:44
-msgid "/_File/--"
-msgstr "/文件(_F)/--"
-
-#: src/main.c:42
-msgid "/_File/_Close"
-msgstr "/文件(_F)/关闭(_C)"
-
-#: src/main.c:43
-msgid "/_File/C_lose All"
-msgstr "/文件(_F)/全部关闭(_l)"
-
-#: src/main.c:45
-msgid "/_File/_Save"
-msgstr "/文件(_F)/保存(_S)"
-
-#: src/main.c:46
-msgid "/_File/Save _As"
-msgstr "/文件(_F)/全部保存(_A)"
-
-#: src/main.c:49
-msgid "/_Edit/_Undo"
-msgstr "/编辑(_E)/撤销(_U)"
-
-#: src/main.c:50
-msgid "/_Edit/_Redo"
-msgstr "/编辑(_E)/重做(_R)"
-
-#: src/main.c:51
-msgid "/_Edit/--"
-msgstr "/编辑(_E)/--"
-
-#: src/main.c:52
-msgid "/_Edit/Cu_t"
-msgstr "/编辑(_E)/剪切(_t)"
-
-#: src/main.c:53
-msgid "/_Edit/_Copy"
-msgstr "/编辑(_E)/复制(_C)"
-
-#: src/main.c:54
-msgid "/_Edit/_Past"
-msgstr "/编辑(_E)/粘帖(_P)"
-
-#: src/main.c:56
-msgid "/_Help/_About"
-msgstr "/帮助(_H)/关于(_A)"
-
-#: src/main.c:76
-msgid "Ready"
-msgstr "就绪"
-
-#: src/main.c:146
-msgid "Explorer"
-msgstr "浏览"
-
-#: src/main.c:156
-msgid "Untitled"
-msgstr "未命名"
-
-#: src/main.c:158
-msgid "Linux-Do"
-msgstr "LinuxDO集成开发环境"
-
-#: src/main.c:257
+#: src/main.c:171
 msgid "do git init and build initial dir struct for use with autotools"
 msgstr "调用git init 初始化仓库,并且建立初始的autotools目录结构"
 
-#: src/main.c:258
+#: src/main.c:172
 msgid "set project root dir"
 msgstr "设置项目目录"
 
-#: src/main.c:258
+#: src/main.c:172
 msgid "dir"
 msgstr "目录"
 
-#: src/main.c:272
+#: src/main.c:188
 #, c-format
 msgid "Linux-DO start up\n"
 msgstr "Linux-DO 启动\n"
 
-#: src/TreeView.c:45
+#: src/main.c:218
+msgid "/_File/_New"
+msgstr "/文件(_F)/新建_N)"
+
+#: src/main.c:219
+msgid "/_File/_Open"
+msgstr "/文件(_F)/打开(_O)"
+
+#: src/main.c:220 src/main.c:223
+msgid "/_File/--"
+msgstr "/文件(_F)/--"
+
+#: src/main.c:221
+msgid "/_File/_Close"
+msgstr "/文件(_F)/关闭(_C)"
+
+#: src/main.c:222
+msgid "/_File/C_lose All"
+msgstr "/文件(_F)/全部关闭(_l)"
+
+#: src/main.c:224
+msgid "/_File/_Save"
+msgstr "/文件(_F)/保存(_S)"
+
+#: src/main.c:225
+msgid "/_File/Save _As"
+msgstr "/文件(_F)/全部保存(_A)"
+
+#: src/main.c:227
+msgid "/_Help/_About"
+msgstr "/帮助(_H)/关于(_A)"
+
+#: src/main.c:246
+msgid "Ready"
+msgstr "就绪"
+
+#: src/main.c:316
+msgid "Explorer"
+msgstr "浏览"
+
+#: src/main.c:326
+msgid "Untitled"
+msgstr "未命名"
+
+#: src/main.c:328
+msgid "Linux-Do"
+msgstr "LinuxDO集成开发环境"
+
+#: src/TreeView.c:65
 msgid "Project View"
 msgstr "项目浏览"
+
+#: src/About.c:710
+msgid "Linux Do is a IDE designed for use with GNU autotools\n"
+msgstr "LinuxDo 是一个用于autotools的集成开发环境\n"
+
+#~ msgid "/_Edit/_Undo"
+#~ msgstr "/编辑(_E)/撤销(_U)"
+
+#~ msgid "/_Edit/_Redo"
+#~ msgstr "/编辑(_E)/重做(_R)"
+
+#~ msgid "/_Edit/--"
+#~ msgstr "/编辑(_E)/--"
+
+#~ msgid "/_Edit/Cu_t"
+#~ msgstr "/编辑(_E)/剪切(_t)"
+
+#~ msgid "/_Edit/_Copy"
+#~ msgstr "/编辑(_E)/复制(_C)"
+
+#~ msgid "/_Edit/_Past"
+#~ msgstr "/编辑(_E)/粘帖(_P)"
 
 #~ msgid "/_Edit"
 #~ msgstr "/编辑(_E)"

@@ -1,2 +1,3 @@
 src/main.c
 src/TreeView.c
+src/About.c
