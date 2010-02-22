@@ -90,35 +90,47 @@ IDE_EDITOR* ide_editor_new()
 
 gboolean ide_editor_openfile(IDE_EDITOR * editor, const gchar * url)
 {
-	GtkTextIter start;
-	guint content_len;
-	gchar * content;
-	GMappedFile * mfile;
-	GtkSourceLanguageManager * lmgr;
-	GtkSourceLanguage * lang;
-	
-	lmgr = IDE_EDITOR_CLASS_GET_CLASS(editor)->lmgr;
-	
-	g_assert(lmgr);
-	
-	mfile = g_mapped_file_new(url,FALSE,NULL);
-	
-	g_return_if_fail(mfile);
+    GtkTextIter start;
+    guint content_len;
+    gchar * content;
+    GMappedFile * mfile;
+    GtkSourceLanguageManager * lmgr;
+    GtkSourceLanguage * lang;
 
-	editor->file = g_string_new(url);
+    gboolean result_uncertain;
+    gchar *content_type;
 
-	content_len = g_mapped_file_get_length(mfile);
-	content = g_mapped_file_get_contents(mfile);
-	
-	lang = gtk_source_language_manager_guess_language(lmgr,url,NULL);
+    lmgr = IDE_EDITOR_CLASS_GET_CLASS(editor)->lmgr;
 
-	gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(editor->buffer),lang);
-	
-	gtk_text_buffer_set_text(GTK_TEXT_BUFFER(editor->buffer),content,content_len);
+    g_assert(lmgr);
 
-	g_mapped_file_unref(mfile);
+    content_type = g_content_type_guess (url, NULL, 0, &result_uncertain);
+    if (result_uncertain)
+    {
+        g_free (content_type);
+        content_type = NULL;
+    }
 
-	gtk_text_buffer_set_modified(GTK_TEXT_BUFFER(editor->buffer),FALSE);
+    lang = gtk_source_language_manager_guess_language (lmgr, url, content_type);
+
+    g_free (content_type);
+
+    mfile = g_mapped_file_new(url,FALSE,NULL);
+
+    g_return_if_fail(mfile);
+
+    editor->file = g_string_new(url);
+
+    content_len = g_mapped_file_get_length(mfile);
+    content = g_mapped_file_get_contents(mfile);
+
+    gtk_source_buffer_set_language(GTK_SOURCE_BUFFER(editor->buffer),lang);
+
+    gtk_text_buffer_set_text(GTK_TEXT_BUFFER(editor->buffer),content,content_len);
+
+    g_mapped_file_unref(mfile);
+
+    gtk_text_buffer_set_modified(GTK_TEXT_BUFFER(editor->buffer),FALSE);
 }
 
 gboolean ide_editor_savefile(IDE_EDITOR * editor, const gchar * url)
