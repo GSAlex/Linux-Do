@@ -33,8 +33,12 @@ static void gtk_tree_view_dir_class_init(TREEVIEW_DIRClass*);
 static void gtk_tree_view_dir_dispose(TREEVIEW_DIR*);
 static void gtk_tree_view_dir_finalize(TREEVIEW_DIR*);
 static void gtk_tree_view_dir_active(GtkTreeView *tree_view,
-										GtkTreePath *path, GtkTreeViewColumn *column,
-										gpointer user_data);
+                                     GtkTreePath *path, GtkTreeViewColumn *column,
+                                     gpointer user_data);
+static void gtk_tree_view_dir_expanded  (GtkTreeView *tree_view,
+										 GtkTreeIter *iter,
+										 GtkTreePath *path,
+										 gpointer	user_data);
 
 GType gtk_tree_view_dir_get_type()
 {
@@ -87,7 +91,7 @@ void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 	g_object_unref(model);
 
 	g_signal_connect(G_OBJECT (obj),"row-activated",G_CALLBACK(gtk_tree_view_dir_active),obj);
-
+	g_signal_connect(G_OBJECT (obj),"row-expanded",G_CALLBACK(gtk_tree_view_dir_expanded),obj);
 }
 
 
@@ -121,13 +125,15 @@ TREEVIEW_DIR * gtk_tree_view_dir_new()
 	return GTK_TREE_VIEW_DIR(g_object_new(GTK_TYPE_TREE_VIEW_DIR,"enable-tree-lines",TRUE,0));
 }
 
-static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gchar * dirname)
+static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gchar * dirname,int deep)
 {
 	const gchar * name ;
 	GDir * dir;
 	GArray * dirs, * files;
 	gchar	*filename;
 	GtkTreeIter cur;
+	
+	if(!deep)return ;
 
 	dir = g_dir_open(dirname,0,NULL);
 
@@ -169,7 +175,7 @@ static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gc
 		gchar * newdir = g_strdup_printf("%s/%s",dirname,filename);
 
 		g_free(filename);
-		append_dir_content(tree,&cur,newdir);
+		append_dir_content(tree,&cur,newdir,deep -1 );
 		g_free(newdir);
 
 	}
@@ -198,7 +204,7 @@ gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir)
 
 	tree = gtk_tree_store_new(2,G_TYPE_STRING,GTK_TYPE_STRING);
 	//根据设置的pattern加入文件和文件夹 ：）
-	append_dir_content(tree,NULL,dir);
+	append_dir_content(tree,NULL,dir,2);
 
 	gtk_tree_view_set_model(GTK_TREE_VIEW(obj), GTK_TREE_MODEL(tree));
 	g_object_unref(tree);
@@ -249,4 +255,14 @@ void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTree
 		g_string_free(filepath,TRUE);
 
 	}
+}
+
+void gtk_tree_view_dir_expanded (GtkTreeView *tree_view,GtkTreeIter *iter,GtkTreePath *path,gpointer user_data)
+{
+	TREEVIEW_DIR * tree = GTK_TREE_VIEW_DIR(user_data);
+	
+	//遍历现有的节点，为每个子节点生成孙节点数据
+	
+	
+	
 }

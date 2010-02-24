@@ -36,7 +36,7 @@ GType ide_autotools_get_type ()
     static GType type;
     if ( g_once_init_enter(&type))
     {
-        g_once_init_leave(&type,g_type_register_static_simple(GTK_TYPE_TREE_VIEW,"IDE_AUTOTOOLS",
+		g_once_init_leave(&type,g_type_register_static_simple(G_TYPE_OBJECT,"IDE_AUTOTOOLS",
                           sizeof(IDE_AUTOTOOLSClass),
                           (GClassInitFunc)ide_autotools_class_init,
                           sizeof(IDE_AUTOTOOLS),
