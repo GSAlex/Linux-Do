@@ -254,11 +254,14 @@ void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTree
 			filepath = g_string_prepend(filepath, value);
 			g_free(value);
 		} while (gtk_tree_model_iter_parent(mode, &parent, &iter));
-
-		g_signal_emit(G_OBJECT(user_data),
+		
+		if(g_file_test(filepath->str,G_FILE_TEST_IS_REGULAR))
+		{
+			g_signal_emit(G_OBJECT(user_data),
 				GTK_TREE_VIEW_DIR_GET_CLASS(user_data)->signals[TREEVIEW_DIR_SIGNAL_OPENFILE],
 				0, filepath->str, NULL);
-
+		}
+		
 		g_string_free(filepath,TRUE);
 
 	}
