@@ -28,6 +28,7 @@
 #include "Linuxdo.h"
 #include "callbacks.h"
 #include "About.h"
+#include "misc.h"
 
 void LinuxDoIDE_show_about_menu_callback(gpointer callback_data, guint callback_action)
 {
