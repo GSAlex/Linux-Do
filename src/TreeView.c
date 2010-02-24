@@ -95,7 +95,7 @@ void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 	g_object_unref(model);
 
 	g_signal_connect(G_OBJECT (obj),"row-activated",G_CALLBACK(gtk_tree_view_dir_active),obj);
-	g_signal_connect(G_OBJECT (obj),"row-expanded",G_CALLBACK(gtk_tree_view_dir_expanded),obj);
+	g_signal_connect(G_OBJECT (obj),"test-expand-row",G_CALLBACK(gtk_tree_view_dir_expanded),obj);
 	g_signal_connect(G_OBJECT (obj),"row-collapsed",G_CALLBACK(gtk_tree_view_dir_row_collapsed),obj);	
 }
 
@@ -142,8 +142,14 @@ static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gc
 	
 	dir = g_dir_open(dirname,0,NULL);
 
-	if(!dir)
+	if(dir==0)
+	{
+		gtk_tree_store_append(tree,&cur,root);
+		
+ 		gtk_tree_store_set(tree, &cur,0,GTK_STOCK_DIRECTORY,1,"FAKE",-1);
+		
 		return ;
+	}
 
 	dirs = g_array_new(TRUE,TRUE,sizeof(gchar*));
 	files = g_array_new(TRUE,TRUE,sizeof(gchar*));
@@ -271,16 +277,12 @@ void gtk_tree_view_dir_expanded (GtkTreeView *tree_view,GtkTreeIter *itr,GtkTree
 	g_return_if_fail(gtk_tree_model_get_iter(model,&iter,tree_path));
 	
 	//遍历现有的节点，为每个子节点删除孙节点数据
-	
-//	gtk_tree_model_get(model, &iter, 1, &value, -1);
-	
+		
 	GString * path;
 	path  = g_string_new("");
 	
 	GtkTreeIter parent = *itr;
-	
-	gboolean is_valid;	
-	
+		
 	//获得绝对路径
 	
 	do {
@@ -293,27 +295,14 @@ void gtk_tree_view_dir_expanded (GtkTreeView *tree_view,GtkTreeIter *itr,GtkTree
 		path = g_string_prepend(path, value);		
 		g_free(value);
 	} while (gtk_tree_model_iter_parent(model, &parent, &iter));
-	
-	g_print("the dit that about to expand is %s\n",path->str);
-	
-	//为每个是dir类型的子节点调用 append_dir_content 
 		
-    for (gtk_tree_model_iter_children(model,&iter,itr); is_valid; is_valid = gtk_tree_model_iter_next(model,&iter))
-    {
-        gtk_tree_model_get(model, &iter, 1, &value, -1);
+	if(gtk_tree_model_iter_children(model,&iter,itr))
+		while(gtk_tree_store_remove(GTK_TREE_STORE(model),&iter));
 		
-		gchar * subdir = g_strdup_printf("%s/%s",path->str,value);
-		
-		g_print("the subdit that about to expand is %s\n full path is %s",value,subdir);
-		
-		g_free(value);
-		
-		append_dir_content(GTK_TREE_STORE(model),&iter,subdir,1);
-		
-		g_free(subdir);
-		
-    }
-	
+	//调用 append_dir_content 
+
+	append_dir_content(GTK_TREE_STORE(model),itr,path->str,2);
+
 	g_string_free(path,TRUE);
 }
 
