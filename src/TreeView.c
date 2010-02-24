@@ -138,18 +138,19 @@ static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gc
 	gchar	*filename;
 	GtkTreeIter cur;
 	
-	if(!deep)return ;
-	
-	dir = g_dir_open(dirname,0,NULL);
-
-	if(dir==0)
+	if(!deep)
 	{
 		gtk_tree_store_append(tree,&cur,root);
 		
- 		gtk_tree_store_set(tree, &cur,0,GTK_STOCK_DIRECTORY,1,"FAKE",-1);
+		gtk_tree_store_set(tree, &cur,0,GTK_STOCK_DIRECTORY,1,"FAKE",-1);
 		
 		return ;
 	}
+	
+	dir = g_dir_open(dirname,0,NULL);
+
+	if(!dir)
+		return ;
 
 	dirs = g_array_new(TRUE,TRUE,sizeof(gchar*));
 	files = g_array_new(TRUE,TRUE,sizeof(gchar*));
