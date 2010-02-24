@@ -24,10 +24,12 @@
 
 #include "Linuxdo.h"
 #include "TreeView.h"
-#include "ide.h"
+#include "autotools.h"
 #include "SourceView.h"
+#include "ide.h"
 #include "callbacks.h"
 #include "misc.h"
+#include <glib/gstdio.h>
 
 static void build_ui(LinuxDoIDE * ide);
 
@@ -191,8 +193,18 @@ int main(int argc, char * argv[])
 	build_ui(&ide);
 
 	connect_signals(&ide);
-
+	
+	ide.project_mgr = ide_autotools_new();
+	
 	g_idle_add(set_dir,ide.main_layout.left_layout.tree);
+
+	if(argc == 2)
+	{
+		ide_autotools_set_configure_ac(ide.project_mgr,argv[1]);
+		g_chdir(ide.project_mgr->project_path->str);
+	}
+	
+	gtk_tree_view_dir_set_dir(ide.main_layout.left_layout.tree,".");
 	
 	if(argc == 2)
 	{

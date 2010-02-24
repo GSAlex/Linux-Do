@@ -47,28 +47,59 @@ GType ide_autotools_get_type ()
 
 void ide_autotools_class_init(IDE_AUTOTOOLSClass * klass )
 {
-	klass->finalize = G_OBJECT_CLASS(klass)->finalize;
-	G_OBJECT_CLASS(klass)->finalize = ide_autotools_finalize;
+    klass->finalize = G_OBJECT_CLASS(klass)->finalize;
+    G_OBJECT_CLASS(klass)->finalize = ide_autotools_finalize;
 }
 
 void ide_autotools_init(IDE_AUTOTOOLS * obj)
 {
-	
+    obj->project_path = g_string_new("");
 }
 
 void ide_autotools_finalize(GObject *object)
 {
-	
-	//chain 
-	IDE_AUTOTOOLS_GET_CLASS(object)->finalize(object);
+
+    //chain
+    IDE_AUTOTOOLS_GET_CLASS(object)->finalize(object);
 }
 
 IDE_AUTOTOOLS * ide_autotools_new()
 {
-	return IDE_AUTOTOOLS(g_object_new(IDE_TYPE_AUTOTOOLS,NULL));
+    return IDE_AUTOTOOLS(g_object_new(IDE_TYPE_AUTOTOOLS,NULL));
 }
 
 void ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path )
 {
-		
+    GFile * file,*of;
+    gchar * path,*ac;
+    //通过指定的文件，自动找到包含 configure.ac 的文件夹，自动设置项目路径到此处。
+    file = g_file_new_for_commandline_arg(configure_ac_path);
+
+    if (!g_file_is_native(file))
+    {
+        g_warning("non-native file\n");
+        g_object_unref(file);
+        return ;
+    }
+
+    for ( of = NULL ; file ; of = file,file = g_file_get_parent(file),g_object_unref(of))
+    {
+        //查找当前目录下是否有 configure.ac 文件
+        path = g_file_get_path(file);
+
+        ac = g_strdup_printf("%s/configure.ac",path);
+
+        if (g_file_test(ac,G_FILE_TEST_EXISTS))
+        {
+            g_free(ac);
+            g_object_unref(file);
+            obj->project_path = g_string_assign(obj->project_path,path);
+            g_free(path);
+            return ;
+        }
+        g_free(ac);
+        g_free(path);
+    }
+    g_object_unref(file);
+    return ;
 }

@@ -39,27 +39,27 @@ void LinuxDoIDE_show_about_menu_callback(gpointer callback_data, guint callback_
 gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, gpointer user_data)
 {
 //	puts(__func__);
-	LinuxDoIDE * ide = (LinuxDoIDE*) user_data;
+    LinuxDoIDE * ide = (LinuxDoIDE*) user_data;
 
-	// 吼吼，更复杂都可以的啦
+    // 吼吼，更复杂都可以的啦
 
-	gtk_paned_set_position(ide->main_layout.right,event->width-220);
-	gtk_paned_set_position(ide->main_layout.midlayout,event->height-140);
+    gtk_paned_set_position(ide->main_layout.right,event->width-220);
+    gtk_paned_set_position(ide->main_layout.midlayout,event->height-140);
 
 }
 
 void LinuxDoIDE_save_menu_callback(gpointer callback_data, guint callback_action)
 {
-	LinuxDoIDE * ide = (LinuxDoIDE*) callback_data;
-	GtkNotebook * note = ide->main_layout.mid_layout.code ;
-	
-	IDE_EDITOR * editor;
-	
-	guint curpage = gtk_notebook_get_current_page(note);
-	
-	editor = gtk_notebook_get_editor(note,curpage);
+    LinuxDoIDE * ide = (LinuxDoIDE*) callback_data;
+    GtkNotebook * note = ide->main_layout.mid_layout.code ;
 
-	g_return_if_fail(editor->file);
-	
-	ide_editor_savefile(editor,editor->file->str);	
+    IDE_EDITOR * editor;
+
+    guint curpage = gtk_notebook_get_current_page(note);
+
+    editor = gtk_notebook_get_editor(note,curpage);
+
+    g_return_if_fail(editor->file);
+
+    ide_editor_savefile(editor,editor->file->str);
 }

@@ -28,6 +28,7 @@
 #define IDE_H_
 
 #include "TreeView.h"
+#include "autotools.h"
 
 typedef struct _LinuxDoIDE{
 	GtkWindow * main_window;
@@ -76,7 +77,7 @@ typedef struct _LinuxDoIDE{
 		GtkToolButton * buttons[20];
 
 	}toolbaritem;
-
+	IDE_AUTOTOOLS * project_mgr;
 }LinuxDoIDE;
 
 #endif /* IDE_H_ */

@@ -32,6 +32,7 @@
 
 typedef struct _IDE_AUTOTOOLS{
 	GObject	parent;
+	GString * project_path;
 }IDE_AUTOTOOLS;
 
 typedef struct _IDE_AUTOTOOLSClass{
@@ -48,5 +49,7 @@ typedef struct _IDE_AUTOTOOLSClass{
 #define IDE_AUTOTOOLS_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), IDE_TYPE_AUTOTOOLS, IDE_AUTOTOOLSClass))
 
 GType ide_autotools_get_type ();
+IDE_AUTOTOOLS * ide_autotools_new();
+void ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path );
 
 #endif /* AUTOTOOLS_H_ */
