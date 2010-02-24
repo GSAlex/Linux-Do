@@ -39,6 +39,10 @@ static void gtk_tree_view_dir_expanded  (GtkTreeView *tree_view,
 										 GtkTreeIter *iter,
 										 GtkTreePath *path,
 										 gpointer	user_data);
+static void gtk_tree_view_dir_row_collapsed  (GtkTreeView *tree_view,
+											  GtkTreeIter *iter,
+											  GtkTreePath *path,
+											  gpointer	user_data);
 
 GType gtk_tree_view_dir_get_type()
 {
@@ -92,6 +96,7 @@ void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 
 	g_signal_connect(G_OBJECT (obj),"row-activated",G_CALLBACK(gtk_tree_view_dir_active),obj);
 	g_signal_connect(G_OBJECT (obj),"row-expanded",G_CALLBACK(gtk_tree_view_dir_expanded),obj);
+	g_signal_connect(G_OBJECT (obj),"row-collapsed",G_CALLBACK(gtk_tree_view_dir_row_collapsed),obj);	
 }
 
 
@@ -134,10 +139,11 @@ static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gc
 	GtkTreeIter cur;
 	
 	if(!deep)return ;
-
+	
 	dir = g_dir_open(dirname,0,NULL);
 
-	g_return_if_fail(dir);
+	if(!dir)
+		return ;
 
 	dirs = g_array_new(TRUE,TRUE,sizeof(gchar*));
 	files = g_array_new(TRUE,TRUE,sizeof(gchar*));
@@ -213,12 +219,8 @@ gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir)
 
 void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer user_data)
 {
-
-	puts(__func__);
 	GtkTreeIter iter;
-	GtkTreeModel *model;
 	char *value;
-
 	GtkTreeModel * mode;
 
 	mode = gtk_tree_view_get_model(tree_view);
@@ -236,7 +238,6 @@ void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTree
 
 		GtkTreeIter parent = iter;
 
-
 		do {
 
 			iter = parent ;
@@ -245,7 +246,7 @@ void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTree
 			if(filepath->len)
 				filepath = g_string_prepend_c(filepath, G_DIR_SEPARATOR);
 			filepath = g_string_prepend(filepath, value);
-
+			g_free(value);
 		} while (gtk_tree_model_iter_parent(mode, &parent, &iter));
 
 		g_signal_emit(G_OBJECT(user_data),
@@ -257,12 +258,87 @@ void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTree
 	}
 }
 
-void gtk_tree_view_dir_expanded (GtkTreeView *tree_view,GtkTreeIter *iter,GtkTreePath *path,gpointer user_data)
+void gtk_tree_view_dir_expanded (GtkTreeView *tree_view,GtkTreeIter *itr,GtkTreePath *tree_path,gpointer user_data)
 {
 	TREEVIEW_DIR * tree = GTK_TREE_VIEW_DIR(user_data);
 	
-	//遍历现有的节点，为每个子节点生成孙节点数据
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+	char *value;
 	
+	model = gtk_tree_view_get_model(tree_view);
 	
+	g_return_if_fail(gtk_tree_model_get_iter(model,&iter,tree_path));
 	
+	//遍历现有的节点，为每个子节点删除孙节点数据
+	
+//	gtk_tree_model_get(model, &iter, 1, &value, -1);
+	
+	GString * path;
+	path  = g_string_new("");
+	
+	GtkTreeIter parent = *itr;
+	
+	gboolean is_valid;	
+	
+	//获得绝对路径
+	
+	do {
+		
+		iter = parent ;
+		
+		gtk_tree_model_get(model, &iter, 1, &value, -1);
+		if(path->len)
+			path = g_string_prepend_c(path, G_DIR_SEPARATOR);
+		path = g_string_prepend(path, value);		
+		g_free(value);
+	} while (gtk_tree_model_iter_parent(model, &parent, &iter));
+	
+	g_print("the dit that about to expand is %s\n",path->str);
+	
+	//为每个是dir类型的子节点调用 append_dir_content 
+		
+    for (gtk_tree_model_iter_children(model,&iter,itr); is_valid; is_valid = gtk_tree_model_iter_next(model,&iter))
+    {
+        gtk_tree_model_get(model, &iter, 1, &value, -1);
+		
+		gchar * subdir = g_strdup_printf("%s/%s",path->str,value);
+		
+		g_print("the subdit that about to expand is %s\n full path is %s",value,subdir);
+		
+		g_free(value);
+		
+		append_dir_content(GTK_TREE_STORE(model),&iter,subdir,1);
+		
+		g_free(subdir);
+		
+    }
+	
+	g_string_free(path,TRUE);
+}
+
+void gtk_tree_view_dir_row_collapsed(GtkTreeView *tree_view,GtkTreeIter *itr,GtkTreePath *tree_path,gpointer	user_data)
+{
+	TREEVIEW_DIR * tree = GTK_TREE_VIEW_DIR(user_data);
+	
+	GtkTreeIter iter;
+	GtkTreeModel *model;
+	char *value;
+	
+	model = gtk_tree_view_get_model(tree_view);
+	
+//	g_return_if_fail(gtk_tree_model_get_iter(model,&iter,tree_path));
+		
+	gboolean is_valid;	
+	
+	//为每个子节点调用 删掉孙节点.
+	
+	for (gtk_tree_model_iter_children(model,&iter,itr); is_valid; is_valid = gtk_tree_model_iter_next(model,&iter))
+	{
+		GtkTreeIter iter_child;
+		
+		if(gtk_tree_model_iter_children(model,&iter_child,&iter))
+			while(gtk_tree_store_remove(GTK_TREE_STORE(model),&iter_child));
+		
+	}	
 }

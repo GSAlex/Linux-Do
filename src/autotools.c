@@ -68,7 +68,7 @@ IDE_AUTOTOOLS * ide_autotools_new()
     return IDE_AUTOTOOLS(g_object_new(IDE_TYPE_AUTOTOOLS,NULL));
 }
 
-void ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path )
+gboolean ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path )
 {
     GFile * file,*of;
     gchar * path,*ac;
@@ -79,7 +79,7 @@ void ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac
     {
         g_warning("non-native file\n");
         g_object_unref(file);
-        return ;
+        return FALSE ;
     }
 
     for ( of = NULL ; file ; of = file,file = g_file_get_parent(file),g_object_unref(of))
@@ -95,11 +95,11 @@ void ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac
             g_object_unref(file);
             obj->project_path = g_string_assign(obj->project_path,path);
             g_free(path);
-            return ;
+            return TRUE;
         }
         g_free(ac);
         g_free(path);
     }
     g_object_unref(file);
-    return ;
+    return FALSE;
 }

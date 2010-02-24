@@ -50,6 +50,6 @@ typedef struct _IDE_AUTOTOOLSClass{
 
 GType ide_autotools_get_type ();
 IDE_AUTOTOOLS * ide_autotools_new();
-void ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path );
+gboolean ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path );
 
 #endif /* AUTOTOOLS_H_ */

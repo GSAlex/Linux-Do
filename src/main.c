@@ -151,19 +151,12 @@ static gboolean find_project_base_dir(gchar * pathin, gchar * pathout)
 	return FALSE;
 }
 
-static gchar	  basedir[255] = ".";
-
-static gboolean set_dir(gpointer ptr)
-{
-	gtk_tree_view_dir_set_dir(GTK_TREE_VIEW_DIR(ptr),basedir);
-	return FALSE;
-}
-
 int main(int argc, char * argv[])
 {
 	LinuxDoIDE ide;
 
 	gboolean init_project;
+	gchar * basedir=NULL;
 
 	setlocale(LC_ALL, "");
 	gtk_set_locale();
@@ -171,8 +164,8 @@ int main(int argc, char * argv[])
 
 	GOptionEntry args[] =
 	{
-			{"init-project",0,0,G_OPTION_ARG_NONE,&init_project,_("do git init and build initial dir struct for use with autotools")},
-			{"root",0,0,G_OPTION_ARG_STRING,basedir,_("set project root dir"), N_("dir")},
+			{"init-project",'\0',0,G_OPTION_ARG_NONE,&init_project,_("do git init and build initial dir struct for use with autotools")},
+			{"root",'\0',0,G_OPTION_ARG_STRING,&basedir,_("set project root dir"), N_("dir")},
 			{0}
 	};
 	
@@ -196,11 +189,14 @@ int main(int argc, char * argv[])
 	
 	ide.project_mgr = ide_autotools_new();
 	
-	g_idle_add(set_dir,ide.main_layout.left_layout.tree);
-
-	if(argc == 2)
+	if(basedir)
 	{
-		ide_autotools_set_configure_ac(ide.project_mgr,argv[1]);
+		g_chdir(basedir);
+		g_free(basedir);
+	}
+		
+	if(argc == 2 && ide_autotools_set_configure_ac(ide.project_mgr,argv[1]))
+	{
 		g_chdir(ide.project_mgr->project_path->str);
 	}
 	
