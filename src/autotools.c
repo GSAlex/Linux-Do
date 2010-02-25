@@ -31,6 +31,9 @@
 static void ide_autotools_class_init(IDE_AUTOTOOLSClass * );
 static void ide_autotools_init(IDE_AUTOTOOLS * );
 static void ide_autotools_finalize(GObject *object);
+
+static void configure_resolved(IDE_AUTOTOOLS * obj , gpointer userdata);
+
 GType ide_autotools_get_type ()
 {
     static GType type;
@@ -49,6 +52,12 @@ void ide_autotools_class_init(IDE_AUTOTOOLSClass * klass )
 {
     klass->finalize = G_OBJECT_CLASS(klass)->finalize;
     G_OBJECT_CLASS(klass)->finalize = ide_autotools_finalize;
+
+    klass->configure_resolved = configure_resolved;
+
+    klass->configure_resolved_signal =  g_signal_new("configure-resolved",
+   			G_TYPE_FROM_CLASS(klass), G_SIGNAL_ACTION | G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET(IDE_AUTOTOOLSClass,configure_resolved), 0,
+   			0, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE,0 , NULL);
 }
 
 void ide_autotools_init(IDE_AUTOTOOLS * obj)
@@ -95,11 +104,22 @@ gboolean ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configur
             g_object_unref(file);
             obj->project_path = g_string_assign(obj->project_path,path);
             g_free(path);
+
+            g_signal_emit_by_name(obj,"configure-resolved",NULL);
+
             return TRUE;
         }
         g_free(ac);
         g_free(path);
     }
-    g_object_unref(file);
+
+    if(file)
+    	g_object_unref(file);
+
     return FALSE;
+}
+
+void configure_resolved(IDE_AUTOTOOLS * obj , gpointer userdata)
+{
+	puts(__func__);
 }

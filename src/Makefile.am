@@ -3,7 +3,17 @@ INCLUDES = @GTK2_CFLAGS@ @GTKSOURCEVIEW2_CFLAGS@
 
 LIBS = @GTK2_LIBS@  @GTKSOURCEVIEW2_LIBS@
 
+EXTRA_DIST = marshller.c marshller.h marshller.define
+
 bin_PROGRAMS = linuxdo
 
-linuxdo_SOURCES = misc.h Linuxdo.h ide.h callbacks.h TreeView.h About.h SourceView.h autotools.h
-linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c SourceView.c autotools.c
+linuxdo_SOURCES = misc.h Linuxdo.h ide.h callbacks.h TreeView.h About.h SourceView.h autotools.h marshller.h
+linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c SourceView.c autotools.c marshller.c
+
+#linuxdo_EXTRA_DEPENDENCIES = $(srcdir)/marshller.h
+
+$(srcdir)/marshller.c : marshller.define $(srcdir)/marshller.h
+	glib-genmarshal --body --prefix=g_cclosure_marshal $< > $(srcdir)/marshller.c
+
+$(srcdir)/marshller.h: marshller.define
+	glib-genmarshal --header --prefix=g_cclosure_marshal $< > $(srcdir)/marshller.h

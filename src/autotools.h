@@ -33,12 +33,26 @@
 typedef struct _IDE_AUTOTOOLS{
 	GObject	parent;
 	GString * project_path;
+	GString * project_name; // from AC_INIT
+	GString * project_version;  // from AC_INIT
+	GString * git_ignore; // from .gitignore
 }IDE_AUTOTOOLS;
 
 typedef struct _IDE_AUTOTOOLSClass{
 	GObjectClass	parent_class;
 	void (*dispose)(GObject *object);
 	void (*finalize)(GObject *object);
+
+	/*<signals>*/
+
+	guint	configure_resolved_signal;
+
+	/*<handler>*/
+
+	void (*configure_resolved)(IDE_AUTOTOOLS * obj , gpointer userdata);
+
+	/*<munbers>*/
+
 }IDE_AUTOTOOLSClass;
 
 #define IDE_TYPE_AUTOTOOLS		(ide_autotools_get_type ())

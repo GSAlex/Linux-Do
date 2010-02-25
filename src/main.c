@@ -194,13 +194,17 @@ int main(int argc, char * argv[])
 		g_chdir(basedir);
 		g_free(basedir);
 	}
+
+	ide_autotools_set_configure_ac(ide.project_mgr,argc==2?argv[1]:".");
+
+	g_object_set(ide.main_layout.left_layout.tree,"mgr",ide.project_mgr,NULL);
 		
-	if(argc == 2 && ide_autotools_set_configure_ac(ide.project_mgr,argv[1]))
+	if(argc == 2  )
 	{
 		g_chdir(ide.project_mgr->project_path->str);
 	}
 	
-	gtk_tree_view_dir_set_dir(ide.main_layout.left_layout.tree,".");
+	g_object_set(ide.main_layout.left_layout.tree,"current-dir",".",NULL);
 	
 	if(argc == 2)
 	{

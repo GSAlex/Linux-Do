@@ -32,6 +32,7 @@
 #define TREEVIEW_H_
 
 #include <gtk/gtk.h>
+#include "autotools.h"
 
 typedef struct _TREEVIEW_DIR TREEVIEW_DIR;
 typedef struct _TREEVIEW_DIRClass TREEVIEW_DIRClass;
@@ -45,6 +46,10 @@ enum{
 	 */
 
 	TREEVIEW_DIR_SIGNAL_OPENFILE,
+
+
+
+	TREEVIEW_DIR_SIGNAL_CHANGE_DIR,
 
 
 	TREEVIEW_DIRCLASS_MAXSIGNAL
@@ -61,15 +66,19 @@ struct _TREEVIEW_DIR {
 	GtkTreeView parent;
 	GString * cur_dir; // current dir
 	GtkTreeViewColumn *col;
-//	GtkWidget *view;
+	IDE_AUTOTOOLS * mgr;
 };
 
 struct _TREEVIEW_DIRClass
 {
 	GtkTreeViewClass parent_class;
-	void (*update_dir)(TREEVIEW_DIR*);
+
 	void (*dispose)(GObject *object);
 	void (*finalize)(GObject *object);
+
+	/*<signals>*/
+	void (*change_dir)(TREEVIEW_DIR*);
+
 	gint				signals[TREEVIEW_DIRCLASS_MAXSIGNAL];
 
 
