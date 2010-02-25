@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-02-23 02:58+0800\n"
+"POT-Creation-Date: 2010-02-26 02:19+0800\n"
 "PO-Revision-Date: 2010-02-23 00:09+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
@@ -15,72 +15,72 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
 
-#: src/main.c:171
+#: src/main.c:136
 msgid "do git init and build initial dir struct for use with autotools"
 msgstr "调用git init 初始化仓库,并且建立初始的autotools目录结构"
 
-#: src/main.c:172
+#: src/main.c:137
 msgid "set project root dir"
 msgstr "设置项目目录"
 
-#: src/main.c:172
+#: src/main.c:137
 msgid "dir"
 msgstr "目录"
 
-#: src/main.c:188
+#: src/main.c:148
 #, c-format
 msgid "Linux-DO start up\n"
 msgstr "Linux-DO 启动\n"
 
-#: src/main.c:218
+#: src/main.c:195
 msgid "/_File/_New"
 msgstr "/文件(_F)/新建_N)"
 
-#: src/main.c:219
+#: src/main.c:196
 msgid "/_File/_Open"
 msgstr "/文件(_F)/打开(_O)"
 
-#: src/main.c:220 src/main.c:223
+#: src/main.c:197 src/main.c:200
 msgid "/_File/--"
 msgstr "/文件(_F)/--"
 
-#: src/main.c:221
+#: src/main.c:198
 msgid "/_File/_Close"
 msgstr "/文件(_F)/关闭(_C)"
 
-#: src/main.c:222
+#: src/main.c:199
 msgid "/_File/C_lose All"
 msgstr "/文件(_F)/全部关闭(_l)"
 
-#: src/main.c:224
+#: src/main.c:201
 msgid "/_File/_Save"
 msgstr "/文件(_F)/保存(_S)"
 
-#: src/main.c:225
+#: src/main.c:202
 msgid "/_File/Save _As"
 msgstr "/文件(_F)/全部保存(_A)"
 
-#: src/main.c:227
+#: src/main.c:204
 msgid "/_Help/_About"
 msgstr "/帮助(_H)/关于(_A)"
 
-#: src/main.c:246
+#: src/main.c:241
 msgid "Ready"
 msgstr "就绪"
 
-#: src/main.c:316
+#: src/main.c:311
 msgid "Explorer"
 msgstr "浏览"
 
-#: src/main.c:326
+#: src/main.c:321
 msgid "Untitled"
 msgstr "未命名"
 
-#: src/main.c:328
+#: src/main.c:323
 msgid "Linux-Do"
 msgstr "LinuxDO集成开发环境"
 
-#: src/TreeView.c:65
+#: src/TreeView.c:83
 msgid "Project View"
 msgstr "项目浏览"
 

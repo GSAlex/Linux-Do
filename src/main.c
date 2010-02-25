@@ -120,41 +120,6 @@ static void connect_signals(LinuxDoIDE * ide)
 	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(openfile), ide);
 }
 
-static gboolean find_project_base_dir(gchar * pathin, gchar * pathout)
-{
-	GFile * file,*of;
-	gchar * path,*ac;
-	//通过指定的文件，自动找到包含 configure.ac 的文件夹，自动设置项目路径到此处。
-	file = g_file_new_for_commandline_arg(pathin);
-	
-	if(!g_file_is_native(file))
-	{
-		g_object_unref(file);
-		return FALSE;
-	}
-	
-	for( of = NULL ; file ; of = file,file = g_file_get_parent(file),g_object_unref(of))
-	{
-		//查找当前目录下是否有 configure.ac 文件
-		 path = g_file_get_path(file);
-		 
-		 ac = g_strdup_printf("%s/configure.ac",path); 
-		 
-		 if(g_file_test(ac,G_FILE_TEST_EXISTS))
-		 {
-			 g_free(ac);
-			 g_object_unref(file);
-			 g_stpcpy(pathout,path);
-			 g_free(path);
-			 return TRUE;			 
-		 }
-		 g_free(ac);
-		 g_free(path);
-	}
-	g_object_unref(file);
-	return FALSE;
-}
-
 int main(int argc, char * argv[])
 {
 	LinuxDoIDE ide;
@@ -177,11 +142,6 @@ int main(int argc, char * argv[])
 	g_set_prgname(PACKAGE_NAME);
 
 	g_assert( gtk_init_with_args(&argc, &argv,PACKAGE_STRING,args,NULL,NULL));
-
-	if(argc == 2)
-	{
-		find_project_base_dir(argv[1],basedir);
-	}
 
 	g_set_application_name(_(PACKAGE_NAME));
 
