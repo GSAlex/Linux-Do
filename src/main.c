@@ -190,7 +190,6 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_window_add_accel_group(ide->main_window,accel);
 
-
 	GtkItemFactoryEntry entry[] = {
 			{  _("/_File/_New") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_NEW },
 			{  _("/_File/_Open") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_OPEN },
@@ -239,6 +238,8 @@ static void build_ui(LinuxDoIDE * ide)
 	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->menubar),0,0,0);
 
 	gtk_statusbar_push(ide->statusbar,0,_("Ready"));
+
+	gtk_statusbar_set_has_resize_grip(ide->statusbar,TRUE);
 
 	ide->toolbar = GTK_TOOLBAR(gtk_toolbar_new());
 
@@ -321,6 +322,9 @@ static void build_ui(LinuxDoIDE * ide)
 	gtk_notebook_append_page(ide->main_layout.mid_layout.code,GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(_("Untitled")));
 
 	gtk_window_set_title(ide->main_window,_("Linux-Do"));
+
+	gtk_widget_show(ide->main_window);
+
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
