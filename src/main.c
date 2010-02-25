@@ -22,6 +22,8 @@
  * main.c - main source file
  */
 
+
+
 #include "Linuxdo.h"
 #include "TreeView.h"
 #include "autotools.h"
@@ -30,6 +32,8 @@
 #include "callbacks.h"
 #include "misc.h"
 #include <glib/gstdio.h>
+
+#include "../icons/LinuxDo.icon.h"
 
 static void build_ui(LinuxDoIDE * ide);
 
@@ -240,6 +244,24 @@ static void build_ui(LinuxDoIDE * ide)
 			{  _("/_Help/_About") , "<control>h", (GtkItemFactoryCallback) LinuxDoIDE_show_about_menu_callback , (guint)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
 	};
 
+	GtkIconFactory * app = gtk_icon_factory_new();
+
+	GdkPixbuf * pixbuf = gdk_pixbuf_new_from_inline(sizeof(LinuxDo_icon_pixbuf),LinuxDo_icon_pixbuf,FALSE,NULL) ;
+
+	gtk_icon_theme_add_builtin_icon(PACKAGE_NAME,64,pixbuf);
+
+	GtkIconSet * icon_set = gtk_icon_set_new_from_pixbuf(pixbuf);
+
+	gtk_window_set_icon_name(ide->main_window,PACKAGE_NAME);
+
+	g_object_unref(pixbuf);
+
+	gtk_icon_factory_add(app,PACKAGE_NAME, icon_set);
+
+	gtk_icon_set_unref(icon_set);
+
+	g_object_unref(app);
+
 	//build main layout, other window will be build within the create event of main window
 	ide->widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
 	ide->mainlayout  = GTK_PANED(gtk_hpaned_new());
@@ -339,7 +361,6 @@ static void build_ui(LinuxDoIDE * ide)
 	gtk_notebook_append_page(ide->main_layout.mid_layout.code,GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(_("Untitled")));
 
 	gtk_window_set_title(ide->main_window,_("Linux-Do"));
-	gtk_window_set_icon_from_file(ide->main_window,APPICONDIR"/LinuxDo.svg",NULL);
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
