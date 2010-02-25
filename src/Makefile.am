@@ -13,7 +13,7 @@ linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c SourceView.c 
 #linuxdo_EXTRA_DEPENDENCIES = $(srcdir)/marshller.h
 
 $(srcdir)/marshller.c : marshller.define $(srcdir)/marshller.h
-	glib-genmarshal --body --prefix=g_cclosure_marshal $< > $(srcdir)/marshller.c
+	cd $(srcdir) && glib-genmarshal --body --prefix=g_cclosure_marshal marshller.define > marshller.c
 
 $(srcdir)/marshller.h: marshller.define
-	glib-genmarshal --header --prefix=g_cclosure_marshal $< > $(srcdir)/marshller.h
+	cd $(srcdir) && glib-genmarshal --header --prefix=g_cclosure_marshal marshller.define > marshller.h

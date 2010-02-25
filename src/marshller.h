@@ -6,9 +6,9 @@
 
 G_BEGIN_DECLS
 
-/* VOID:VOID (../../src/marshller.define:1) */
+/* VOID:VOID (marshller.define:1) */
 
-/* VOID:STRING (../../src/marshller.define:2) */
+/* VOID:STRING (marshller.define:2) */
 
 G_END_DECLS
 
