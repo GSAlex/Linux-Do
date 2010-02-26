@@ -138,6 +138,7 @@ int main(int argc, char * argv[])
 			{0}
 	};
 	
+	GFile * file = NULL;
 
 	g_set_prgname(PACKAGE_NAME);
 
@@ -153,6 +154,11 @@ int main(int argc, char * argv[])
 	
 	ide.project_mgr = ide_autotools_new();
 	
+	if(argc==2)
+	{
+		file = g_file_new_for_path(argv[1]);
+	}
+
 	if(basedir)
 	{
 		g_chdir(basedir);
@@ -170,10 +176,21 @@ int main(int argc, char * argv[])
 	
 	g_object_set(ide.main_layout.left_layout.tree,"current-dir",".",NULL);
 	
-	if(argc == 2)
+	if(file)
 	{
 		//打开文件，吼吼
-		openfile(NULL,argv[1],&ide);
+
+		GFile * pwd = g_file_new_for_path(".");
+
+		gchar * path = g_file_get_relative_path(pwd, file);
+
+		g_object_unref(pwd);
+
+		g_object_unref(file);
+
+		openfile(NULL,path,&ide);
+
+		g_free(path);
 	}
 	
 	gtk_main();
