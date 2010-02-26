@@ -71,7 +71,10 @@ void ide_editor_init(IDE_EDITOR * obj)
 
 	GtkSourceBuffer * buffer ;
 
-	buffer = gtk_source_buffer_new_with_language(lang);
+	if(lang)
+		buffer = gtk_source_buffer_new_with_language(lang);
+	else
+		buffer = gtk_source_buffer_new(NULL);
 
 	gtk_text_view_set_buffer(GTK_TEXT_VIEW(obj),GTK_TEXT_BUFFER(buffer));
 
