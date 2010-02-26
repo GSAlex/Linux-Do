@@ -46,6 +46,7 @@ gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, g
     gtk_paned_set_position(ide->main_layout.right,event->width-220);
     gtk_paned_set_position(ide->main_layout.midlayout,event->height-140);
 
+    return FALSE;
 }
 
 void LinuxDoIDE_save_menu_callback(gpointer callback_data, guint callback_action)
