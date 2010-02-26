@@ -323,8 +323,18 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_window_set_title(ide->main_window,_("Linux-Do"));
 
-	gtk_widget_show(ide->main_window);
+	gtk_widget_show_all(GTK_WIDGET(ide->statusbar));
 
+	gtk_widget_show_all(GTK_WIDGET(ide->menubar));
+
+	gtk_widget_show(GTK_WIDGET(ide->widget_vbox));
+
+	gtk_widget_show(GTK_WIDGET(ide->main_window));
+
+	/*让窗口快点显示出来*/
+	gdk_flush();
+
+	//然后在慢慢显示内部控件吼吼
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
