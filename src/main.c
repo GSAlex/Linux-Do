@@ -105,6 +105,8 @@ static void openfile(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
 	LinuxDoIDE * ide = userdata;
 	IDE_EDITOR * source_editor;
 
+	g_return_if_fail(g_file_test(item,G_FILE_TEST_IS_REGULAR));
+
 	GtkNotebook* note = ide->main_layout.mid_layout.code;
 
 	source_editor = ide_notebook_new_page(note,item);
