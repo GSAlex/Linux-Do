@@ -2,12 +2,12 @@
 # This file is distributed under the same license as the ibus-handwrite package.
 # microcai <microcai@fedoraproject.org>, 2010.
 # microcai <microcai@fedoraproject.org>, 2010.
-#, fuzzy
+# fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-02-26 02:19+0800\n"
+"POT-Creation-Date: 2010-03-02 02:38+0800\n"
 "PO-Revision-Date: 2010-02-23 00:09+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
@@ -15,72 +15,77 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
 
-#: src/main.c:136
+#: src/main.c:138
 msgid "do git init and build initial dir struct for use with autotools"
 msgstr "调用git init 初始化仓库,并且建立初始的autotools目录结构"
 
-#: src/main.c:137
+#: src/main.c:139
 msgid "set project root dir"
 msgstr "设置项目目录"
 
-#: src/main.c:137
+#: src/main.c:139
 msgid "dir"
 msgstr "目录"
 
-#: src/main.c:148
+#: src/main.c:151
 #, c-format
 msgid "Linux-DO start up\n"
 msgstr "Linux-DO 启动\n"
 
-#: src/main.c:195
+#: src/main.c:215
 msgid "/_File/_New"
 msgstr "/文件(_F)/新建_N)"
 
-#: src/main.c:196
+#: src/main.c:216
 msgid "/_File/_Open"
 msgstr "/文件(_F)/打开(_O)"
 
-#: src/main.c:197 src/main.c:200
+#: src/main.c:217 src/main.c:220
 msgid "/_File/--"
 msgstr "/文件(_F)/--"
 
-#: src/main.c:198
+#: src/main.c:218
 msgid "/_File/_Close"
 msgstr "/文件(_F)/关闭(_C)"
 
-#: src/main.c:199
+#: src/main.c:219
 msgid "/_File/C_lose All"
 msgstr "/文件(_F)/全部关闭(_l)"
 
-#: src/main.c:201
+#: src/main.c:221
 msgid "/_File/_Save"
 msgstr "/文件(_F)/保存(_S)"
 
-#: src/main.c:202
+#: src/main.c:222
 msgid "/_File/Save _As"
 msgstr "/文件(_F)/全部保存(_A)"
 
-#: src/main.c:204
+#: src/main.c:224
 msgid "/_Help/_About"
 msgstr "/帮助(_H)/关于(_A)"
 
-#: src/main.c:241
+#: src/main.c:261
 msgid "Ready"
 msgstr "就绪"
 
-#: src/main.c:311
+#: src/main.c:333
 msgid "Explorer"
 msgstr "浏览"
 
-#: src/main.c:321
+#: src/main.c:343
 msgid "Untitled"
 msgstr "未命名"
 
-#: src/main.c:323
+#: src/main.c:345
 msgid "Linux-Do"
 msgstr "LinuxDO集成开发环境"
 
-#: src/TreeView.c:83
+#: src/main.c:364
+#, c-format
+msgid "Linux-Do - %s"
+msgstr "LinuxDO集成开发环境 - %s"
+
+#: src/TreeView.c:86
 msgid "Project View"
 msgstr "项目浏览"
 
@@ -90,7 +95,7 @@ msgstr "LinuxDo 是一个用于autotools的集成开发环境\n"
 
 #: src/About.c:722
 msgid "microcai"
-msgstr ""
+msgstr "菜菜"
 
 #~ msgid "/_Edit/_Undo"
 #~ msgstr "/编辑(_E)/撤销(_U)"
