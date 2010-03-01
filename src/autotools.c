@@ -28,6 +28,8 @@
 #include "Linuxdo.h"
 #include "autotools.h"
 
+#include <string.h>
+
 static void ide_autotools_class_init(IDE_AUTOTOOLSClass * );
 static void ide_autotools_init(IDE_AUTOTOOLS * );
 static void ide_autotools_finalize(GObject *object);
@@ -56,13 +58,14 @@ void ide_autotools_class_init(IDE_AUTOTOOLSClass * klass )
     klass->configure_resolved = configure_resolved;
 
     klass->configure_resolved_signal =  g_signal_new("configure-resolved",
-   			G_TYPE_FROM_CLASS(klass), G_SIGNAL_ACTION | G_SIGNAL_RUN_LAST, G_STRUCT_OFFSET(IDE_AUTOTOOLSClass,configure_resolved), 0,
+   			G_TYPE_FROM_CLASS(klass), G_SIGNAL_ACTION | G_SIGNAL_RUN_FIRST, G_STRUCT_OFFSET(IDE_AUTOTOOLSClass,configure_resolved), 0,
    			0, g_cclosure_marshal_VOID__VOID, G_TYPE_NONE,0 , NULL);
 }
 
 void ide_autotools_init(IDE_AUTOTOOLS * obj)
 {
     obj->project_path = g_string_new("");
+    obj->project_name = g_string_new(_("Unknow"));
 }
 
 void ide_autotools_finalize(GObject *object)
@@ -119,7 +122,49 @@ gboolean ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configur
     return FALSE;
 }
 
+//Get PACKAGE_NAME and
 void configure_resolved(IDE_AUTOTOOLS * obj , gpointer userdata)
 {
+	GError *	err=NULL;
+	GMappedFile * ac;
+
+	const gchar * ac_content ;
+
+	ac = g_mapped_file_new("configure.ac",FALSE,&err);
+
+	ac_content = g_mapped_file_get_contents(ac);
+
+	char name[80]={""};
+
+//	sscanf(ac_content,"AC_INIT(\\[%[^\\]^\\n]\\],)\n",name);
+
+	gchar * ac_init = strstr(ac_content,"AC_INIT(");
+
+	sscanf(ac_init,"AC_INIT(%[^,]\n",name);
+
+	gchar * look_define = g_strdup_printf("m4_define(%s",name);
+
+	gchar * real_package_name = strstr(ac_content,look_define);
+
+	g_free(look_define);
+
+	if(real_package_name)
+	{
+		puts("got real ");
+		sscanf(real_package_name,"m4_define(%*[^,],%[^)])\n",name);
+	}
+
+	g_mapped_file_unref(ac);
+
 	puts(__func__);
+
+//	g_print("got %s\n",name);
+
+//	strip_name(name);
+
+	//只选[]中间的东西
+
+//	g_print("got %s\n",name);
+
+	obj->project_name = g_string_assign(obj->project_name,name);
 }

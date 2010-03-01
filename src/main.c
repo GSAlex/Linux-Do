@@ -153,8 +153,10 @@ int main(int argc, char * argv[])
 	build_ui(&ide);
 
 	connect_signals(&ide);
-	
+
 	ide.project_mgr = ide_autotools_new();
+
+	g_object_set(ide.main_layout.left_layout.tree,"mgr",ide.project_mgr,NULL);
 	
 	if(argc==2)
 	{
@@ -168,8 +170,6 @@ int main(int argc, char * argv[])
 	}
 
 	ide_autotools_set_configure_ac(ide.project_mgr,argc==2?argv[1]:".");
-
-	g_object_set(ide.main_layout.left_layout.tree,"mgr",ide.project_mgr,NULL);
 		
 	if(argc == 2  )
 	{

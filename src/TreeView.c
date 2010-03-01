@@ -27,6 +27,7 @@
 
 #include "Linuxdo.h"
 #include "TreeView.h"
+#include "autotools.h"
 
 static void gtk_tree_view_dir_init(TREEVIEW_DIR*);
 static void gtk_tree_view_dir_class_init(TREEVIEW_DIRClass*);
@@ -47,6 +48,8 @@ static void gtk_tree_view_dir_row_collapsed  (GtkTreeView *tree_view,
 											  GtkTreeIter *iter,
 											  GtkTreePath *path,
 											  gpointer	user_data);
+
+void gtk_tree_view_dir_settitle(IDE_AUTOTOOLS * obj, gpointer userdata);
 
 enum{
 	GTK_TREE_VIEW_DIR_PROP_MGR = 1,
@@ -102,8 +105,6 @@ void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 	g_signal_connect(G_OBJECT (obj),"test-expand-row",G_CALLBACK(gtk_tree_view_dir_expanded),obj);
 	g_signal_connect(G_OBJECT (obj),"row-collapsed",G_CALLBACK(gtk_tree_view_dir_row_collapsed),obj);
 
-	g_signal_connect(G_OBJECT (obj),"row-collapsed",G_CALLBACK(gtk_tree_view_dir_row_collapsed),obj);
-
 }
 
 void gtk_tree_view_dir_class_init(TREEVIEW_DIRClass*klass)
@@ -131,7 +132,7 @@ void gtk_tree_view_dir_class_init(TREEVIEW_DIRClass*klass)
 			G_STRUCT_OFFSET(TREEVIEW_DIRClass,change_dir), 0,0,
 			g_cclosure_marshal_VOID__STRING, G_TYPE_NONE, 1 , G_TYPE_STRING , NULL);
 
-	spec = g_param_spec_object("mgr","mgr","autotools mgr",IDE_TYPE_AUTOTOOLS ,G_PARAM_CONSTRUCT|G_PARAM_READWRITE);
+	spec = g_param_spec_object("mgr","mgr","autotools mgr",IDE_TYPE_AUTOTOOLS ,G_PARAM_READWRITE);
 
 	g_object_class_install_property(gobject_class,GTK_TREE_VIEW_DIR_PROP_MGR,spec);
 
@@ -166,6 +167,11 @@ void gtk_tree_view_dir_set_property(GObject *object,guint property_id,const GVal
 	case GTK_TREE_VIEW_DIR_PROP_MGR:
 
 		self->mgr = g_value_dup_object(value);
+
+		g_assert(IDE_IS_AUTOTOOLS(self->mgr));
+
+		g_signal_connect(G_OBJECT(self->mgr),"configure-resolved",G_CALLBACK(gtk_tree_view_dir_settitle),self);
+
 		break;
 	case GTK_TREE_VIEW_DIR_PROP_DIR:
 		self->cur_dir = g_string_assign(self->cur_dir,g_value_get_string(value));
@@ -412,4 +418,14 @@ void gtk_tree_view_dir_row_collapsed(GtkTreeView *tree_view,GtkTreeIter *itr,Gtk
 			while(gtk_tree_store_remove(GTK_TREE_STORE(model),&iter_child));
 		
 	}	
+}
+void gtk_tree_view_dir_settitle(IDE_AUTOTOOLS * obj, gpointer userdata)
+{
+	TREEVIEW_DIR * tree_view = (TREEVIEW_DIR*) userdata;
+
+	g_assert(obj->project_name);
+
+	gtk_tree_view_column_set_title(tree_view->col, obj->project_name->str);
+
+	puts(__func__);
 }
