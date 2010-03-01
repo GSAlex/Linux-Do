@@ -36,7 +36,7 @@
 #include "../icons/LinuxDo.icon.h"
 
 static void build_ui(LinuxDoIDE * ide);
-
+static void ide_window_set_title(IDE_AUTOTOOLS * , GtkWindow * window );
 static void close_tab(gpointer callback_data, guint callback_action)
 {
 	LinuxDoIDE * ide = callback_data;
@@ -157,6 +157,8 @@ int main(int argc, char * argv[])
 	ide.project_mgr = ide_autotools_new();
 
 	g_object_set(ide.main_layout.left_layout.tree,"mgr",ide.project_mgr,NULL);
+
+	g_signal_connect(G_OBJECT(ide.project_mgr),"configure-resolved",G_CALLBACK(ide_window_set_title),ide.main_window);
 	
 	if(argc==2)
 	{
@@ -357,3 +359,12 @@ static void build_ui(LinuxDoIDE * ide)
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
 }
 
+void ide_window_set_title(IDE_AUTOTOOLS * obj, GtkWindow * window )
+{
+	gchar * title = g_strdup_printf(_("Linux-Do - %s"),obj->project_name->str);
+
+	gtk_window_set_title(window,title);
+
+	g_free(title);
+
+}

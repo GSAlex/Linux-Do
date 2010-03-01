@@ -419,6 +419,7 @@ void gtk_tree_view_dir_row_collapsed(GtkTreeView *tree_view,GtkTreeIter *itr,Gtk
 		
 	}	
 }
+
 void gtk_tree_view_dir_settitle(IDE_AUTOTOOLS * obj, gpointer userdata)
 {
 	TREEVIEW_DIR * tree_view = (TREEVIEW_DIR*) userdata;
