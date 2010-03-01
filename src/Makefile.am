@@ -7,8 +7,8 @@ EXTRA_DIST = marshller.c marshller.h marshller.define
 
 bin_PROGRAMS = linuxdo
 
-linuxdo_SOURCES = misc.h Linuxdo.h ide.h callbacks.h TreeView.h About.h SourceView.h autotools.h marshller.h
-linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c SourceView.c autotools.c marshller.c
+linuxdo_SOURCES = misc.h Linuxdo.h ide.h callbacks.h TreeView.h About.h SourceView.h autotools.h marshller.h xterm.h
+linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c SourceView.c autotools.c marshller.c xterm.c
 
 #linuxdo_EXTRA_DEPENDENCIES = $(srcdir)/marshller.h
 
