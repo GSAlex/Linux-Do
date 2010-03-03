@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-03-02 02:38+0800\n"
+"POT-Creation-Date: 2010-03-03 19:46+0800\n"
 "PO-Revision-Date: 2010-02-23 00:09+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
@@ -86,8 +86,9 @@ msgid "Linux-Do - %s"
 msgstr "LinuxDO集成开发环境 - %s"
 
 #: src/TreeView.c:86
-msgid "Project View"
-msgstr "项目浏览"
+#, fuzzy
+msgid "CurrentDir"
+msgstr "当前目录"
 
 #: src/About.c:710
 msgid "Linux Do is a IDE designed for use with GNU autotools\n"

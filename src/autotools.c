@@ -130,7 +130,18 @@ void configure_resolved(IDE_AUTOTOOLS * obj , gpointer userdata)
 
 	const gchar * ac_content ;
 
-	ac = g_mapped_file_new("configure.ac",FALSE,&err);
+	gchar * ac_file = g_strdup_printf("%s" G_DIR_SEPARATOR_S "configure.ac" , 	obj->project_path->str);
+
+	ac = g_mapped_file_new(ac_file,FALSE,&err);
+
+	g_free(ac_file);
+
+	if(!ac)
+	{
+		g_signal_stop_emission_by_name(obj,"configure-resolved");
+		g_warning("configure.ac can't open\n");
+		return;
+	}
 
 	ac_content = g_mapped_file_get_contents(ac);
 

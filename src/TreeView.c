@@ -83,7 +83,7 @@ void gtk_tree_view_dir_init(TREEVIEW_DIR*obj)
 	obj->cur_dir = g_string_new("");
 	obj->col = gtk_tree_view_column_new();
 
-	gtk_tree_view_column_set_title(obj->col, _("Project View"));
+	gtk_tree_view_column_set_title(obj->col, _("CurrentDir"));
 
 	gtk_tree_view_append_column(GTK_TREE_VIEW(obj), obj->col);
 
