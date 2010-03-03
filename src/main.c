@@ -139,7 +139,7 @@ int main(int argc, char * argv[])
 			{"root",'\0',0,G_OPTION_ARG_STRING,&basedir,_("set project root dir"), N_("dir")},
 			{0}
 	};
-	
+
 	GFile * file = NULL;
 
 	g_set_prgname(PACKAGE_NAME);
@@ -159,7 +159,7 @@ int main(int argc, char * argv[])
 	g_object_set(ide.main_layout.left_layout.tree,"mgr",ide.project_mgr,NULL);
 
 	g_signal_connect(G_OBJECT(ide.project_mgr),"configure-resolved",G_CALLBACK(ide_window_set_title),ide.main_window);
-	
+
 	if(argc==2)
 	{
 		file = g_file_new_for_path(argv[1]);
@@ -172,14 +172,14 @@ int main(int argc, char * argv[])
 	}
 
 	ide_autotools_set_configure_ac(ide.project_mgr,argc==2?argv[1]:".");
-		
-	if(argc == 2  )
+
+	if(!basedir)
 	{
 		g_chdir(ide.project_mgr->project_path->str);
 	}
-	
+
 	g_object_set(ide.main_layout.left_layout.tree,"current-dir",".",NULL);
-	
+
 	if(file)
 	{
 		//打开文件，吼吼
@@ -196,7 +196,7 @@ int main(int argc, char * argv[])
 
 		g_free(path);
 	}
-	
+
 	gtk_main();
 	return 0;
 }
@@ -221,7 +221,7 @@ static void build_ui(LinuxDoIDE * ide)
 			{  _("/_File/_Save") , NULL,(GtkItemFactoryCallback)LinuxDoIDE_save_menu_callback, 0 , "<StockItem>" , GTK_STOCK_SAVE },
 			{  _("/_File/Save _As") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE_AS},
 
-			{  _("/_Help/_About") , "<control>h", (GtkItemFactoryCallback) LinuxDoIDE_show_about_menu_callback , (guint)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
+			{  _("/_Help/_About") , "<control>h", (GtkItemFactoryCallback) LinuxDoIDE_show_about_menu_callback , (gsize)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
 	};
 
 	GtkIconFactory * app = gtk_icon_factory_new();
