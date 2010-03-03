@@ -27,7 +27,7 @@
 
 #include "Linuxdo.h"
 #include "autotools.h"
-
+#include <glib/gutils.h>
 #include <string.h>
 
 static void ide_autotools_class_init(IDE_AUTOTOOLSClass * );
