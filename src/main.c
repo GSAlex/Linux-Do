@@ -127,6 +127,7 @@ int main(int argc, char * argv[])
 	LinuxDoIDE ide;
 
 	gboolean init_project;
+	GError * err=NULL;
 	gchar * basedir=NULL;
 
 	setlocale(LC_ALL, "");
@@ -142,9 +143,20 @@ int main(int argc, char * argv[])
 
 	GFile * file = NULL;
 
+	ide.project_mgr = ide_autotools_new();
+
+	if(G_UNLIKELY(init_project))
+	{
+		//建立标准目录结构
+		return ;
+	}
+
 	g_set_prgname(PACKAGE_NAME);
 
-	g_assert( gtk_init_with_args(&argc, &argv,PACKAGE_STRING,args,NULL,NULL));
+	if(G_UNLIKELY(!gtk_init_with_args(&argc, &argv,PACKAGE_STRING,args,NULL,&err)))
+	{
+		g_error(err->message);
+	}
 
 	g_set_application_name(_(PACKAGE_NAME));
 
@@ -153,8 +165,6 @@ int main(int argc, char * argv[])
 	build_ui(&ide);
 
 	connect_signals(&ide);
-
-	ide.project_mgr = ide_autotools_new();
 
 	g_object_set(ide.main_layout.left_layout.tree,"mgr",ide.project_mgr,NULL);
 

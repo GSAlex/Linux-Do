@@ -179,3 +179,8 @@ void configure_resolved(IDE_AUTOTOOLS * obj , gpointer userdata)
 
 	obj->project_name = g_string_assign(obj->project_name,name);
 }
+
+void ide_autotools_create_tmpl()
+{
+
+}
