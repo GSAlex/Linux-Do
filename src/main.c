@@ -25,13 +25,14 @@
 
 
 #include "Linuxdo.h"
+#include <glib/gstdio.h>
 #include "TreeView.h"
 #include "autotools.h"
 #include "SourceView.h"
 #include "ide.h"
 #include "callbacks.h"
 #include "misc.h"
-#include <glib/gstdio.h>
+#include "xterm.h"
 
 #include "../icons/LinuxDo.icon.h"
 
@@ -297,7 +298,11 @@ static void build_ui(LinuxDoIDE * ide)
 	GtkWidget * bt1 = gtk_button_new_with_label("我菜鸟！！！");
 
 	GtkWidget * bt3 = gtk_button_new_with_label("right area");
-	GtkWidget * bt5= gtk_button_new_with_label("support area");
+	GtkWidget * xterm = gtk_scrolled_window_new(NULL,NULL); //gtk_xterm_new();   // button_new_with_label("support area");
+
+	gtk_container_add(GTK_CONTAINER(xterm),gtk_xterm_new());
+
+	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(xterm),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
 
 	// main area
 	ide->main_layout.left = GTK_NOTEBOOK(gtk_notebook_new());
@@ -310,6 +315,7 @@ static void build_ui(LinuxDoIDE * ide)
 	ide->main_layout.midlayout = GTK_PANED(gtk_vpaned_new());
 
 	gtk_paned_add1(ide->main_layout.right,GTK_WIDGET(ide->main_layout.midlayout));
+
 	gtk_paned_add2(ide->main_layout.right,bt3);//,FALSE,FALSE);
 
 	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_notebook_new());
@@ -317,7 +323,7 @@ static void build_ui(LinuxDoIDE * ide)
 	gtk_notebook_set_scrollable(ide->main_layout.mid_layout.code,TRUE);
 
 	gtk_paned_add1(ide->main_layout.midlayout,GTK_WIDGET(ide->main_layout.mid_layout.code));
-	gtk_paned_add2(ide->main_layout.midlayout,bt5);
+	gtk_paned_add2(ide->main_layout.midlayout,xterm);
 
 
 	ide->main_layout.left_layout.tree_scroll = GTK_SCROLLED_WINDOW(gtk_scrolled_window_new(NULL,NULL));
