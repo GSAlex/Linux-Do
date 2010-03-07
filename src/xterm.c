@@ -56,10 +56,18 @@ void gtk_xterm_class_init(GtkXtermClass * klass)
 	G_OBJECT_CLASS(klass)->finalize = gtk_xterm_finalize;
 }
 
+static gboolean fork_child(gpointer obj)
+{
+	vte_terminal_fork_command(VTE_TERMINAL(obj),NULL,NULL,NULL,NULL,FALSE,FALSE,FALSE);
+	return FALSE;
+}
+
 void gtk_xterm_init(GtkXterm * obj)
 {
 	g_signal_connect(G_OBJECT (obj),"child-exited",G_CALLBACK(gtk_xterm_on_child_exit),obj);
-	vte_terminal_fork_command(VTE_TERMINAL(obj),NULL,NULL,NULL,NULL,FALSE,FALSE,FALSE);
+
+	g_idle_add(fork_child,obj);
+
 }
 
 void gtk_xterm_finalize(GObject*obj)
@@ -69,11 +77,11 @@ void gtk_xterm_finalize(GObject*obj)
 
 void gtk_xterm_on_child_exit(GtkXterm *obj, gchar *text,guint size, gpointer user_data)
 {
-	vte_terminal_fork_command(VTE_TERMINAL(obj),NULL,NULL,NULL,NULL,FALSE,FALSE,FALSE);
-
+	g_idle_add(fork_child,obj);
+//	vte_terminal_fork_command(VTE_TERMINAL(obj),NULL,NULL,NULL,NULL,FALSE,FALSE,FALSE);
 }
 
 GtkWidget * gtk_xterm_new()
 {
-	return g_object_new(GTK_TYPE_XTERM,"encoding","UTF-8",NULL);
+	return g_object_new(GTK_TYPE_XTERM,"encoding","UTF-8","background-opacity",0.8,NULL);
 }
