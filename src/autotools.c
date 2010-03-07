@@ -161,13 +161,11 @@ void configure_resolved(IDE_AUTOTOOLS * obj , gpointer userdata)
 
 	if(real_package_name)
 	{
-		puts("got real ");
+//		puts("got real ");
 		sscanf(real_package_name,"m4_define(%*[^,],%[^)])\n",name);
 	}
 
 	g_mapped_file_unref(ac);
-
-	puts(__func__);
 
 //	g_print("got %s\n",name);
 

@@ -215,16 +215,16 @@ static void append_dir_content(GtkTreeStore * tree,GtkTreeIter * root , const gc
 	GArray * dirs, * files;
 	gchar	*filename;
 	GtkTreeIter cur;
-	
+
 	if(!deep)
 	{
 		gtk_tree_store_append(tree,&cur,root);
-		
+
 		gtk_tree_store_set(tree, &cur,0,GTK_STOCK_DIRECTORY,1,"FAKE",-1);
-		
+
 		return ;
 	}
-	
+
 	dir = g_dir_open(dirname,0,NULL);
 
 	if(!dir)
@@ -339,14 +339,14 @@ void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTree
 			filepath = g_string_prepend(filepath, value);
 			g_free(value);
 		} while (gtk_tree_model_iter_parent(mode, &parent, &iter));
-		
+
 		if(g_file_test(filepath->str,G_FILE_TEST_IS_REGULAR))
 		{
 			g_signal_emit(G_OBJECT(user_data),
 				GTK_TREE_VIEW_DIR_GET_CLASS(user_data)->signals[TREEVIEW_DIR_SIGNAL_OPENFILE],
 				0, filepath->str, NULL);
 		}
-		
+
 		g_string_free(filepath,TRUE);
 
 	}
@@ -355,39 +355,39 @@ void gtk_tree_view_dir_active(GtkTreeView *tree_view, GtkTreePath *path, GtkTree
 void gtk_tree_view_dir_expanded (GtkTreeView *tree_view,GtkTreeIter *itr,GtkTreePath *tree_path,gpointer user_data)
 {
 	TREEVIEW_DIR * tree = GTK_TREE_VIEW_DIR(user_data);
-	
+
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 	char *value;
-	
+
 	model = gtk_tree_view_get_model(tree_view);
-	
+
 	g_return_if_fail(gtk_tree_model_get_iter(model,&iter,tree_path));
-	
+
 	//遍历现有的节点，为每个子节点删除孙节点数据
-		
+
 	GString * path;
 	path  = g_string_new("");
-	
+
 	GtkTreeIter parent = *itr;
-		
+
 	//获得绝对路径
-	
+
 	do {
-		
+
 		iter = parent ;
-		
+
 		gtk_tree_model_get(model, &iter, 1, &value, -1);
 		if(path->len)
 			path = g_string_prepend_c(path, G_DIR_SEPARATOR);
-		path = g_string_prepend(path, value);		
+		path = g_string_prepend(path, value);
 		g_free(value);
 	} while (gtk_tree_model_iter_parent(model, &parent, &iter));
-		
+
 	if(gtk_tree_model_iter_children(model,&iter,itr))
 		while(gtk_tree_store_remove(GTK_TREE_STORE(model),&iter));
-		
-	//调用 append_dir_content 
+
+	//调用 append_dir_content
 
 	append_dir_content(GTK_TREE_STORE(model),itr,path->str,2);
 
@@ -397,27 +397,27 @@ void gtk_tree_view_dir_expanded (GtkTreeView *tree_view,GtkTreeIter *itr,GtkTree
 void gtk_tree_view_dir_row_collapsed(GtkTreeView *tree_view,GtkTreeIter *itr,GtkTreePath *tree_path,gpointer	user_data)
 {
 	TREEVIEW_DIR * tree = GTK_TREE_VIEW_DIR(user_data);
-	
+
 	GtkTreeIter iter;
 	GtkTreeModel *model;
 	char *value;
-	
+
 	model = gtk_tree_view_get_model(tree_view);
-	
+
 //	g_return_if_fail(gtk_tree_model_get_iter(model,&iter,tree_path));
-		
-	gboolean is_valid;	
-	
+
+	gboolean is_valid;
+
 	//为每个子节点调用 删掉孙节点.
-	
+
 	for (gtk_tree_model_iter_children(model,&iter,itr); is_valid; is_valid = gtk_tree_model_iter_next(model,&iter))
 	{
 		GtkTreeIter iter_child;
-		
+
 		if(gtk_tree_model_iter_children(model,&iter_child,&iter))
 			while(gtk_tree_store_remove(GTK_TREE_STORE(model),&iter_child));
-		
-	}	
+
+	}
 }
 
 void gtk_tree_view_dir_settitle(IDE_AUTOTOOLS * obj, gpointer userdata)
@@ -428,5 +428,4 @@ void gtk_tree_view_dir_settitle(IDE_AUTOTOOLS * obj, gpointer userdata)
 
 	gtk_tree_view_column_set_title(tree_view->col, obj->project_name->str);
 
-	puts(__func__);
 }
