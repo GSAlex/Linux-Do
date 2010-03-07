@@ -7,86 +7,121 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-03-03 19:46+0800\n"
-"PO-Revision-Date: 2010-02-23 00:09+0800\n"
+"POT-Creation-Date: 2010-03-08 03:11+0800\n"
+"PO-Revision-Date: 2010-03-08 03:11+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
 
-#: src/main.c:138
+#: src/main.c:139
 msgid "do git init and build initial dir struct for use with autotools"
 msgstr "调用git init 初始化仓库,并且建立初始的autotools目录结构"
 
-#: src/main.c:139
+#: src/main.c:140
 msgid "set project root dir"
 msgstr "设置项目目录"
 
-#: src/main.c:139
+#: src/main.c:140
 msgid "dir"
 msgstr "目录"
 
-#: src/main.c:151
+#: src/main.c:152
 #, c-format
 msgid "Linux-DO start up\n"
 msgstr "Linux-DO 启动\n"
 
-#: src/main.c:215
-msgid "/_File/_New"
-msgstr "/文件(_F)/新建_N)"
+#: src/main.c:233
+msgid "_File"
+msgstr "文件(_F)"
 
-#: src/main.c:216
-msgid "/_File/_Open"
-msgstr "/文件(_F)/打开(_O)"
+#: src/main.c:234
+msgid "_New"
+msgstr "新建(_N)"
 
-#: src/main.c:217 src/main.c:220
-msgid "/_File/--"
-msgstr "/文件(_F)/--"
+#: src/main.c:234
+msgid "Create New File"
+msgstr "创建新文件"
 
-#: src/main.c:218
-msgid "/_File/_Close"
-msgstr "/文件(_F)/关闭(_C)"
+#: src/main.c:235
+msgid "_Open"
+msgstr "打开(_O)"
 
-#: src/main.c:219
-msgid "/_File/C_lose All"
-msgstr "/文件(_F)/全部关闭(_l)"
+#: src/main.c:235
+msgid "Open A File"
+msgstr "打开一个文件"
 
-#: src/main.c:221
-msgid "/_File/_Save"
-msgstr "/文件(_F)/保存(_S)"
+#: src/main.c:236
+msgid "_Close"
+msgstr "关闭(_C)"
 
-#: src/main.c:222
-msgid "/_File/Save _As"
-msgstr "/文件(_F)/全部保存(_A)"
+#: src/main.c:236
+msgid "Close File"
+msgstr "关闭文件"
 
-#: src/main.c:224
-msgid "/_Help/_About"
-msgstr "/帮助(_H)/关于(_A)"
+#: src/main.c:237
+msgid "C_lose All"
+msgstr "全部关闭(_l)"
 
-#: src/main.c:261
+#: src/main.c:237
+msgid "Close All Files"
+msgstr "关闭所有打开的文件"
+
+#: src/main.c:238
+msgid "_Save"
+msgstr "保存(_S)"
+
+#: src/main.c:238
+msgid "Save File"
+msgstr "保存文件"
+
+#: src/main.c:239
+msgid "Save _As"
+msgstr "另存为(_A)"
+
+#: src/main.c:239
+msgid "Save File As ..."
+msgstr "另存文件为 ....."
+
+#: src/main.c:240
+msgid "_Quit"
+msgstr "退出(_Q)"
+
+#: src/main.c:240
+msgid "QUIT"
+msgstr "退出本程序"
+
+#: src/main.c:241
+msgid "_Help"
+msgstr "帮助(_H)"
+
+#: src/main.c:242
+msgid "_About"
+msgstr "关于(_A)"
+
+#: src/main.c:293
 msgid "Ready"
 msgstr "就绪"
 
-#: src/main.c:333
+#: src/main.c:370
 msgid "Explorer"
 msgstr "浏览"
 
-#: src/main.c:343
+#: src/main.c:380
 msgid "Untitled"
 msgstr "未命名"
 
-#: src/main.c:345
+#: src/main.c:382
 msgid "Linux-Do"
 msgstr "LinuxDO集成开发环境"
 
-#: src/main.c:364
+#: src/main.c:401
 #, c-format
 msgid "Linux-Do - %s"
 msgstr "LinuxDO集成开发环境 - %s"
 
 #: src/TreeView.c:86
-#, fuzzy
 msgid "CurrentDir"
 msgstr "当前目录"
 
@@ -97,6 +132,15 @@ msgstr "LinuxDo 是一个用于autotools的集成开发环境\n"
 #: src/About.c:722
 msgid "microcai"
 msgstr "菜菜"
+
+#~ msgid "/_File/_New"
+#~ msgstr "/文件(_F)/新建_N)"
+
+#~ msgid "/_File/_Open"
+#~ msgstr "/文件(_F)/打开(_O)"
+
+#~ msgid "/_File/_Save"
+#~ msgstr "/文件(_F)/保存(_S)"
 
 #~ msgid "/_Edit/_Undo"
 #~ msgstr "/编辑(_E)/撤销(_U)"

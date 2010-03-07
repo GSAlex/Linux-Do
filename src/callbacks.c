@@ -30,7 +30,7 @@
 #include "About.h"
 #include "misc.h"
 
-void LinuxDoIDE_show_about_menu_callback(gpointer callback_data, guint callback_action)
+void LinuxDoIDE_show_about_menu_callback(GtkWidget * item , gpointer callback_data)
 {
     LinuxDoIDE * ide = callback_data;
     LinuxDoIDE_show_about(GTK_WIDGET(ide->main_window));
@@ -49,7 +49,7 @@ gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, g
     return FALSE;
 }
 
-void LinuxDoIDE_save_menu_callback(gpointer callback_data, guint callback_action)
+void LinuxDoIDE_save_menu_callback(GtkWidget * item ,gpointer callback_data)
 {
     LinuxDoIDE * ide = (LinuxDoIDE*) callback_data;
     GtkNotebook * note = ide->main_layout.mid_layout.code ;

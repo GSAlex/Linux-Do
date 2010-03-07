@@ -204,26 +204,57 @@ int main(int argc, char * argv[])
 
 static void build_ui(LinuxDoIDE * ide)
 {
-	GtkAccelGroup * accel;
+	GError * err = NULL;
 	//build main window
 	ide->main_window = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
 
-	accel = gtk_accel_group_new();
-
-	gtk_window_add_accel_group(ide->main_window,accel);
-
-	GtkItemFactoryEntry entry[] = {
-			{  _("/_File/_New") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_NEW },
-			{  _("/_File/_Open") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_OPEN },
-			{  _("/_File/--") , NULL, 0, 0 , "<Separator>" , NULL },
-			{  _("/_File/_Close") , NULL, (GtkItemFactoryCallback)close_tab, 0 , "<StockItem>" , GTK_STOCK_CLOSE },
-			{  _("/_File/C_lose All") , "<control><shift>w", 0, 0 , "<StockItem>" , GTK_STOCK_CLOSE},
-			{  _("/_File/--") , NULL, 0, 0 , "<Separator>" , NULL },
-			{  _("/_File/_Save") , NULL,(GtkItemFactoryCallback)LinuxDoIDE_save_menu_callback, 0 , "<StockItem>" , GTK_STOCK_SAVE },
-			{  _("/_File/Save _As") , NULL, 0, 0 , "<StockItem>" , GTK_STOCK_SAVE_AS},
-
-			{  _("/_Help/_About") , "<control>h", (GtkItemFactoryCallback) LinuxDoIDE_show_about_menu_callback , (gsize)ide->main_window , "<StockItem>" , GTK_STOCK_ABOUT },
+	static const gchar menubar [] = {
+			"<ui>"
+			  "<menubar name=\"MenuBar\" >"
+			    "<menu name=\"FileMenu\" action = \"FileMenu\" >"
+					"<menuitem action = \"FileNew\" />"
+					"<menuitem action = \"FileOpen\" />"
+					"<separator/>"
+					"<menuitem action = \"FileClose\" />"
+					"<menuitem action = \"FileCloseAll\" />"
+					"<separator/>"
+					"<menuitem action = \"FileSave\" />"
+					"<menuitem action = \"FileSaveAs\" />"
+					"<menuitem action = \"FileQuit\" />"
+			    "</menu>"
+				"<menu name=\"HelpMenu\" action = \"HelpMenu\" >"
+					"<menuitem action = \"HelpAbout\" />"
+				"</menu>"
+			  "</menubar> "
+			"</ui>"
 	};
+
+	const GtkActionEntry actions[] = {
+			{"FileMenu" , NULL, _("_File") },
+			{ "FileNew", GTK_STOCK_NEW, _("_New"), "<control>N", _("Create New File") },//, G_CALLBACK(itemPressed)},
+			{ "FileOpen", GTK_STOCK_OPEN,_("_Open"),"<control>O", _("Open A File") },//, G_CALLBACK(itemPressed)},
+			{ "FileClose", GTK_STOCK_CLOSE, _("_Close"),"<control>W", _("Close File") } , // G_CALLBACK(gtk_main_quit)},
+			{ "FileCloseAll", GTK_STOCK_CLOSE, _("C_lose All"),"<control><shift>W", _("Close All Files") } , // G_CALLBACK(gtk_main_quit)},
+			{ "FileSave", GTK_STOCK_SAVE, _("_Save"), "<control>S", _("Save File") ,  G_CALLBACK(LinuxDoIDE_save_menu_callback)},
+			{ "FileSaveAs", GTK_STOCK_SAVE_AS, _("Save _As"), "<control><shift>S", _("Save File As ...") }, // G_CALLBACK(itemPressed)},
+			{ "FileQuit", GTK_STOCK_QUIT, _("_Quit"), "<control>Q", _("QUIT") ,  G_CALLBACK(gtk_main_quit)},
+			{ "HelpMenu", GTK_STOCK_HELP, _("_Help") },
+			{ "HelpAbout", GTK_STOCK_ABOUT, _("_About") , "<control>H" , _("_About") , G_CALLBACK(LinuxDoIDE_show_about_menu_callback) }
+		};
+
+	GtkUIManager * uimgr = gtk_ui_manager_new();
+
+	gtk_ui_manager_add_ui_from_string(uimgr, menubar, sizeof(menubar) - 1, &err);
+
+	GtkActionGroup* actionGroup = gtk_action_group_new("Actions");
+
+	gtk_action_group_add_actions(actionGroup, actions, G_N_ELEMENTS(actions), ide);
+
+	gtk_ui_manager_insert_action_group(uimgr,actionGroup,0);
+
+	ide->menubar = gtk_ui_manager_get_widget(uimgr,"/MenuBar"); // GTK_WIDGET(gtk_item_factory_get_widget (ide->menu, "<main>")) ;// GTK_MENU_BAR(gtk_menu_bar_new());
+
+	gtk_window_add_accel_group(ide->main_window,gtk_ui_manager_get_accel_group(uimgr));
 
 	GtkIconFactory * app = gtk_icon_factory_new();
 
@@ -251,11 +282,11 @@ static void build_ui(LinuxDoIDE * ide)
 
 	ide->statusbar = GTK_STATUSBAR(gtk_statusbar_new());
 
-	ide->menu = gtk_item_factory_new(GTK_TYPE_MENU_BAR,"<main>",accel);
+//	ide->menu = gtk_item_factory_new(GTK_TYPE_MENU_BAR,"<main>",accel);
 
-	gtk_item_factory_create_items(ide->menu, sizeof(entry)/sizeof(GtkItemFactoryEntry) ,entry,ide);
+//	gtk_item_factory_create_items(ide->menu, sizeof(entry)/sizeof(GtkItemFactoryEntry) ,entry,ide);
 
-	ide->menubar = GTK_WIDGET(gtk_item_factory_get_widget (ide->menu, "<main>")) ;// GTK_MENU_BAR(gtk_menu_bar_new());
+//	gtk_ui_manager_get_widget(uimgr,"ui");
 
 	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->menubar),0,0,0);
 
