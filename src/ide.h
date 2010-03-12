@@ -54,12 +54,6 @@ typedef struct _LinuxDoIDE{
 		GtkPaned* midlayout;
 
 	}main_layout;
-//	struct{
-//		GtkMenuItem * file;
-//		GtkMenuItem * edit;
-//
-//	}menu;
-	GtkItemFactory * menu;
 	struct{
 		//first group
 		GtkToolItem * new;

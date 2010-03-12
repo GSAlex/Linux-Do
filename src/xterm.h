@@ -29,15 +29,19 @@
 #define XTERM_H_
 
 #include <gtk/gtk.h>
+#include <vte/vte.h>
 
-typedef struct _GtkXterm{
+typedef struct _GtkXterm
+{
+	VteTerminal parent;
 
-}GtkXterm;
+} GtkXterm;
 
-typedef struct _GtkXtermClass{
-
-
-}GtkXtermClass;
+typedef struct _GtkXtermClass
+{
+	VteTerminalClass parent_class;
+	void (*finalize)(GObject *object);
+} GtkXtermClass;
 
 #define GTK_TYPE_XTERM		(gtk_xterm_get_type ())
 #define GTK_XTERM(obj)		(G_TYPE_CHECK_INSTANCE_CAST ((obj), GTK_TYPE_XTERM, GtkXterm))
@@ -48,5 +52,6 @@ typedef struct _GtkXtermClass{
 
 
 GType gtk_xterm_get_type() G_GNUC_CONST ;
+GtkWidget * gtk_xterm_new();
 
 #endif /* XTERM_H_ */
