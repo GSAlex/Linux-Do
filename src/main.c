@@ -464,23 +464,22 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_window_add_accel_group(ide->main_window,gtk_ui_manager_get_accel_group(uimgr));
 
-	GtkIconFactory * app = gtk_icon_factory_new();
-
 	GdkPixbuf * pixbuf = gdk_pixbuf_new_from_inline(sizeof(LinuxDo_icon_pixbuf),LinuxDo_icon_pixbuf,FALSE,NULL) ;
 
-	gtk_icon_theme_add_builtin_icon(PACKAGE_NAME,64,pixbuf);
+	GtkIconFactory * app = gtk_icon_factory_new();
 
 	GtkIconSet * icon_set = gtk_icon_set_new_from_pixbuf(pixbuf);
 
+	gtk_icon_theme_add_builtin_icon(PACKAGE_NAME,64,pixbuf);
+	gtk_icon_factory_add(app,PACKAGE_NAME, icon_set);
+	gtk_icon_set_unref(icon_set);
+	gtk_icon_factory_add_default(app);
+	g_object_unref(app);
+
 	gtk_window_set_icon_name(ide->main_window,PACKAGE_NAME);
+	gtk_window_set_icon(ide->main_window,pixbuf);
 
 	g_object_unref(pixbuf);
-
-	gtk_icon_factory_add(app,PACKAGE_NAME, icon_set);
-
-	gtk_icon_set_unref(icon_set);
-
-	g_object_unref(app);
 
 	//build main layout, other window will be build within the create event of main window
 	ide->widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
