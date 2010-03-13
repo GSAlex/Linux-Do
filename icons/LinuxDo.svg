@@ -13,8 +13,8 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   inkscape:version="0.47pre4 r22446"
-   sodipodi:docname="内存文档 2">
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="LinuxDo.svg">
   <defs
      id="defs2818">
     <inkscape:perspective
@@ -34,15 +34,15 @@
      inkscape:pageshadow="2"
      inkscape:zoom="5.5"
      inkscape:cx="-5.5454545"
-     inkscape:cy="32"
+     inkscape:cy="39.272727"
      inkscape:current-layer="layer1"
      showgrid="true"
      inkscape:document-units="px"
      inkscape:grid-bbox="true"
-     inkscape:window-width="1440"
-     inkscape:window-height="852"
+     inkscape:window-width="1280"
+     inkscape:window-height="670"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="28"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata2821">
@@ -52,7 +52,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -62,16 +62,16 @@
      inkscape:groupmode="layer">
     <text
        xml:space="preserve"
-       style="font-size:36.67527008px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"
-       x="5.5833659"
-       y="34.336021"
+       style="font-size:29.63270378px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:2.99999993%;writing-mode:lr-tb;text-anchor:start;fill:#ff0000;fill-opacity:1;stroke:none;font-family:Serif;-inkscape-font-specification:Serif"
+       x="6.5207891"
+       y="27.375082"
        id="text2826"
-       sodipodi:linespacing="3%"
-       transform="scale(1.0789195,0.9268532)"><tspan
+       sodipodi:linespacing="2.9999999%"
+       transform="scale(0.91714111,1.0903448)"><tspan
          sodipodi:role="line"
          id="tspan2828"
-         x="-1"
-         y="34.336021">DO!</tspan></text>
+         x="6.5207891"
+         y="27.375082">DO!</tspan></text>
     <text
        xml:space="preserve"
        style="font-size:10.29429149999999993px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffff00;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans"
