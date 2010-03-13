@@ -4,4 +4,4 @@ icons_DATA = LinuxDo.svg
 iconsdir = @appicondir@
 # $(appicondir)
 
-EXTRA_DIST = $(icons_DATA) LinuxDo.svg.h
+EXTRA_DIST = $(icons_DATA) LinuxDo.icon.h
