@@ -24,6 +24,9 @@
 
 
 #include <errno.h>
+#include <limits.h>
+#include <stdlib.h>
+
 #include "Linuxdo.h"
 #include <glib/gstdio.h>
 #include "TreeView.h"
@@ -125,6 +128,7 @@ static void connect_signals(LinuxDoIDE * ide)
 
 static int create_std_autotools_project(const gchar * package_name,gboolean with_nls)
 {
+	int	ret;
 	FILE * am;
 	FILE * ac;
 	FILE * po_LINGUAS, * po_makebars;
@@ -260,8 +264,9 @@ static int create_std_autotools_project(const gchar * package_name,gboolean with
 	}
 
 	//调用 git init
-	system("git init");
-	system("git add .");
+
+	ret = system("git init");
+	ret = system("git add .");
 	//加入 .gitignore
 	FILE * gitignore = fopen(".gitignore","a");
 
@@ -273,11 +278,11 @@ static int create_std_autotools_project(const gchar * package_name,gboolean with
 
 	fclose(gitignore);
 
-	system("git add -f .gitignore");
+	ret = system("git add -f .gitignore");
 
-	system("git commit -a -m 'Init project with LinuxDo'");
+	ret = system("git commit -a -m 'Init project with LinuxDo'");
 
-	return 0;
+	return ret;
 }
 
 int main(int argc, char * argv[])
@@ -292,6 +297,12 @@ int main(int argc, char * argv[])
 	setlocale(LC_ALL, "");
 	gtk_set_locale();
 	textdomain(GETTEXT_PACKAGE);
+#ifdef G_OS_WIN32
+	{
+		char realpath_str[1024];
+		bindtextdomain(GETTEXT_PACKAGE,realpath(argv[0],realpath_str));
+	}
+#endif
 	g_type_init();
 
 	GOptionEntry args[] =
@@ -412,7 +423,19 @@ static void build_ui(LinuxDoIDE * ide)
 				"<menu name=\"HelpMenu\" action = \"HelpMenu\" >"
 					"<menuitem action = \"HelpAbout\" />"
 				"</menu>"
-			  "</menubar> "
+			  "</menubar>"
+			  "<toolbar name=\"TOOLBAR\">"
+				  "<toolitem action=\"FileNew\"/>"
+				  "<toolitem action=\"FileOpen\"/>"
+				  "<toolitem action=\"FileClose\"/>"
+				  "<separator/>"
+				  "<toolitem action=\"FileQuit\"/>"
+			  "</toolbar>"
+			  ""
+			  ""
+			  ""
+			  ""
+			  ""
 			"</ui>"
 	};
 
@@ -439,8 +462,6 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_ui_manager_insert_action_group(uimgr,actionGroup,0);
 
-	ide->menubar = gtk_ui_manager_get_widget(uimgr,"/MenuBar"); // GTK_WIDGET(gtk_item_factory_get_widget (ide->menu, "<main>")) ;// GTK_MENU_BAR(gtk_menu_bar_new());
-
 	gtk_window_add_accel_group(ide->main_window,gtk_ui_manager_get_accel_group(uimgr));
 
 	GtkIconFactory * app = gtk_icon_factory_new();
@@ -465,50 +486,24 @@ static void build_ui(LinuxDoIDE * ide)
 	ide->widget_vbox = GTK_BOX(gtk_vbox_new(0,0));
 	ide->mainlayout  = GTK_PANED(gtk_hpaned_new());
 
+	ide->menubar = gtk_ui_manager_get_widget(uimgr,"/MenuBar"); // GTK_WIDGET(gtk_item_factory_get_widget (ide->menu, "<main>")) ;// GTK_MENU_BAR(gtk_menu_bar_new());
+
+	ide->toolbar = gtk_ui_manager_get_widget(uimgr,"/TOOLBAR"); //GTK_TOOLBAR(gtk_toolbar_new());
+
+	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->menubar),0,0,0);
+
+	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->toolbar),0,0,0);
+
 	gtk_container_add(GTK_CONTAINER(ide->main_window),GTK_WIDGET(ide->widget_vbox));
 
 	ide->statusbar = GTK_STATUSBAR(gtk_statusbar_new());
-
-//	ide->menu = gtk_item_factory_new(GTK_TYPE_MENU_BAR,"<main>",accel);
-
-//	gtk_item_factory_create_items(ide->menu, sizeof(entry)/sizeof(GtkItemFactoryEntry) ,entry,ide);
-
-//	gtk_ui_manager_get_widget(uimgr,"ui");
-
-	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->menubar),0,0,0);
 
 	gtk_statusbar_push(ide->statusbar,0,_("Ready"));
 
 	gtk_statusbar_set_has_resize_grip(ide->statusbar,TRUE);
 
-	ide->toolbar = GTK_TOOLBAR(gtk_toolbar_new());
-
-	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->toolbar),0,0,0);
-
-	//Tool bar items
-
-	ide->toolbaritem.new = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_NEW));
-	ide->toolbaritem.open = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_OPEN));
-	ide->toolbaritem.close = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE));
-
-	ide->toolbaritem.sep1  = GTK_TOOL_ITEM(gtk_separator_tool_item_new());
-
-	ide->toolbaritem.cut = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_CUT));
-	ide->toolbaritem.copy = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_COPY));
-	ide->toolbaritem.past = GTK_TOOL_ITEM(gtk_tool_button_new_from_stock(GTK_STOCK_PASTE));
-
-	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.new),-1);
-	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.open),-1);
-	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.close),-1);
-
-	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.sep1),-1);
-
-	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.cut),-1);
-	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.copy),-1);
-	gtk_toolbar_insert(ide->toolbar,GTK_TOOL_ITEM(ide->toolbaritem.past),-1);
-
-
 	gtk_box_pack_start(ide->widget_vbox,GTK_WIDGET(ide->mainlayout),1,1,1);
+
 	gtk_box_pack_end(ide->widget_vbox,GTK_WIDGET(ide->statusbar),0,0,0);
 
 	gtk_window_resize(ide->main_window,500,400);

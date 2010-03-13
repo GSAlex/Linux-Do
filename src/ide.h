@@ -35,7 +35,7 @@ typedef struct _LinuxDoIDE{
 	GtkBox  *	widget_vbox;
 	GtkWidget * menubar;
 	GtkStatusbar * statusbar;
-	GtkToolbar * toolbar;
+	GtkWidget * toolbar;
 	GtkPaned *  mainlayout;
 	struct{
 
@@ -54,23 +54,6 @@ typedef struct _LinuxDoIDE{
 		GtkPaned* midlayout;
 
 	}main_layout;
-	struct{
-		//first group
-		GtkToolItem * new;
-		GtkToolItem * open;
-		GtkToolItem * close;
-
-		GtkToolItem * sep1;
-		//second group
-		GtkToolItem * cut;
-		GtkToolItem * copy;
-		GtkToolItem * past;
-
-
-		//other
-		GtkToolButton * buttons[20];
-
-	}toolbaritem;
 	IDE_AUTOTOOLS * project_mgr;
 }LinuxDoIDE;
 
