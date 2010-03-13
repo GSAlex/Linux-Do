@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.01\n"
 "Report-Msgid-Bugs-To: microcaicai@gmail.com \n"
-"POT-Creation-Date: 2010-03-08 03:11+0800\n"
+"POT-Creation-Date: 2010-03-13 17:34+0800\n"
 "PO-Revision-Date: 2010-03-08 03:11+0800\n"
 "Last-Translator: microcai <microcai@fedoraproject.org>\n"
 "Language-Team: zh_CN <microcai@fedoraproject.org>\n"
@@ -15,108 +15,122 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: UTF-8\n"
 
-#: src/main.c:139
+#: src/main.c:136
+#, c-format
+msgid "can not create file configure.ac : %s"
+msgstr "无法创建文件 configure.ac : %s"
+
+#: src/main.c:299
 msgid "do git init and build initial dir struct for use with autotools"
 msgstr "调用git init 初始化仓库,并且建立初始的autotools目录结构"
 
-#: src/main.c:140
+#: src/main.c:300
+msgid "Valid when emit --init-project, specify the name of the project"
+msgstr "当提供 --init-project时候有效，提供项目名称"
+
+#: src/main.c:301
 msgid "set project root dir"
 msgstr "设置项目目录"
 
-#: src/main.c:140
+#: src/main.c:301
 msgid "dir"
 msgstr "目录"
 
-#: src/main.c:152
+#: src/main.c:331
+#, c-format
+msgid "can not change to dir %s"
+msgstr "无法切换到目录 %s"
+
+#: src/main.c:339
 #, c-format
 msgid "Linux-DO start up\n"
 msgstr "Linux-DO 启动\n"
 
-#: src/main.c:233
+#: src/main.c:420
 msgid "_File"
 msgstr "文件(_F)"
 
-#: src/main.c:234
+#: src/main.c:421
 msgid "_New"
 msgstr "新建(_N)"
 
-#: src/main.c:234
+#: src/main.c:421
 msgid "Create New File"
 msgstr "创建新文件"
 
-#: src/main.c:235
+#: src/main.c:422
 msgid "_Open"
 msgstr "打开(_O)"
 
-#: src/main.c:235
+#: src/main.c:422
 msgid "Open A File"
 msgstr "打开一个文件"
 
-#: src/main.c:236
+#: src/main.c:423
 msgid "_Close"
 msgstr "关闭(_C)"
 
-#: src/main.c:236
+#: src/main.c:423
 msgid "Close File"
 msgstr "关闭文件"
 
-#: src/main.c:237
+#: src/main.c:424
 msgid "C_lose All"
 msgstr "全部关闭(_l)"
 
-#: src/main.c:237
+#: src/main.c:424
 msgid "Close All Files"
 msgstr "关闭所有打开的文件"
 
-#: src/main.c:238
+#: src/main.c:425
 msgid "_Save"
 msgstr "保存(_S)"
 
-#: src/main.c:238
+#: src/main.c:425
 msgid "Save File"
 msgstr "保存文件"
 
-#: src/main.c:239
+#: src/main.c:426
 msgid "Save _As"
 msgstr "另存为(_A)"
 
-#: src/main.c:239
+#: src/main.c:426
 msgid "Save File As ..."
 msgstr "另存文件为 ....."
 
-#: src/main.c:240
+#: src/main.c:427
 msgid "_Quit"
 msgstr "退出(_Q)"
 
-#: src/main.c:240
+#: src/main.c:427
 msgid "QUIT"
 msgstr "退出本程序"
 
-#: src/main.c:241
+#: src/main.c:428
 msgid "_Help"
 msgstr "帮助(_H)"
 
-#: src/main.c:242
+#: src/main.c:429
 msgid "_About"
 msgstr "关于(_A)"
 
-#: src/main.c:293
+#: src/main.c:480
 msgid "Ready"
 msgstr "就绪"
 
-#: src/main.c:370
+#: src/main.c:557
 msgid "Explorer"
 msgstr "浏览"
 
-#: src/main.c:380
+#: src/main.c:567
 msgid "Untitled"
 msgstr "未命名"
 
-#: src/main.c:382
+#: src/main.c:569
 msgid "Linux-Do"
 msgstr "LinuxDO集成开发环境"
 
-#: src/main.c:401
+#: src/main.c:588
 #, c-format
 msgid "Linux-Do - %s"
 msgstr "LinuxDO集成开发环境 - %s"

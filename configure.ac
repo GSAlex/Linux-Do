@@ -54,9 +54,8 @@ PKG_CHECK_MODULES(LIBVTE, [
     vte >= 0.22
 ])
 
-
 PKG_CHECK_MODULES(ALL_NEEDED, [
-	vte gtksourceview-2.0 gtk+-2.0 
+	gtksourceview-2.0 gtk+-2.0 vte 
 ])
 
 

@@ -1,7 +1,7 @@
 
 INCLUDES = @ALL_NEEDED_CFLAGS@ 
 
-LIBS = @ALL_NEEDED_LIBS@ 
+LIBS = @ALL_NEEDED_LIBS@
 
 EXTRA_DIST = marshller.c marshller.h marshller.define
 

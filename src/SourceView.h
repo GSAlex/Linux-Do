@@ -31,7 +31,6 @@
 #include <gtksourceview/gtksourceview.h>
 #include <gtksourceview/gtksourcelanguagemanager.h>
 
-
 typedef struct _IDE_EDITOR{
 	GtkSourceView	parent;
 	GtkSourceBuffer * buffer;
