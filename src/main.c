@@ -123,17 +123,51 @@ static void connect_signals(LinuxDoIDE * ide)
 	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(openfile), ide);
 }
 
+static int create_std_autotools_project()
+{
+
+	//建立 configure
+	FILE * ac = fopen("configure.ac","w");
+
+	if(!ac)
+	{
+		g_error(_("can not create file configure.ac : permission denied"));
+	}
+
+	//建立标准目录结构
+
+
+	mkdir("m4",0666);
+	mkdir("po",0666);
+	mkdir("src",0666);
+	mkdir("doc",0666);
+	mkdir("icons",0666);
+
+
+
+
+
+	//调用 git init
+	system("git init");
+	system("git add .");
+
+	system("git commit -a -m 'Init project with LinuxDo'");
+
+
+}
+
 int main(int argc, char * argv[])
 {
 	LinuxDoIDE ide;
 
-	gboolean init_project;
+	gboolean init_project=FALSE;
 	GError * err=NULL;
 	gchar * basedir=NULL;
 
 	setlocale(LC_ALL, "");
 	gtk_set_locale();
 	textdomain(GETTEXT_PACKAGE);
+	g_type_init();
 
 	GOptionEntry args[] =
 	{
@@ -144,22 +178,39 @@ int main(int argc, char * argv[])
 
 	GFile * file = NULL;
 
-	ide.project_mgr = ide_autotools_new();
-
-	if(G_UNLIKELY(init_project))
-	{
-		//建立标准目录结构
-		return ;
-	}
-
 	g_set_prgname(PACKAGE_NAME);
 
 	if(G_UNLIKELY(!gtk_init_with_args(&argc, &argv,PACKAGE_STRING,args,NULL,&err)))
 	{
-		g_error(err->message);
+		GOptionContext * context;
+		context = g_option_context_new("");
+		g_option_context_add_main_entries(context,args,PACKAGE_NAME);
+		g_option_context_parse(context,&argc,&argv,NULL);
+		g_option_context_free(context);
+		//没有打开 DISPLAY,但是，其实在控制台下是可以允许 --init-project 的
+		if(G_LIKELY(!init_project))
+		{
+			g_error("%s",err->message);
+		}
 	}
 
 	g_set_application_name(_(PACKAGE_NAME));
+
+	ide.project_mgr = ide_autotools_new();
+
+	if(G_UNLIKELY(init_project))
+	{
+		if (basedir)
+		{
+			if (g_chdir(basedir))
+			{
+				g_error(_("can not change to dir %s"),basedir);
+			}
+			g_free(basedir);
+		}
+
+		return create_std_autotools_project();
+	}
 
 	printf(_("Linux-DO start up\n"));
 
