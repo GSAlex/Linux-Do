@@ -464,7 +464,7 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_window_add_accel_group(ide->main_window,gtk_ui_manager_get_accel_group(uimgr));
 
-	GdkPixbuf * pixbuf = gdk_pixbuf_new_from_inline(sizeof(LinuxDo_icon_pixbuf),LinuxDo_icon_pixbuf,FALSE,NULL) ;
+	GdkPixbuf * pixbuf = gdk_pixbuf_new_from_inline(sizeof(LinuxDo_icon_pixbuf)-1,LinuxDo_icon_pixbuf,FALSE,NULL) ;
 
 	GtkIconFactory * app = gtk_icon_factory_new();
 
@@ -510,7 +510,7 @@ static void build_ui(LinuxDoIDE * ide)
 	GtkWidget * bt1 = gtk_button_new_with_label("我菜鸟！！！");
 
 	GtkWidget * bt3 = gtk_button_new_with_label("right area");
-	GtkWidget * xterm = gtk_scrolled_window_new(NULL,NULL); //gtk_xterm_new();   // button_new_with_label("support area");
+	GtkWidget * xterm = gtk_scrolled_window_new(NULL,NULL);
 
 	gtk_container_add(GTK_CONTAINER(xterm),gtk_xterm_new());
 

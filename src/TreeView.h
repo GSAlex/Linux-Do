@@ -84,9 +84,9 @@ struct _TREEVIEW_DIRClass
 
 };
 
-GType gtk_tree_view_dir_get_type() G_GNUC_CONST;
+GType gtk_tree_view_dir_get_type() G_GNUC_CONST G_GNUC_INTERNAL;
 
-TREEVIEW_DIR * gtk_tree_view_dir_new();
-gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir);
+TREEVIEW_DIR * gtk_tree_view_dir_new() G_GNUC_MALLOC;
+gboolean gtk_tree_view_dir_set_dir(TREEVIEW_DIR * obj,const gchar * dir) G_GNUC_INTERNAL ;
 
 #endif /* TREEVIEW_H_ */

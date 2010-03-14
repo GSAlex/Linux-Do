@@ -28,6 +28,6 @@
 #ifndef ABOUT_H_
 #define ABOUT_H_
 
-void LinuxDoIDE_show_about(GtkWidget * parent);
+void LinuxDoIDE_show_about(GtkWidget * parent) G_GNUC_INTERNAL ;
 
 #endif /* ABOUT_H_ */

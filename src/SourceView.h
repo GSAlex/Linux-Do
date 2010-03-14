@@ -52,9 +52,9 @@ typedef struct _IDE_EDITORClass{
 #define IDE_IS_EDITOR_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), IDE_TYPE_EDITOR))
 #define IDE_EDITOR_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), IDE_TYPE_EDITOR, IDE_EDITORClass))
 
-GType ide_editor_get_type() G_GNUC_CONST;
-IDE_EDITOR* ide_editor_new();
+GType ide_editor_get_type() G_GNUC_CONST G_GNUC_INTERNAL;
+IDE_EDITOR* ide_editor_new() G_GNUC_INTERNAL G_GNUC_MALLOC;
 
-gboolean ide_editor_openfile(IDE_EDITOR * ,const gchar * url);
-gboolean ide_editor_savefile(IDE_EDITOR * editor, const gchar * url);
+gboolean ide_editor_openfile(IDE_EDITOR * ,const gchar * url) G_GNUC_INTERNAL;
+gboolean ide_editor_savefile(IDE_EDITOR * editor, const gchar * url) G_GNUC_INTERNAL;
 #endif /* SOURCEVIEW_H_ */

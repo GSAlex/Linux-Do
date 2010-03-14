@@ -51,7 +51,7 @@ typedef struct _GtkXtermClass
 #define GTK_XTERM_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_XTERM, GtkXtermClass))
 
 
-GType gtk_xterm_get_type() G_GNUC_CONST ;
-GtkWidget * gtk_xterm_new();
+GType gtk_xterm_get_type() G_GNUC_CONST G_GNUC_INTERNAL;
+GtkWidget * gtk_xterm_new()G_GNUC_MALLOC G_GNUC_INTERNAL;
 
 #endif /* XTERM_H_ */

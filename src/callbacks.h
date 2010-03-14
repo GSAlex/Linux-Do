@@ -32,7 +32,7 @@
 #include "SourceView.h"
 #include "TreeView.h"
 
-void LinuxDoIDE_show_about_menu_callback(GtkWidget * item , gpointer callback_data);
-gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, gpointer user_data);
-void LinuxDoIDE_save_menu_callback(GtkWidget * item ,gpointer callback_data);
+void LinuxDoIDE_show_about_menu_callback(GtkWidget * item , gpointer callback_data) G_GNUC_INTERNAL;
+gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, gpointer user_data) G_GNUC_INTERNAL;
+void LinuxDoIDE_save_menu_callback(GtkWidget * item ,gpointer callback_data) G_GNUC_INTERNAL;
 #endif /* CALLBACKS_H_ */

@@ -62,8 +62,8 @@ typedef struct _IDE_AUTOTOOLSClass{
 #define IDE_IS_AUTOTOOLS_CLASS(klass)	(G_TYPE_CHECK_CLASS_TYPE ((klass), IDE_TYPE_AUTOTOOLS))
 #define IDE_AUTOTOOLS_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), IDE_TYPE_AUTOTOOLS, IDE_AUTOTOOLSClass))
 
-GType ide_autotools_get_type ();
-IDE_AUTOTOOLS * ide_autotools_new();
-gboolean ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path );
+GType ide_autotools_get_type () G_GNUC_CONST G_GNUC_INTERNAL;
+IDE_AUTOTOOLS * ide_autotools_new() G_GNUC_MALLOC G_GNUC_INTERNAL ;
+gboolean ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path ) G_GNUC_INTERNAL;
 
 #endif /* AUTOTOOLS_H_ */
