@@ -32,6 +32,7 @@
 #include "TreeView.h"
 #include "autotools.h"
 #include "SourceView.h"
+#include "Editors.h"
 #include "ide.h"
 #include "callbacks.h"
 #include "misc.h"
@@ -530,7 +531,7 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_paned_add2(ide->main_layout.right,bt3);//,FALSE,FALSE);
 
-	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_notebook_new());
+	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_editors_new());
 
 	gtk_notebook_set_scrollable(ide->main_layout.mid_layout.code,TRUE);
 

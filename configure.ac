@@ -54,8 +54,13 @@ PKG_CHECK_MODULES(LIBVTE, [
     vte >= 0.22
 ])
 
+PKG_CHECK_MODULES(DBUS_GLIB, [
+     dbus-glib-1
+])
+
+
 PKG_CHECK_MODULES(ALL_NEEDED, [
-	gtksourceview-2.0 gtk+-2.0 vte 
+	gtksourceview-2.0 gtk+-2.0 vte dbus-glib-1
 ])
 
 

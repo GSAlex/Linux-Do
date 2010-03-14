@@ -49,9 +49,12 @@
 
 #endif
 
+#include <glib.h>
 #include <gtk/gtk.h>
 #include <gtksourceview/gtksourceview.h>
 #include <gtksourceview/gtksourcelanguagemanager.h>
+#include <dbus/dbus.h>
+#include <dbus/dbus-glib.h>
 #include "marshller.h"
 
 #endif /* PRTSC_H_ */
