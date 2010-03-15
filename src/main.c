@@ -504,7 +504,9 @@ static void build_ui(LinuxDoIDE * ide)
 	GtkWidget * scroll = gtk_scrolled_window_new(NULL,NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
 
-	gtk_container_add(GTK_CONTAINER(scroll), GTK_WIDGET(ide_editor_new()));
+	GtkWidget * untitled =  GTK_WIDGET(ide_editor_new());
+
+	gtk_container_add(GTK_CONTAINER(scroll),untitled);
 
  	gtk_notebook_append_page(GTK_NOTEBOOK(ide->main_layout.mid_layout.code),GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(_("Untitled")));
 
@@ -523,6 +525,11 @@ static void build_ui(LinuxDoIDE * ide)
 
 	//然后在慢慢显示内部控件吼吼
 	gtk_widget_show_all(GTK_WIDGET(ide->main_window));
+
+	gtk_widget_grab_focus(untitled);
+
+	gdk_flush();
+
 }
 
 void ide_window_set_title(IDE_AUTOTOOLS * obj, GtkWindow * window )
