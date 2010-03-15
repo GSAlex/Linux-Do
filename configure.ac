@@ -28,6 +28,7 @@ AM_INIT_AUTOMAKE([1.10])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
+AC_PROG_RANLIB
 AC_PROG_CC
 AC_HEADER_STDC
 
@@ -74,8 +75,8 @@ AC_DEFINE(APPICONDIR,["/usr/share/icons/hicolor/scalable/apps/"],[the dir hold i
 # OUTPUT files
 AC_CONFIG_FILES(po/Makefile.in
 src/Makefile
+src/autocomplete/Makefile
 icons/Makefile
-m4/Makefile
 doc/Makefile
 Makefile
 )
