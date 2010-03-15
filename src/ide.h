@@ -29,6 +29,7 @@
 
 #include "TreeView.h"
 #include "autotools.h"
+#include "Editors.h"
 
 typedef struct _LinuxDoIDE{
 	GtkWindow * main_window;
@@ -48,7 +49,7 @@ typedef struct _LinuxDoIDE{
 		GtkNotebook  * left;
 		GtkPaned  * right;
 		struct{
-			GtkNotebook * code;
+			GTK_EDITORS * code;
 			GtkWidget * support;
 		}mid_layout;
 		GtkPaned* midlayout;

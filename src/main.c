@@ -45,7 +45,7 @@ static void ide_window_set_title(IDE_AUTOTOOLS * , GtkWindow * window );
 static void close_tab(gpointer callback_data, guint callback_action)
 {
 	LinuxDoIDE * ide = callback_data;
-	GtkNotebook * note = ide->main_layout.mid_layout.code ;
+	GtkNotebook * note = GTK_NOTEBOOK(ide->main_layout.mid_layout.code);
 
 	IDE_EDITOR * editor;
 
@@ -53,70 +53,11 @@ static void close_tab(gpointer callback_data, guint callback_action)
 		return;
 	guint cur = gtk_notebook_get_current_page(note);
 
-	editor = gtk_notebook_get_editor(note,cur);
+	editor = gtk_notebook_get_editor(GTK_EDITORS(note),cur);
 
 	ide_editor_savefile(editor,editor->file->str);
 
 	gtk_notebook_remove_page(note,cur);
-}
-
-static void savefile(GtkButton * bt , IDE_EDITOR * editor)
-{
-	ide_editor_savefile(editor,editor->file->str);
-	gtk_notebook_remove_page(editor->note,gtk_notebook_page_num(editor->note,gtk_widget_get_parent(GTK_WIDGET(editor))));
-}
-
-static IDE_EDITOR * ide_notebook_new_page(GtkNotebook* note, const gchar * label)
-{
-	IDE_EDITOR * source_editor;
-
-	source_editor = ide_editor_new();
-
-	source_editor->note = note;
-
-	GtkWidget * scroll = gtk_scrolled_window_new(NULL,NULL);
-
-	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
-
-	gtk_container_add(GTK_CONTAINER(scroll), GTK_WIDGET(source_editor));
-
-	GtkWidget * title = gtk_hbox_new(0,0);
-
-	GtkWidget * bt = GTK_WIDGET(gtk_tool_button_new_from_stock(GTK_STOCK_CLOSE));
-
-	gtk_widget_set_size_request(bt,18,18);
-
-	gtk_box_pack_start(GTK_BOX(title),gtk_label_new_with_mnemonic(label),TRUE,0,0);
-
-	gtk_box_pack_start(GTK_BOX(title),bt,TRUE,0,0);
-
-	gtk_widget_show_all(title);
-
-	gtk_notebook_append_page(note,GTK_WIDGET(scroll),title);
-
-	gtk_widget_show_all(GTK_WIDGET(source_editor));
-
-	gtk_widget_show_all(GTK_WIDGET(gtk_notebook_get_nth_page(note,gtk_notebook_get_n_pages(note)-1)));
-
-	gtk_notebook_set_current_page(note,gtk_notebook_get_n_pages(note)-1);
-
-	g_signal_connect(G_OBJECT(bt),"clicked",G_CALLBACK(savefile),source_editor);
-
-	return source_editor;
-}
-
-static void openfile(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
-{
-	LinuxDoIDE * ide = userdata;
-	IDE_EDITOR * source_editor;
-
-	g_return_if_fail(g_file_test(item,G_FILE_TEST_IS_REGULAR));
-
-	GtkNotebook* note = ide->main_layout.mid_layout.code;
-
-	source_editor = ide_notebook_new_page(note,item);
-
-	ide_editor_openfile(source_editor,item);
 }
 
 static void connect_signals(LinuxDoIDE * ide)
@@ -124,7 +65,7 @@ static void connect_signals(LinuxDoIDE * ide)
 	// resize
 	g_signal_connect(G_OBJECT(ide->main_window),"configure-event",G_CALLBACK(main_window_on_configure),ide);
 	g_signal_connect(G_OBJECT (ide->main_window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(openfile), ide);
+	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(ide_editor_openfile), ide);
 }
 
 static int create_std_autotools_project(const gchar * package_name,gboolean with_nls)
@@ -392,7 +333,7 @@ int main(int argc, char * argv[])
 
 		g_object_unref(file);
 
-		openfile(NULL,path,&ide);
+		gtk_editors_open(ide.main_layout.mid_layout.code,path,NULL);
 
 		g_free(path);
 	}
@@ -531,9 +472,9 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_paned_add2(ide->main_layout.right,bt3);//,FALSE,FALSE);
 
-	ide->main_layout.mid_layout.code = GTK_NOTEBOOK(gtk_editors_new());
+	ide->main_layout.mid_layout.code = gtk_editors_new();
 
-	gtk_notebook_set_scrollable(ide->main_layout.mid_layout.code,TRUE);
+	gtk_notebook_set_scrollable(GTK_NOTEBOOK(ide->main_layout.mid_layout.code),TRUE);
 
 	gtk_paned_add1(ide->main_layout.midlayout,GTK_WIDGET(ide->main_layout.mid_layout.code));
 	gtk_paned_add2(ide->main_layout.midlayout,xterm);
@@ -559,7 +500,7 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_container_add(GTK_CONTAINER(scroll), GTK_WIDGET(ide_editor_new()));
 
-	gtk_notebook_append_page(ide->main_layout.mid_layout.code,GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(_("Untitled")));
+	gtk_notebook_append_page(GTK_NOTEBOOK(ide->main_layout.mid_layout.code),GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(_("Untitled")));
 
 	gtk_window_set_title(ide->main_window,_("Linux-Do"));
 

@@ -20,22 +20,6 @@
 #include "Linuxdo.h"
 #include "misc.h"
 
-IDE_EDITOR * gtk_notebook_get_editor(GtkNotebook * note, guint nth)
-{
-    GList * list;
-    IDE_EDITOR * editor;
-
-    GtkWidget * curpage = gtk_notebook_get_nth_page(note,nth);
-
-    list = gtk_container_get_children(GTK_CONTAINER(curpage));
-
-    editor = IDE_EDITOR(g_list_first(list)->data);
-
-    g_list_free(list);
-
-    return editor;
-}
-
 void gtk_widget_disable(GtkWidget * widget)
 {
     //遍历子窗口。

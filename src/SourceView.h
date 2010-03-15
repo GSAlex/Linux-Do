@@ -31,11 +31,14 @@
 #include <gtksourceview/gtksourceview.h>
 #include <gtksourceview/gtksourcelanguagemanager.h>
 
+
+typedef struct _GTK_EDITORS GTK_EDITORS;
+
 typedef struct _IDE_EDITOR{
 	GtkSourceView	parent;
 	GtkSourceBuffer * buffer;
 	GString			* file; // non-NULL if associate with a file
-	GtkNotebook		* note;
+	GTK_EDITORS		* note;
 }IDE_EDITOR;
 
 typedef struct _IDE_EDITORClass{

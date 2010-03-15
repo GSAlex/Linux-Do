@@ -10,10 +10,11 @@
 
 #include <gtk/gtk.h>
 
-typedef struct _GTK_EDITORS{
-	GtkNotebook	parent;
+#include "SourceView.h"
 
-}GTK_EDITORS;
+struct _GTK_EDITORS{
+	GtkNotebook	parent;
+};
 
 typedef struct _GTK_EDITORSClass{
 	GtkNotebookClass	parent_class;
@@ -31,6 +32,9 @@ typedef struct _GTK_EDITORSClass{
 
 GType gtk_editors_get_type() G_GNUC_CONST G_GNUC_INTERNAL;
 GTK_EDITORS* gtk_editors_new() G_GNUC_INTERNAL G_GNUC_MALLOC;
+gboolean gtk_editors_open(GTK_EDITORS * , gchar * file , GError **) G_GNUC_INTERNAL ;
 
+IDE_EDITOR * gtk_editors_create_page(GTK_EDITORS* note, const gchar * label) G_GNUC_INTERNAL ;
+IDE_EDITOR * gtk_notebook_get_editor(GTK_EDITORS * note, guint nth) G_GNUC_INTERNAL ;
 
 #endif /* EDITORS_H_ */

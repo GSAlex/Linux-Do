@@ -22,7 +22,6 @@
 #define LinuxDO_COMMON_H
 #include "SourceView.h"
 
-IDE_EDITOR * gtk_notebook_get_editor(GtkNotebook * note, guint nth) G_GNUC_INTERNAL ;
 void gtk_widget_disable(GtkWidget * widget) G_GNUC_INTERNAL;
 void gtk_widget_enable(GtkWidget * widget) G_GNUC_INTERNAL ;
 
