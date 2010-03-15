@@ -38,4 +38,9 @@ void LinuxDoIDE_save_menu_callback(GtkWidget * item ,gpointer callback_data) G_G
 
 void LinuxDoIDE_openfile_callback(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata) G_GNUC_INTERNAL;
 void savefile(GtkButton * bt , IDE_EDITOR * editor) G_GNUC_INTERNAL;
+
+// cal backs for menu/toolbar
+void LinuxDoIDE_menu_build_cb(GtkWidget * item ,gpointer callback_data) G_GNUC_INTERNAL;
+
+
 #endif /* CALLBACKS_H_ */

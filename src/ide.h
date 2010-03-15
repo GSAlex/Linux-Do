@@ -50,7 +50,7 @@ typedef struct _LinuxDoIDE{
 		GtkPaned  * right;
 		struct{
 			GTK_EDITORS * code;
-			GtkWidget * support;
+			GtkWidget * console;
 		}mid_layout;
 		GtkPaned* midlayout;
 

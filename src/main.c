@@ -362,6 +362,9 @@ static void build_ui(LinuxDoIDE * ide)
 					"<menuitem action = \"FileSaveAs\" />"
 					"<menuitem action = \"FileQuit\" />"
 			    "</menu>"
+			    "<menu name=\"ProjectMenu\" action=\"ProjectMenu\">"
+			    "	<menuitem action = \"ProjectBuild\" />"
+			    "</menu>"
 				"<menu name=\"HelpMenu\" action = \"HelpMenu\" >"
 					"<menuitem action = \"HelpAbout\" />"
 				"</menu>"
@@ -371,18 +374,15 @@ static void build_ui(LinuxDoIDE * ide)
 				  "<toolitem action=\"FileOpen\"/>"
 				  "<toolitem action=\"FileClose\"/>"
 				  "<separator/>"
+				  "<toolitem action=\"ProjectBuild\"/>"
+				  "<separator/>"
 				  "<toolitem action=\"FileQuit\"/>"
 			  "</toolbar>"
-			  ""
-			  ""
-			  ""
-			  ""
-			  ""
 			"</ui>"
 	};
 
 	const GtkActionEntry actions[] = {
-			{"FileMenu" , NULL, _("_File") },
+			{"FileMenu" , GTK_STOCK_FILE, _("_File") },
 			{ "FileNew", GTK_STOCK_NEW, _("_New"), "<control>N", _("Create New File") },//, G_CALLBACK(itemPressed)},
 			{ "FileOpen", GTK_STOCK_OPEN,_("_Open"),"<control>O", _("Open A File") },//, G_CALLBACK(itemPressed)},
 			{ "FileClose", GTK_STOCK_CLOSE, _("_Close"),"<control>W", _("Close File") } , // G_CALLBACK(gtk_main_quit)},
@@ -390,6 +390,10 @@ static void build_ui(LinuxDoIDE * ide)
 			{ "FileSave", GTK_STOCK_SAVE, _("_Save"), "<control>S", _("Save File") ,  G_CALLBACK(LinuxDoIDE_save_menu_callback)},
 			{ "FileSaveAs", GTK_STOCK_SAVE_AS, _("Save _As"), "<control><shift>S", _("Save File As ...") }, // G_CALLBACK(itemPressed)},
 			{ "FileQuit", GTK_STOCK_QUIT, _("_Quit"), "<control>Q", _("QUIT") ,  G_CALLBACK(gtk_main_quit)},
+
+			{ "ProjectMenu", NULL, _("_Project")},
+			{ "ProjectBuild", NULL , _("_Build"), "F2", _("Build project") ,  G_CALLBACK(LinuxDoIDE_menu_build_cb)},
+
 			{ "HelpMenu", GTK_STOCK_HELP, _("_Help") },
 			{ "HelpAbout", GTK_STOCK_ABOUT, _("_About") , "<control>H" , _("_About") , G_CALLBACK(LinuxDoIDE_show_about_menu_callback) }
 		};
@@ -454,7 +458,9 @@ static void build_ui(LinuxDoIDE * ide)
 	GtkWidget * bt3 = gtk_button_new_with_label("right area");
 	GtkWidget * xterm = gtk_scrolled_window_new(NULL,NULL);
 
-	gtk_container_add(GTK_CONTAINER(xterm),gtk_xterm_new());
+	ide->main_layout.mid_layout.console = gtk_xterm_new();
+
+	gtk_container_add(GTK_CONTAINER(xterm),ide->main_layout.mid_layout.console);
 
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(xterm),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
 
@@ -500,7 +506,7 @@ static void build_ui(LinuxDoIDE * ide)
 
 	gtk_container_add(GTK_CONTAINER(scroll), GTK_WIDGET(ide_editor_new()));
 
-	gtk_notebook_append_page(GTK_NOTEBOOK(ide->main_layout.mid_layout.code),GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(_("Untitled")));
+ 	gtk_notebook_append_page(GTK_NOTEBOOK(ide->main_layout.mid_layout.code),GTK_WIDGET(scroll),gtk_label_new_with_mnemonic(_("Untitled")));
 
 	gtk_window_set_title(ide->main_window,_("Linux-Do"));
 

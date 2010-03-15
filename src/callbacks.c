@@ -31,6 +31,7 @@
 #include "SourceView.h"
 #include "About.h"
 #include "misc.h"
+#include "xterm.h"
 
 void LinuxDoIDE_show_about_menu_callback(GtkWidget * item , gpointer callback_data)
 {
@@ -84,3 +85,11 @@ void savefile(GtkButton * bt , IDE_EDITOR * editor)
 	gtk_notebook_remove_page(GTK_NOTEBOOK(editor->note),gtk_notebook_page_num(GTK_NOTEBOOK(editor->note),gtk_widget_get_parent(GTK_WIDGET(editor))));
 }
 
+void LinuxDoIDE_menu_build_cb(GtkWidget * item ,gpointer callback_data)
+{
+    LinuxDoIDE * ide = (LinuxDoIDE*) callback_data;
+
+    VteTerminal *vte = VTE_TERMINAL(ide->main_layout.mid_layout.console);
+
+    vte_terminal_feed_child(vte,"make\n",sizeof("make\n"));
+}
