@@ -65,7 +65,7 @@ static void connect_signals(LinuxDoIDE * ide)
 	// resize
 	g_signal_connect(G_OBJECT(ide->main_window),"configure-event",G_CALLBACK(main_window_on_configure),ide);
 	g_signal_connect(G_OBJECT (ide->main_window), "destroy", G_CALLBACK(gtk_main_quit), NULL);
-	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(ide_editor_openfile), ide);
+	g_signal_connect(G_OBJECT (ide->main_layout.left_layout.tree), "openfile", G_CALLBACK(LinuxDoIDE_openfile_callback), ide);
 }
 
 static int create_std_autotools_project(const gchar * package_name,gboolean with_nls)
