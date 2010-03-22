@@ -1,6 +1,4 @@
 
-SUBDIRS = autocomplete
-
 INCLUDES = @ALL_NEEDED_CFLAGS@ 
 
 LIBS = @ALL_NEEDED_LIBS@ -lautocompletion -L$(builddir)/autocomplete
@@ -9,10 +7,11 @@ EXTRA_DIST = marshller.c marshller.h marshller.define
 
 bin_PROGRAMS = linuxdo
 
+autocompletion_SRC = scaner.h scaner.c
+
 linuxdo_SOURCES = misc.h Linuxdo.h ide.h callbacks.h TreeView.h About.h SourceView.h autotools.h marshller.h xterm.h Editors.h
 linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c SourceView.c autotools.c marshller.c xterm.c Editors.c
-
-linuxdo_DEPENDENCIES = autocomplete/libautocomplete.a
+linuxdo_SOURCES += $(autocompletion_SRC)
 
 autocomplete/libautocomplete.a : autocomplete/*
 	cd autocomplete && $(MAKE)

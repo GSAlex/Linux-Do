@@ -31,8 +31,18 @@
 #include <glib.h>
 #include <glib-object.h>
 
+typedef enum _HEADER_TYPE{
+	SCAN_TYPE_SYSTEM_HEADER = 1,
+	SCAN_TYPE_USER_HEADER
+
+}AutoCompleteScanerHeaderType;
+
+
+
+
 typedef struct _AutoCompleteScaner{
 	GObject	parent;
+	GList*	project_headers;
 }AutoCompleteScaner;
 
 
@@ -47,6 +57,8 @@ typedef struct _AutoCompleteScanerClass{
 	/*<handler>*/
 
 	/*<munbers>*/
+
+	GList	*	system_headers;
 
 }AutoCompleteScanerClass;
 
