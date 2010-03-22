@@ -31,12 +31,12 @@
 #include <glib.h>
 #include <glib-object.h>
 
-typedef struct _IDE_AUTOTOOLS{
+typedef struct _AutoCompleteScaner{
 	GObject	parent;
 }AutoCompleteScaner;
 
 
-typedef struct _IDE_AUTOTOOLSClass{
+typedef struct _AutoCompleteScanerClass{
 	GObjectClass	parent_class;
 	void (*dispose)(GObject *object);
 	void (*finalize)(GObject *object);
