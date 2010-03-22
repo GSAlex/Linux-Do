@@ -65,5 +65,6 @@ typedef struct _IDE_AUTOTOOLSClass{
 GType ide_autotools_get_type () G_GNUC_CONST G_GNUC_INTERNAL;
 IDE_AUTOTOOLS * ide_autotools_new() G_GNUC_MALLOC G_GNUC_INTERNAL ;
 gboolean ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configure_ac_path ) G_GNUC_INTERNAL;
+int ide_autotools_create_tmpl(IDE_AUTOTOOLS* obj, const gchar * package_name,gboolean with_nls);
 
 #endif /* AUTOTOOLS_H_ */
