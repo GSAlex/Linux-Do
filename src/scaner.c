@@ -32,7 +32,8 @@
 typedef enum _SyntaxNodeType{
 	NODE_TYPE_SWITCH =1 , // #if 这样的语法结构
 	NODE_TYPE_INCLUDE , //包含的是一个另外被包含的文件的结构指针
-	NODE_TYPE_FUNCTION , //最普遍的，包含的是函数
+	NODE_TYPE_FUNCTION , //最普遍的，包含的是函数声明
+	NODE_TYPE_FUNCTION_BODY , //包含的是函数体
 	NODE_TYPE_MACRO , //也很普遍，包含的是 MACRO 宏定义
 	NODE_TYPE_STRUCT , //吼吼，包含的是，STRUCT 类型
 	NODE_TYPE_UNION  , //联合体
@@ -44,6 +45,8 @@ typedef enum _SyntaxNodeType{
 typedef struct _SyntaxNode{
 	SyntaxNodeType type; //类型
 	const gchar * syntax; //名称
+	GNode	*	  header; //包含它的头文件
+	guint		  line; //行号。
 
 
 

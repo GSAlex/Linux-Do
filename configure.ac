@@ -75,7 +75,6 @@ AC_DEFINE(APPICONDIR,["/usr/share/icons/hicolor/scalable/apps/"],[the dir hold i
 # OUTPUT files
 AC_CONFIG_FILES(po/Makefile.in
 src/Makefile
-src/autocomplete/Makefile
 icons/Makefile
 doc/Makefile
 Makefile
