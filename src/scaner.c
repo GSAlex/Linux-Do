@@ -29,11 +29,6 @@
 #include <glib.h>
 #include "scaner.h"
 
-typedef struct _HEADERS{
-	const gchar * file;
-	GNode	*	  syntax;
-}HeadersScaned;
-
 typedef enum _SyntaxNodeType{
 	NODE_TYPE_SWITCH =1 , // #if 这样的语法结构
 	NODE_TYPE_INCLUDE , //包含的是一个另外被包含的文件的结构指针
@@ -96,9 +91,9 @@ AutoCompleteScaner * auto_complete_scaner_new()
     return AUTO_COMPLETE_SCANER(g_object_new(G_TYPE_AUTOCOMPLETE,NULL));
 }
 
-static void find_same(HeadersScaned * h, gchar ** header)
+static void find_same(SyntaxNode * h, gchar ** header)
 {
-	if (!strcmp(h->file, *header))
+	if (!strcmp(h->syntax, *header))
 	{
 		*header = NULL;
 	}
@@ -108,19 +103,6 @@ static gboolean header_is_in_list(GList * headers, const gchar * header)
 {
 	g_list_foreach(headers,(GFunc)find_same,&header);
 	return header?FALSE:TRUE;
-}
-
-static GList * header_add_to_list(GList * headers,const gchar * header, HeadersScaned ** out)
-{
-	HeadersScaned * header_scaned = g_new(HeadersScaned,1);
-
-	header_scaned->file = g_strdup(header);
-
-	headers  = g_list_append(headers,header_scaned);
-
-	*out = header_scaned;
-
-	return headers;
 }
 
 void auto_complete_scaner_scanfile(AutoCompleteScaner * obj,const gchar * includedfile,AutoCompleteScanerHeaderType type)
