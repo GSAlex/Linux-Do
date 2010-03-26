@@ -20,7 +20,8 @@
 
 #ifndef LinuxDO_COMMON_H
 #define LinuxDO_COMMON_H
-#include "SourceView.h"
+
+#include "Linuxdo.h"
 
 void gtk_widget_disable(GtkWidget * widget) G_GNUC_INTERNAL;
 void gtk_widget_enable(GtkWidget * widget) G_GNUC_INTERNAL ;

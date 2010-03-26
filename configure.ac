@@ -61,7 +61,7 @@ PKG_CHECK_MODULES(DBUS_GLIB, [
 
 
 PKG_CHECK_MODULES(ALL_NEEDED, [
-	gtksourceview-2.0 gtk+-2.0 vte dbus-glib-1
+	gtksourceview-2.0 gtk+-2.0 vte dbus-glib-1 gconf-2.0
 ])
 
 
@@ -75,6 +75,7 @@ AC_DEFINE(APPICONDIR,["/usr/share/icons/hicolor/scalable/apps/"],[the dir hold i
 # OUTPUT files
 AC_CONFIG_FILES(po/Makefile.in
 src/Makefile
+src/gedit/Makefile
 icons/Makefile
 doc/Makefile
 Makefile

@@ -26,7 +26,6 @@
 #include <glib/gstdio.h>
 #include "TreeView.h"
 #include "autotools.h"
-#include "SourceView.h"
 #include "Editors.h"
 #include "ide.h"
 #include "callbacks.h"
@@ -42,15 +41,15 @@ static void close_tab(gpointer callback_data, guint callback_action)
 	LinuxDoIDE * ide = callback_data;
 	GtkNotebook * note = GTK_NOTEBOOK(ide->main_layout.mid_layout.code);
 
-	IDE_EDITOR * editor;
+	GeditView * editor;
 
 	if (gtk_notebook_get_n_pages(note) <= 1)
 		return;
 	guint cur = gtk_notebook_get_current_page(note);
 
-	editor = gtk_notebook_get_editor(GTK_EDITORS(note),cur);
+//	editor = gtk_notebook_get_editor(GTK_EDITORS(note),cur);
 
-	ide_editor_savefile(editor,editor->file->str);
+	//gedit_document_save(editor);
 
 	gtk_notebook_remove_page(note,cur);
 }
@@ -138,6 +137,8 @@ int main(int argc, char * argv[])
 	}
 
 	printf(_("Linux-DO start up\n"));
+
+	gedit_prefs_manager_init();
 
 	build_ui(&ide);
 
@@ -350,7 +351,7 @@ static void build_ui(LinuxDoIDE * ide)
 	GtkWidget * scroll = gtk_scrolled_window_new(NULL,NULL);
 	gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroll),GTK_POLICY_AUTOMATIC,GTK_POLICY_AUTOMATIC);
 
-	GtkWidget * untitled =  GTK_WIDGET(ide_editor_new());
+	GtkWidget * untitled =  GTK_WIDGET(gedit_view_new(gedit_document_new()));
 
 	gtk_container_add(GTK_CONTAINER(scroll),untitled);
 

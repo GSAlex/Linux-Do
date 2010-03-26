@@ -29,7 +29,6 @@
 #define CALLBACKS_H_
 
 #include "ide.h"
-#include "SourceView.h"
 #include "TreeView.h"
 
 void LinuxDoIDE_show_about_menu_callback(GtkWidget * item , gpointer callback_data) G_GNUC_INTERNAL;
@@ -37,7 +36,7 @@ gboolean main_window_on_configure(GtkWidget *widget,	GdkEventConfigure *event, g
 void LinuxDoIDE_save_menu_callback(GtkWidget * item ,gpointer callback_data) G_GNUC_INTERNAL;
 
 void LinuxDoIDE_openfile_callback(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata) G_GNUC_INTERNAL;
-void savefile(GtkButton * bt , IDE_EDITOR * editor) G_GNUC_INTERNAL;
+void savefile(GtkButton * bt , GeditView * editor) G_GNUC_INTERNAL;
 
 // cal backs for menu/toolbar
 void LinuxDoIDE_menu_build_cb(GtkWidget * item ,gpointer callback_data) G_GNUC_INTERNAL;

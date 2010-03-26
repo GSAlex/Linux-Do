@@ -27,7 +27,6 @@
 #include <errno.h>
 #include "Linuxdo.h"
 #include "Editors.h"
-#include "SourceView.h"
 #include "callbacks.h"
 
 static void gtk_editors_class_init(GTK_EDITORSClass * klass);
@@ -128,15 +127,15 @@ GTK_EDITORS* gtk_editors_new()
 
 gboolean gtk_editors_open(GTK_EDITORS * note, gchar * file , GError * * err)
 {
-	IDE_EDITOR * source_editor;
+	GeditView * source_editor;
 
 	if(g_file_test(file,G_FILE_TEST_IS_REGULAR))
 	{
 
 	source_editor = gtk_editors_create_page(note,file);
 
-	ide_editor_openfile(source_editor,file);
-	return TRUE;
+
+		return TRUE;
 	}
 	if(err)
 		*err = g_error_new(g_quark_from_string(PACKAGE_NAME),EINVAL,"not regular file");
@@ -149,16 +148,16 @@ gboolean gtk_editors_dbus_method_close(GTK_EDITORS * obj , gchar * file , GError
 	return FALSE;
 }
 
-IDE_EDITOR * gtk_notebook_get_editor(GTK_EDITORS * note, guint nth)
+GeditView * gtk_notebook_get_editor(GTK_EDITORS * note, guint nth)
 {
     GList * list;
-    IDE_EDITOR * editor;
+    GeditView * editor;
 
     GtkWidget * curpage = gtk_notebook_get_nth_page(GTK_NOTEBOOK(note),nth);
 
     list = gtk_container_get_children(GTK_CONTAINER(curpage));
 
-    editor = IDE_EDITOR(g_list_first(list)->data);
+    editor = GEDIT_VIEW(g_list_first(list)->data);
 
     g_list_free(list);
 
@@ -166,13 +165,12 @@ IDE_EDITOR * gtk_notebook_get_editor(GTK_EDITORS * note, guint nth)
 }
 
 
-IDE_EDITOR * gtk_editors_create_page(GTK_EDITORS* note, const gchar * label)
+GeditView * gtk_editors_create_page(GTK_EDITORS* note, const gchar * label)
 {
-	IDE_EDITOR * source_editor;
+	GeditView * source_editor;
 
-	source_editor = ide_editor_new();
 
-	source_editor->note = note;
+	source_editor = GEDIT_VIEW(gedit_view_new( gedit_document_new()));
 
 	GtkWidget * scroll = gtk_scrolled_window_new(NULL,NULL);
 

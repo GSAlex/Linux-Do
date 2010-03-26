@@ -28,7 +28,6 @@
 #include "Linuxdo.h"
 #include "callbacks.h"
 #include "Editors.h"
-#include "SourceView.h"
 #include "About.h"
 #include "misc.h"
 #include "xterm.h"
@@ -57,15 +56,15 @@ void LinuxDoIDE_save_menu_callback(GtkWidget * item ,gpointer callback_data)
     LinuxDoIDE * ide = (LinuxDoIDE*) callback_data;
     GTK_EDITORS * note = ide->main_layout.mid_layout.code ;
 
-    IDE_EDITOR * editor;
+    GeditView * editor;
 
     guint curpage = gtk_notebook_get_current_page(GTK_NOTEBOOK(note));
 
     editor = gtk_notebook_get_editor(note,curpage);
 
-    g_return_if_fail(editor->file);
 
-    ide_editor_savefile(editor,editor->file->str);
+
+
 }
 
 void LinuxDoIDE_openfile_callback(TREEVIEW_DIR* obj  ,gchar * item, gpointer userdata)
@@ -79,10 +78,9 @@ void LinuxDoIDE_openfile_callback(TREEVIEW_DIR* obj  ,gchar * item, gpointer use
 	gtk_editors_open(note,item,NULL);
 }
 
-void savefile(GtkButton * bt , IDE_EDITOR * editor)
+void savefile(GtkButton * bt , GeditView * editor)
 {
-	ide_editor_savefile(editor,editor->file->str);
-	gtk_notebook_remove_page(GTK_NOTEBOOK(editor->note),gtk_notebook_page_num(GTK_NOTEBOOK(editor->note),gtk_widget_get_parent(GTK_WIDGET(editor))));
+//	gtk_notebook_remove_page(GTK_NOTEBOOK(editor->note),gtk_notebook_page_num(GTK_NOTEBOOK(editor->note),gtk_widget_get_parent(GTK_WIDGET(editor))));
 }
 
 void LinuxDoIDE_menu_build_cb(GtkWidget * item ,gpointer callback_data)
