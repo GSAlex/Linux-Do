@@ -21,3 +21,13 @@ $(srcdir)/marshller.c : marshller.define $(srcdir)/marshller.h
 
 $(srcdir)/marshller.h: marshller.define
 	cd $(srcdir) && glib-genmarshal --header --prefix=g_marshal marshller.define > marshller.h
+
+test : linuxdo $(top_builddir)/usr/share/locale/ $(top_srcdir)/po/LinuxDo.pot
+	./linuxdo --locale=$(top_builddir)/usr/share/locale/
+
+$(top_srcdir)/po/LinuxDo.pot:
+	cd 	$(top_builddir)/po && $(MAKE) 
+
+$(top_builddir)/usr/share/locale/:
+	cd $(top_builddir)/po && $(MAKE) install DESTDIR=$(top_builddir)
+		

@@ -71,10 +71,13 @@ int main(int argc, char * argv[])
 	GError * err=NULL;
 	gchar * basedir=NULL;
 	gchar * package_name=NULL;
+	gchar * domain_dir=NULL;
 
 	setlocale(LC_ALL, "");
 	gtk_set_locale();
 	textdomain(GETTEXT_PACKAGE);
+
+
 #ifdef G_OS_WIN32
 	{
 		char realpath_str[1024];
@@ -88,6 +91,7 @@ int main(int argc, char * argv[])
 			{"init-project",'\0',0,G_OPTION_ARG_NONE,&init_project,_("do git init and build initial dir struct for use with autotools")},
 			{"package-name",'\0',0,G_OPTION_ARG_STRING,&package_name,_("Valid when emit --init-project, specify the name of the project"),"name"},
 			{"root",'\0',0,G_OPTION_ARG_STRING,&basedir,_("set project root dir"), N_("dir")},
+			{"locale",'\0',0,G_OPTION_ARG_STRING,&domain_dir,_("set domain dir root"),N_("dir")},
 			{0}
 	};
 
@@ -107,6 +111,12 @@ int main(int argc, char * argv[])
 		{
 			g_error("%s",err->message);
 		}
+	}
+
+	if(domain_dir)
+	{
+		bindtextdomain(GETTEXT_PACKAGE,domain_dir);
+		g_free(domain_dir);
 	}
 
 	g_set_application_name(_(PACKAGE_NAME));
