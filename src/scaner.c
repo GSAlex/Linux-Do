@@ -47,10 +47,19 @@ typedef struct _SyntaxNode{
 	const gchar * syntax; //名称
 	GNode	*	  header; //包含它的头文件
 	guint		  line; //行号。
-
-
-
+	GNode	*	  ret_type; //返回类型
 }SyntaxNode;
+
+/**
+ * 解释
+ *
+ * 使用树来存储语法。对于 NODE_TYPE_INCLUDE 类型，叶子就是这个头文件的树
+ * 对于 NODE_TYPE_SWITCH ， 会出现两个方向的分支就是2个子树，分别代表 #if 条件编译
+ * 成立和不成了的语法树。 NODE_TYPE_FUNCTION 是叶子。包含了符合名和行号，以及包含
+ * 这个函数的头文件。NODE_TYPE_FUNCTION_BODY 包含函数体指向。呵呵
+ * NODE_TYPE_MACRO 是一个宏
+ *
+ */
 
 
 static void auto_complete_scaner_class_init(AutoCompleteScanerClass * );
@@ -59,6 +68,7 @@ static void auto_complete_scaner_finalize(GObject *object);
 
 GType auto_complete_scaner_get_type ()
 {
+	//d
     static GType type;
     if ( g_once_init_enter(&type))
     {
@@ -132,4 +142,34 @@ void auto_complete_scaner_scanfile(AutoCompleteScaner * obj,const gchar * includ
 
 
 
+}
+
+#define SCANER_STATE_NONE	0
+#define SCANER_STATE_COMMENT	1
+#define SCANER_STATE_IN	0
+//#define SCANER_STATE_NONE	0
+//#define SCANER_STATE_NONE	0
+
+
+void auto_complete_scaner_scanheader(AutoCompleteScaner * obj,const gchar * includedfile)
+{
+	//开始扫描!
+	FILE * hdr = fopen(includedfile,"r");
+
+	//使用有限状态机实现
+	int state = SCANER_STATE_NONE;
+
+	char line[1024];
+
+	while(!feof(hdr))
+	{
+		fgets(line,sizeof(line),hdr);
+		//开始扫描这一行
+
+
+
+
+	}
+
+	fclose(hdr);
 }
