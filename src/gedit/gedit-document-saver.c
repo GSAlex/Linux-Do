@@ -194,7 +194,7 @@ gedit_document_saver_class_init (GeditDocumentSaverClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GeditDocumentSaverClass, saving),
 			      NULL, NULL,
-			      gedit_marshal_VOID__BOOLEAN_POINTER,
+			      g_marshal_VOID__BOOLEAN_POINTER,
 			      G_TYPE_NONE,
 			      2,
 			      G_TYPE_BOOLEAN,

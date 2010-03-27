@@ -62,8 +62,7 @@ void LinuxDoIDE_save_menu_callback(GtkWidget * item ,gpointer callback_data)
 
     editor = gtk_notebook_get_editor(note,curpage);
 
-
-
+    gtk_editors_save(editor);
 
 }
 
@@ -80,7 +79,13 @@ void LinuxDoIDE_openfile_callback(TREEVIEW_DIR* obj  ,gchar * item, gpointer use
 
 void savefile(GtkButton * bt , GeditView * editor)
 {
-//	gtk_notebook_remove_page(GTK_NOTEBOOK(editor->note),gtk_notebook_page_num(GTK_NOTEBOOK(editor->note),gtk_widget_get_parent(GTK_WIDGET(editor))));
+    gtk_editors_save(editor);
+
+    GtkWidget * scroll  = gtk_widget_get_parent(GTK_WIDGET(editor));
+
+    GtkWidget * note  = gtk_widget_get_parent(scroll);
+
+	gtk_notebook_remove_page(GTK_NOTEBOOK(note),gtk_notebook_page_num(GTK_NOTEBOOK(note),scroll));
 }
 
 void LinuxDoIDE_menu_build_cb(GtkWidget * item ,gpointer callback_data)

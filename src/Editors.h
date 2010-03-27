@@ -53,6 +53,7 @@ typedef struct _GTK_EDITORSClass{
 GType gtk_editors_get_type() G_GNUC_CONST G_GNUC_INTERNAL;
 GTK_EDITORS* gtk_editors_new() G_GNUC_INTERNAL G_GNUC_MALLOC;
 gboolean gtk_editors_open(GTK_EDITORS * , gchar * file , GError **) G_GNUC_INTERNAL ;
+gboolean gtk_editors_save(GeditView * source_editor) G_GNUC_INTERNAL ;
 
 GeditView * gtk_editors_create_page(GTK_EDITORS* note, const gchar * label) G_GNUC_INTERNAL ;
 GeditView * gtk_notebook_get_editor(GTK_EDITORS * note, guint nth) G_GNUC_INTERNAL ;

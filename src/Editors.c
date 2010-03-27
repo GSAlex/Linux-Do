@@ -125,21 +125,44 @@ GTK_EDITORS* gtk_editors_new()
 	return GTK_EDITORS(g_object_new (GTK_TYPE_EDITORS, NULL));
 }
 
-gboolean gtk_editors_open(GTK_EDITORS * note, gchar * file , GError * * err)
+gboolean gtk_editors_open(GTK_EDITORS * note, gchar * file, GError * * err)
 {
+	GeditDocument * buffer;
 	GeditView * source_editor;
 
-	if(g_file_test(file,G_FILE_TEST_IS_REGULAR))
+	if (g_file_test(file, G_FILE_TEST_IS_REGULAR))
 	{
+		source_editor = gtk_editors_create_page(note, file);
 
-	source_editor = gtk_editors_create_page(note,file);
+		g_object_get(source_editor,"buffer",&buffer,NULL);
 
+		gchar * pwd = g_get_current_dir();
+
+		gchar * uri = g_strdup_printf("file://%s/%s",pwd,file);
+
+		g_free(pwd);
+
+		gedit_document_load(buffer,uri,NULL,0,0);
+
+		g_free(uri);
 
 		return TRUE;
 	}
-	if(err)
-		*err = g_error_new(g_quark_from_string(PACKAGE_NAME),EINVAL,"not regular file");
+	if (err)
+		*err = g_error_new(g_quark_from_string(PACKAGE_NAME), EINVAL,
+				"not regular file");
 	return FALSE;
+}
+
+gboolean gtk_editors_save(GeditView * source_editor)
+{
+	GeditDocument * buffer;
+
+	g_object_get(source_editor,"buffer",&buffer,NULL);
+
+	gedit_document_save(buffer,GEDIT_DOCUMENT_SAVE_PRESERVE_BACKUP);
+
+	return TRUE;
 }
 
 gboolean gtk_editors_dbus_method_close(GTK_EDITORS * obj , gchar * file , GError ** err)

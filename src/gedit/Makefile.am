@@ -112,7 +112,7 @@ libgedit_a_SOURCES = 			\
 	gedit-view.c 			\
 	gedit-window.c			\
 	gedittextregion.c		\
-	gedit-marshal.c gedit-enum-types.c gedit-enum-types.h \
+	gedit-enum-types.c gedit-enum-types.h \
 	$(NOINST_H_FILES)		\
 	$(INST_H_FILES) 
 	

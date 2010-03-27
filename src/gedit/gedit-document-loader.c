@@ -173,7 +173,7 @@ gedit_document_loader_class_init (GeditDocumentLoaderClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      G_STRUCT_OFFSET (GeditDocumentLoaderClass, loading),
 			      NULL, NULL,
-			      gedit_marshal_VOID__BOOLEAN_POINTER,
+			      g_marshal_VOID__BOOLEAN_POINTER,
 			      G_TYPE_NONE,
 			      2,
 			      G_TYPE_BOOLEAN,

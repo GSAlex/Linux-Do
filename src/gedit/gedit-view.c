@@ -220,7 +220,7 @@ gedit_view_class_init (GeditViewClass *klass)
 		  	      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  	      G_STRUCT_OFFSET (GeditViewClass, start_interactive_search),
 			      NULL, NULL,
-			      gedit_marshal_BOOLEAN__NONE,
+			      g_marshal_BOOLEAN__NONE,
 			      G_TYPE_BOOLEAN, 0);	
 
 	view_signals[START_INTERACTIVE_GOTO_LINE] =
@@ -229,7 +229,7 @@ gedit_view_class_init (GeditViewClass *klass)
 		  	      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  	      G_STRUCT_OFFSET (GeditViewClass, start_interactive_goto_line),
 			      NULL, NULL,
-			      gedit_marshal_BOOLEAN__NONE,
+			      g_marshal_BOOLEAN__NONE,
 			      G_TYPE_BOOLEAN, 0);
 
 	view_signals[RESET_SEARCHED_TEXT] =
@@ -238,7 +238,7 @@ gedit_view_class_init (GeditViewClass *klass)
 		  	      G_SIGNAL_RUN_LAST | G_SIGNAL_ACTION,
 		  	      G_STRUCT_OFFSET (GeditViewClass, reset_searched_text),
 			      NULL, NULL,
-			      gedit_marshal_BOOLEAN__NONE,
+			      g_marshal_BOOLEAN__NONE,
 			      G_TYPE_BOOLEAN, 0);		
 
 	/* A new signal DROP_URIS has been added to allow plugins to intercept
