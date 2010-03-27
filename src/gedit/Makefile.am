@@ -1,8 +1,5 @@
 ## Process this file with automake to produce Makefile.in
 
-GLIB_MKENUMS = /usr/bin/glib-mkenums
-GLIB_GENMARSHAL = /usr/bin/glib-genmarshal
-
 noinst_LIBRARIES = libgedit.a
 
 INCLUDES =								\
@@ -66,21 +63,11 @@ INST_H_FILES =				\
 	gedit-tab.h 			\
 	gedit-utils.h 			\
 	gedit-view.h 			\
-	gedit-window.h
-
-headerdir = $(prefix)/include/gedit-@GEDIT_API_VERSION@/gedit
-
-header_DATA = 				\
-	$(INST_H_FILES)	
-
-
-POSIXIO_FILES = 			\
-	gedit-local-document-saver.c	
-
+	gedit-window.h 
 
 
 libgedit_a_SOURCES = 			\
-	$(POSIXIO_FILES)		\
+	gedit-local-document-saver.c	\
 	gedit-convert.c			\
 	gedit-debug.c			\
 	gedit-dirs.c			\
@@ -115,23 +102,3 @@ libgedit_a_SOURCES = 			\
 	gedit-enum-types.c gedit-enum-types.h \
 	$(NOINST_H_FILES)		\
 	$(INST_H_FILES) 
-	
-EXTRA_DIST = 				\
-	gedit-enum-types.h.template	\
-	gedit-enum-types.c.template	\
-	gedit-marshal.list		\
-	gedit.rc
-
-CLEANFILES = $(BUILT_SOURCES)
-
-dist-hook:
-	cd $(distdir); rm -f $(BUILT_SOURCES)
-
-
-BACON_DIR=$(srcdir)/../../libbacon/src/
-BACON_FILES=bacon-message-connection.h bacon-message-connection.c
-
-regenerate-built-sources:
-	BACONFILES="$(BACON_FILES)" BACONDIR="$(BACON_DIR)" $(top_srcdir)/gedit/update-from-bacon.sh
-
--include $(top_srcdir)/git.mk
