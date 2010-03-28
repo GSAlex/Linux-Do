@@ -24,6 +24,7 @@ m4_define([package_name], [LinuxDo])
 AC_INIT([package_name], [0.0.1], [ microcaicai@gmail.com ], [package_name])
 AM_INIT_AUTOMAKE([1.10])
 # AC_GNU_SOURCE
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
