@@ -24,7 +24,6 @@ m4_define([package_name], [LinuxDo])
 AC_INIT([package_name], [0.0.1], [ microcaicai@gmail.com ], [package_name])
 AM_INIT_AUTOMAKE([1.10])
 # AC_GNU_SOURCE
-m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
@@ -34,6 +33,14 @@ AC_PROG_CC
 AC_HEADER_STDC
 
 AC_PREFIX_DEFAULT(/usr)
+
+PROG_LEX="check"
+
+AC_PATH_PROG(PROG_LEX,lex,["no"])
+
+AS_IF([test "x${PROG_LEX}" = "xno"],[AC_MSG_FAILURE(lex not found,1)])
+
+AC_SUBST(PROG_LEX)
 
 # define GETTEXT_* variables
 GETTEXT_PACKAGE="$PACKAGE_NAME"
@@ -74,12 +81,13 @@ AC_DEFINE(APPICONDIR,["/usr/share/icons/hicolor/scalable/apps/"],[the dir hold i
 
 
 # OUTPUT files
-AC_CONFIG_FILES(po/Makefile.in
-src/Makefile
-src/gedit/Makefile
-icons/Makefile
-doc/Makefile
-Makefile
+AC_CONFIG_FILES(
+	po/Makefile.in
+	src/Makefile
+	src/gedit/Makefile
+	icons/Makefile
+	doc/Makefile
+	Makefile
 )
 
 AC_OUTPUT

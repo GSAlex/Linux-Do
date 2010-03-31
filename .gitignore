@@ -31,3 +31,4 @@ stamp-h1
 src/linuxdo
 *.out
 *.k*
+src/scaner.c

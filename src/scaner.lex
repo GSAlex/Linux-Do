@@ -1,3 +1,5 @@
+%{
+
 /*
  *  Linux Do - A new IDE for newbee
  *
@@ -66,44 +68,6 @@ static void auto_complete_scaner_class_init(AutoCompleteScanerClass * );
 static void auto_complete_scaner_init(AutoCompleteScaner * );
 static void auto_complete_scaner_finalize(GObject *object);
 
-GType auto_complete_scaner_get_type ()
-{
-	//d
-    static GType type;
-    if ( g_once_init_enter(&type))
-    {
-		g_once_init_leave(&type,g_type_register_static_simple(G_TYPE_OBJECT,"auto_complete_scaner",
-                          sizeof(AutoCompleteScanerClass),
-                          (GClassInitFunc)auto_complete_scaner_class_init,
-                          sizeof(AutoCompleteScaner),
-                          (GInstanceInitFunc)auto_complete_scaner_init,0));
-    }
-    return type;
-}
-
-void auto_complete_scaner_class_init(AutoCompleteScanerClass * klass )
-{
-	klass->system_headers = NULL;
-    klass->finalize = G_OBJECT_CLASS(klass)->finalize;
-    G_OBJECT_CLASS(klass)->finalize = auto_complete_scaner_finalize;
-}
-
-void auto_complete_scaner_init(AutoCompleteScaner * obj)
-{
-	obj->project_headers = NULL;
-}
-
-void auto_complete_scaner_finalize(GObject *object)
-{
-    //chain
-    AUTO_COMPLETE_SCANER_GET_CLASS(object)->finalize(object);
-}
-
-AutoCompleteScaner * auto_complete_scaner_new()
-{
-    return AUTO_COMPLETE_SCANER(g_object_new(G_TYPE_AUTOCOMPLETE,NULL));
-}
-
 static void find_same(SyntaxNode * h, gchar ** header)
 {
 	if (!strcmp(h->syntax, *header))
@@ -150,26 +114,79 @@ void auto_complete_scaner_scanfile(AutoCompleteScaner * obj,const gchar * includ
 //#define SCANER_STATE_NONE	0
 //#define SCANER_STATE_NONE	0
 
+%}
+
+%%
+
+\/\/.*	{printf("%s is 注释\n",yytext);}
+
+\/\*.*\*\/	{printf("/**/类型的注释哦\n");}
+
+\/\*	{ printf("/**/开始！\n"); }
+\*\/	{ printf("/**/结束！\n"); }
+
+[\n\t ]+	;
+
+;	{printf("一句结束\n");}
+
+is |
+are |
+am |
+go	{ printf("%s: is a verb\n",yytext);}
+
+[a-zA-Z]+	{  printf("->%s<- unknow\n",yytext); }
+
+
+
+%%
+
+int yywrap()
+{
+	return 1;
+}
+
+
 
 void auto_complete_scaner_scanheader(AutoCompleteScaner * obj,const gchar * includedfile)
 {
-	//开始扫描!
-	FILE * hdr = fopen(includedfile,"r");
-
-	//使用有限状态机实现
-	int state = SCANER_STATE_NONE;
-
-	char line[1024];
-
-	while(!feof(hdr))
-	{
-		fgets(line,sizeof(line),hdr);
-		//开始扫描这一行
-
-
-
-
-	}
-
-	fclose(hdr);
+	yylex();
 }
+
+GType auto_complete_scaner_get_type ()
+{
+	//d
+    static GType type;
+    if ( g_once_init_enter(&type))
+    {
+		g_once_init_leave(&type,g_type_register_static_simple(G_TYPE_OBJECT,"auto_complete_scaner",
+                          sizeof(AutoCompleteScanerClass),
+                          (GClassInitFunc)auto_complete_scaner_class_init,
+                          sizeof(AutoCompleteScaner),
+                          (GInstanceInitFunc)auto_complete_scaner_init,0));
+    }
+    return type;
+}
+
+void auto_complete_scaner_class_init(AutoCompleteScanerClass * klass )
+{
+	klass->system_headers = NULL;
+    klass->finalize = G_OBJECT_CLASS(klass)->finalize;
+    G_OBJECT_CLASS(klass)->finalize = auto_complete_scaner_finalize;
+}
+
+void auto_complete_scaner_init(AutoCompleteScaner * obj)
+{
+	obj->project_headers = NULL;
+}
+
+void auto_complete_scaner_finalize(GObject *object)
+{
+    //chain
+    AUTO_COMPLETE_SCANER_GET_CLASS(object)->finalize(object);
+}
+
+AutoCompleteScaner * auto_complete_scaner_new()
+{
+    return AUTO_COMPLETE_SCANER(g_object_new(G_TYPE_AUTOCOMPLETE,NULL));
+}
+
