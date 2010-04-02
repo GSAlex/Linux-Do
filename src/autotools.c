@@ -336,6 +336,8 @@ int ide_autotools_create_tmpl(IDE_AUTOTOOLS* obj, const gchar * package_name,gbo
 
 	fclose(autogen);
 
+	chmod("autogen.sh",0755);
+
 	//调用 git init
 
 	ret = system("git init");
