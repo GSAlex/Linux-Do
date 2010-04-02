@@ -316,6 +316,26 @@ int ide_autotools_create_tmpl(IDE_AUTOTOOLS* obj, const gchar * package_name,gbo
 
 	}
 
+	FILE * autogen = fopen("autogen.sh","w");
+
+	fprintf(autogen,"#!/bin/sh\n"
+			"set -e\n"
+			"set -x\n");
+
+	if(with_nls)
+	{
+		fprintf(autogen,"autopoint\n#libtoolize --automake --copy\n");
+	}
+
+	fprintf(autogen,"aclocal -I m4\n"
+			"autoheader\n"
+			"automake --add-missing --copy\n"
+			"autoconf\n"
+			"export CFLAGS=\"-g -O0 -DDEBUG\"\n"
+			"export CXXFLAGS=\"$CFLAGS\"");
+
+	fclose(autogen);
+
 	//调用 git init
 
 	ret = system("git init");
