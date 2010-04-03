@@ -114,11 +114,7 @@ void auto_complete_scaner_scanfile(AutoCompleteScaner * obj,const gchar * includ
 //#define SCANER_STATE_NONE	0
 //#define SCANER_STATE_NONE	0
 
-int yywrap()
-{
-	return 1;
-}
-
+static AutoCompleteScaner * yy_obj;
 
 %}
 
@@ -158,7 +154,8 @@ static gchar * auto_complete_scaner_find_complete_uri(AutoCompleteScaner * obj,c
 void auto_complete_scaner_scanheader(AutoCompleteScaner * obj,const gchar * includedfile)
 {
 	//根据路径来找啊
-
+	yy_obj = obj;
+	
 	gchar * uri = auto_complete_scaner_find_complete_uri(obj,includedfile);
 
 	FILE * cf = fopen(uri,"r");
@@ -209,4 +206,15 @@ AutoCompleteScaner * auto_complete_scaner_new()
 void auto_complete_scaner_add_include_path(AutoCompleteScaner * obj,const gchar * path)
 {
 	
+}
+
+int auto_complete_scaner_yywrap(AutoCompleteScaner * yy_obj)
+{
+	return 1;	
+}
+
+
+int yywrap()
+{
+	return auto_complete_scaner_yywrap(yy_obj);
 }
