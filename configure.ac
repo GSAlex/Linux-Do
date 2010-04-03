@@ -36,9 +36,9 @@ AC_PREFIX_DEFAULT(/usr)
 
 PROG_LEX="check"
 
-AC_PATH_PROG(PROG_LEX,lex,["no"])
+AC_PATH_PROG(PROG_FLEX,flex,["no"])
 
-AS_IF([test "x${PROG_LEX}" = "xno"],[AC_MSG_FAILURE(lex not found,1)])
+AS_IF([test "x${PROG_FLEX}" = "xno"],[AC_MSG_FAILURE(flex not found,1)])
 
 AC_SUBST(PROG_LEX)
 

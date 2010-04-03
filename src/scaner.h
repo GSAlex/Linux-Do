@@ -71,5 +71,6 @@ typedef struct _AutoCompleteScanerClass{
 
 GType auto_complete_scaner_get_type () G_GNUC_CONST G_GNUC_INTERNAL;
 AutoCompleteScaner * auto_complete_scaner_new() G_GNUC_MALLOC G_GNUC_INTERNAL ;
+void auto_complete_scaner_add_include_path(AutoCompleteScaner * obj,const gchar * path);
 
 #endif /* AUTO_COMPLETE_SCANER_H_ */

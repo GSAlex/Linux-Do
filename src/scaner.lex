@@ -114,16 +114,23 @@ void auto_complete_scaner_scanfile(AutoCompleteScaner * obj,const gchar * includ
 //#define SCANER_STATE_NONE	0
 //#define SCANER_STATE_NONE	0
 
+int yywrap()
+{
+	return 1;
+}
+
+
 %}
+
+%x	COMMENT
 
 %%
 
-\/\/.*	{printf("%s is 注释\n",yytext);}
+"/*"	BEGIN COMMENT;
 
-\/\*.*\*\/	{printf("/**/类型的注释哦\n");}
-
-\/\*	{ printf("/**/开始！\n"); }
-\*\/	{ printf("/**/结束！\n"); }
+<COMMENT>"*/"	BEGIN INITIAL;
+<COMMENT>.	|
+<COMMENT>\n	;
 
 [\n\t ]+	;
 
@@ -140,16 +147,25 @@ go	{ printf("%s: is a verb\n",yytext);}
 
 %%
 
-int yywrap()
+static gchar * auto_complete_scaner_find_complete_uri(AutoCompleteScaner * obj,const gchar * includedfile)
 {
-	return 1;
+
+
 }
 
 
 
 void auto_complete_scaner_scanheader(AutoCompleteScaner * obj,const gchar * includedfile)
 {
+	//根据路径来找啊
+
+	gchar * uri = auto_complete_scaner_find_complete_uri(obj,includedfile);
+
+	FILE * cf = fopen(uri,"r");
+	yyin = cf;
+	yyrestart(cf);
 	yylex();
+	fclose(cf); 
 }
 
 GType auto_complete_scaner_get_type ()
@@ -190,3 +206,7 @@ AutoCompleteScaner * auto_complete_scaner_new()
     return AUTO_COMPLETE_SCANER(g_object_new(G_TYPE_AUTOCOMPLETE,NULL));
 }
 
+void auto_complete_scaner_add_include_path(AutoCompleteScaner * obj,const gchar * path)
+{
+	
+}

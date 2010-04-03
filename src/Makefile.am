@@ -1,6 +1,6 @@
 SUBDIRS=gedit
 
-LEX=@PROG_LEX@
+FLEX=@PROG_FLEX@
 
 INCLUDES = @ALL_NEEDED_CFLAGS@ 
 
@@ -18,7 +18,7 @@ linuxdo_SOURCES += $(autocompletion_SRC)
 
 
 $(srcdir)/scaner.c : scaner.lex
-	$(LEX)	-o $@ $<
+	$(FLEX)	-o $@ $<
 	
 
 autocomplete/libautocomplete.a : autocomplete/*
