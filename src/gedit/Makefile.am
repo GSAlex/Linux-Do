@@ -3,8 +3,6 @@
 noinst_LIBRARIES = libgedit.a
 
 INCLUDES =								\
-	-I$(top_srcdir)							\
-	-I$(srcdir)							\
 	-I$(top_srcdir)/src							\
 	$(ALL_NEEDED_CFLAGS)							\
 	-DDATADIR=\""$(datadir)"\"					\

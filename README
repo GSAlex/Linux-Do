@@ -5,3 +5,5 @@
  和编辑Autotools工具链于一身, 提供了强大的代码自动完成能力,最大
  化的简化基于autotools的Linux程序的开发. 与 devhelp 和 man page
  进行了集成,快捷的显示函数帮助.
+
+ 其实也算不上 IDE,不过是一个带自动完成的 编辑器，但是能自动到 autotools 去提取有用信息来帮助编码
