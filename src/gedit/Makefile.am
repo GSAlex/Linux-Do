@@ -4,11 +4,17 @@ noinst_LIBRARIES = libgedit.a
 
 INCLUDES =								\
 	-I$(top_srcdir)/src							\
+	-I$(top_builddir)/src							\
 	$(ALL_NEEDED_CFLAGS)							\
 	-DDATADIR=\""$(datadir)"\"					\
 	-DLIBDIR=\""$(libdir)"\"					
 
 LIBS = @ALL_NEEDED_LIBS@
+
+$(top_srcdir)/src/marshller.h:$(top_srcdir)/src/marshller.define
+	cd $(top_builddir)/src && $(MAKE) marshller.h
+
+gedit-marshal.h : $(top_srcdir)/src/marshller.h 
 
 NOINST_H_FILES =			\
 	gedit-marshal.h \

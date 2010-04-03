@@ -31,4 +31,12 @@ stamp-h1
 src/linuxdo
 *.out
 *.k*
-src/scaner.c
+src/scaner.lex.c
+src/scaner.lex.h
+src/scaner.tab.h
+src/scaner.tab.c
+src/marshller.h
+src/marshller.c
+
+
+

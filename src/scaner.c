@@ -1,5 +1,3 @@
-%{
-
 /*
  *  Linux Do - A new IDE for newbee
  *
@@ -30,6 +28,7 @@
 #include "Linuxdo.h"
 #include <glib.h>
 #include "scaner.h"
+#include "scaner.lex.h"
 
 typedef enum _SyntaxNodeType{
 	NODE_TYPE_SWITCH =1 , // #if 这样的语法结构
@@ -116,40 +115,10 @@ void auto_complete_scaner_scanfile(AutoCompleteScaner * obj,const gchar * includ
 
 static AutoCompleteScaner * yy_obj;
 
-%}
-
-%x	COMMENT
-
-%%
-
-"/*"	BEGIN COMMENT;
-
-<COMMENT>"*/"	BEGIN INITIAL;
-<COMMENT>.	|
-<COMMENT>\n	;
-
-[\n\t ]+	;
-
-;	{printf("一句结束\n");}
-
-is |
-are |
-am |
-go	{ printf("%s: is a verb\n",yytext);}
-
-[a-zA-Z]+	{  printf("->%s<- unknow\n",yytext); }
-
-
-
-%%
-
 static gchar * auto_complete_scaner_find_complete_uri(AutoCompleteScaner * obj,const gchar * includedfile)
 {
-
-
+	return 0;
 }
-
-
 
 void auto_complete_scaner_scanheader(AutoCompleteScaner * obj,const gchar * includedfile)
 {
@@ -159,9 +128,7 @@ void auto_complete_scaner_scanheader(AutoCompleteScaner * obj,const gchar * incl
 	gchar * uri = auto_complete_scaner_find_complete_uri(obj,includedfile);
 
 	FILE * cf = fopen(uri,"r");
-	yyin = cf;
-	yyrestart(cf);
-	yylex();
+
 	fclose(cf); 
 }
 
@@ -210,11 +177,17 @@ void auto_complete_scaner_add_include_path(AutoCompleteScaner * obj,const gchar 
 
 int auto_complete_scaner_yywrap(AutoCompleteScaner * yy_obj)
 {
-	return 1;	
+	return 1;
 }
 
-
-int yywrap()
+int yywrap (yyscan_t yyscanner )
 {
-	return auto_complete_scaner_yywrap(yy_obj);
+	return 1;
 }
+
+void yyerror(yyscan_t scanner,void *private_data,char *msg)
+{
+	AutoCompleteScaner * obj = private_data;
+	fprintf(stderr,"%s",msg);
+}
+

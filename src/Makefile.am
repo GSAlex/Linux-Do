@@ -2,33 +2,40 @@ SUBDIRS=gedit
 
 FLEX=@PROG_FLEX@
 
+BISON=bison
+GLIB_GENMARSHAL=glib-genmarshal
+
 INCLUDES = @ALL_NEEDED_CFLAGS@ 
 
 LIBS = @ALL_NEEDED_LIBS@ gedit/libgedit.a
 
-EXTRA_DIST = scaner.lex marshller.c marshller.h marshller.define
+EXTRA_DIST = scaner.flex  scaner.bison  marshller.define
 
 bin_PROGRAMS = linuxdo
 
-autocompletion_SRC = scaner.h scaner.c
+autocompletion_SRC = $(srcdir)/scaner.tab.c $(srcdir)/scaner.tab.h $(srcdir)/scaner.lex.c $(srcdir)/scaner.lex.h
 
-linuxdo_SOURCES = misc.h Linuxdo.h ide.h callbacks.h TreeView.h About.h autotools.h marshller.h xterm.h Editors.h
-linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c autotools.c marshller.c xterm.c Editors.c
+
+DISTCLEANFILES = $(autocompletion_SRC) marshller.c marshller.h
+
+linuxdo_SOURCES = misc.h Linuxdo.h ide.h callbacks.h TreeView.h About.h autotools.h xterm.h Editors.h scaner.h
+linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c autotools.c  xterm.c Editors.c scaner.c
+linuxdo_SOURCES += marshller.c marshller.h
 linuxdo_SOURCES += $(autocompletion_SRC)
 
-
-$(srcdir)/scaner.c : scaner.lex
-	$(FLEX)	-o $@ $<
-	
+$(srcdir)/scaner.lex.c $(srcdir)/scaner.lex.h : $(srcdir)/scaner.flex  $(srcdir)/scaner.tab.h
+	cd $(srcdir) && $(FLEX)	-o scaner.lex.c scaner.flex
+$(srcdir)/scaner.tab.c $(srcdir)/scaner.tab.h : $(srcdir)/scaner.bison
+	cd $(srcdir) && $(BISON) $< --defines=scaner.tab.h -o scaner.tab.c 
 
 autocomplete/libautocomplete.a : autocomplete/*
 	cd autocomplete && $(MAKE)
 
-$(srcdir)/marshller.c : marshller.define $(srcdir)/marshller.h
-	cd $(srcdir) && glib-genmarshal --body --prefix=g_marshal marshller.define > marshller.c
+$(srcdir)/marshller.c : marshller.define
+	$(GLIB_GENMARSHAL) --body --prefix=g_marshal $< > $@
 
 $(srcdir)/marshller.h: marshller.define
-	cd $(srcdir) && glib-genmarshal --header --prefix=g_marshal marshller.define > marshller.h
+	$(GLIB_GENMARSHAL) --header --prefix=g_marshal $< > $@
 
 test : linuxdo $(top_builddir)/usr/share/locale/ $(top_srcdir)/po/LinuxDo.pot
 	./linuxdo --locale=$(top_builddir)/usr/share/locale/
