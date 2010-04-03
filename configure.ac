@@ -34,19 +34,25 @@ AC_HEADER_STDC
 
 AC_PREFIX_DEFAULT(/usr)
 
-PROG_LEX="check"
-
-AC_PATH_PROG(PROG_FLEX,flex,["no"])
-
-AS_IF([test "x${PROG_FLEX}" = "xno"],[AC_MSG_FAILURE(flex not found,1)])
-
-AC_SUBST(PROG_LEX)
-
 # define GETTEXT_* variables
 GETTEXT_PACKAGE="$PACKAGE_NAME"
 AC_SUBST(GETTEXT_PACKAGE)
 AC_SUBST(prefix)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE", [Define to the read-only architecture-independent data directory.])
+
+AC_PATH_PROG(PROG_FLEX,flex,["no"])
+
+AS_IF([test "x${PROG_FLEX}" = "xno"],[AC_MSG_FAILURE(flex not found,1)])
+
+AC_PATH_PROG(PROG_BISON,bison,["no"])
+
+AS_IF([test "x${PROG_BISON}" = "xno"],[AC_MSG_FAILURE(bison not found,1)])
+
+
+AC_PATH_PROG(GLIB_GENMARSHAL,glib-genmarshal,["no"])
+
+AS_IF([test "x${GLIB_GENMARSHAL}" = "xno"],[AC_MSG_FAILURE(bison not found,1)])
+
 
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION(0.16.1)
