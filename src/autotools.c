@@ -126,6 +126,7 @@ gboolean ide_autotools_set_configure_ac(IDE_AUTOTOOLS*obj,const gchar * configur
 //Get PACKAGE_NAME and
 void configure_resolved(IDE_AUTOTOOLS * obj , gpointer userdata)
 {
+
 	GError *	err=NULL;
 	GMappedFile * ac;
 

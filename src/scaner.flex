@@ -4,6 +4,8 @@
 #include "scaner.tab.h"   
 #define YY_DECL int yylex(yyscan_t yyscanner,YYSTYPE *yylval,void * private_data)
 
+#define ECHO {;}
+
 %}
 
 %option header-file="scaner.lex.h"
@@ -21,13 +23,19 @@
 
 [\n\t ]+	;
 
+int	|
+char	|
+long	|
+signed	|
+unsigned {  yylval->tok = yytext; return KEYWORD;  }
 
-[0-9]+		{  yylval->val = atoi(yytext); return NUMBER; }
+typedef { yylval->tok = yytext ;  return TYPEDEF;  }
+
+struct { yylval->tok = yytext ;  return STRUCT;  }
 
 
-;	return 0;
+"#include"   {return INCLUDE;}
 
 . return yytext[0];
-
 
 %%
