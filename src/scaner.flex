@@ -23,18 +23,8 @@
 
 [\n\t ]+	;
 
-int	|
-char	|
-long	|
-signed	|
-unsigned {  yylval->tok = yytext; return KEYWORD;  }
 
-typedef { yylval->tok = yytext ;  return TYPEDEF;  }
-
-struct { yylval->tok = yytext ;  return STRUCT;  }
-
-
-"#include"   {return INCLUDE;}
+"#include"   {return 0;}
 
 . return yytext[0];
 
