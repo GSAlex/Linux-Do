@@ -29,7 +29,9 @@ void yyerror(yyscan_t,void *private_data,char *);
 %token CHAR SHORT INT LONG FLOAT DOUBLE SIGNED UNSIGNED
 %token CONST VOLATILE STRUCT UNION ENUM
 
-%token OP_LESSEQU OP_MOREEQU
+%token OP_LESSEQU OP_MOREEQU OP_INC OP_DEC OP_PTR OP_EQU OP_NOTEQU  OP_SHIFT_LEFT OP_SHIFT_RIGHT
+%token OP_EQU_MUL OP_EQU_DIV OP_EQU_REMAIN OP_EQU_ADD OP_EQU_SUB OP_EQU_SHIFT_LEFT OP_EQU_SHIFT_RIGHT OP_EQU_AND OP_EQU_XOR OP_EQU_OR OP_OR OP_AND
+%token DOT_DOT_DOT SIZEOF
 
 %left	'+' '-'
 %left '*' '/'
@@ -130,7 +132,7 @@ type_qualifier_list	: type_qualifier
 			| type_qualifier_list type_qualifier
 			;
 param_type_list		: param_list
-			| param_list ',' '...'
+			| param_list ',' DOT_DOT_DOT
 			;
 param_list		: param_decl
 			| param_list ',' param_decl
@@ -217,8 +219,8 @@ exp			: assignment_exp
 assignment_exp		: conditional_exp
 			| unary_exp assignment_operator assignment_exp
 			;
-assignment_operator	: '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<='
-			| '>>=' | '&=' | '^=' | '|='
+assignment_operator	: '=' | OP_EQU_MUL | OP_EQU_DIV | OP_EQU_REMAIN | OP_EQU_ADD | OP_EQU_SUB | OP_EQU_SHIFT_LEFT
+			| OP_EQU_SHIFT_RIGHT | OP_EQU_AND | OP_EQU_XOR | OP_EQU_OR
 			;
 conditional_exp		: logical_or_exp
 			| logical_or_exp '?' exp ':' conditional_exp
@@ -226,10 +228,10 @@ conditional_exp		: logical_or_exp
 const_exp		: conditional_exp
 			;
 logical_or_exp		: logical_and_exp
-			| logical_or_exp '||' logical_and_exp
+			| logical_or_exp OP_OR logical_and_exp
 			;
 logical_and_exp		: inclusive_or_exp
-			| logical_and_exp '&&' inclusive_or_exp
+			| logical_and_exp OP_AND inclusive_or_exp
 			;
 inclusive_or_exp	: exclusive_or_exp
 			| inclusive_or_exp '|' exclusive_or_exp
@@ -241,8 +243,8 @@ and_exp			: equality_exp
 			| and_exp '&' equality_exp
 			;
 equality_exp		: relational_exp
-			| equality_exp '==' relational_exp
-			| equality_exp '!=' relational_exp
+			| equality_exp OP_EQU relational_exp
+			| equality_exp OP_NOTEQU relational_exp
 			;
 relational_exp		: shift_expression
 			| relational_exp '<' shift_expression
@@ -251,8 +253,8 @@ relational_exp		: shift_expression
 			| relational_exp OP_MOREEQU shift_expression
 			;
 shift_expression	: additive_exp
-			| shift_expression '<<' additive_exp
-			| shift_expression '>>' additive_exp
+			| shift_expression OP_SHIFT_LEFT additive_exp
+			| shift_expression OP_SHIFT_RIGHT additive_exp
 			;
 additive_exp		: mult_exp
 			| additive_exp '+' mult_exp
@@ -267,11 +269,11 @@ cast_exp		: unary_exp
 			| '(' type_name ')' cast_exp
 			;
 unary_exp		: postfix_exp
-			| '++' unary_exp
-			| '--' unary_exp
+			| OP_INC unary_exp
+			| OP_DEC unary_exp
 			| unary_operator cast_exp
-			| 'sizeof' unary_exp
-			| 'sizeof' '(' type_name ')'
+			| SIZEOF unary_exp
+			| SIZEOF '(' type_name ')'
 			;
 unary_operator		: '&' | '*' | '+' | '-' | '~' | '!'
 			;
@@ -280,9 +282,9 @@ postfix_exp		: primary_exp
 			| postfix_exp '(' argument_exp_list ')'
 			| postfix_exp '('			')'
 			| postfix_exp '.' id
-			| postfix_exp '->' id
-			| postfix_exp '++'
-			| postfix_exp '--'
+			| postfix_exp OP_PTR id
+			| postfix_exp OP_INC
+			| postfix_exp OP_DEC
 			;
 primary_exp		: id
 			| const
