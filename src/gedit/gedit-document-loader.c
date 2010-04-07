@@ -40,8 +40,7 @@
 #include "gedit-metadata-manager.h"
 #include "gedit-utils.h"
 #include "gedit-convert.h"
-#include "gedit-marshal.h"
-
+#include "../marshller.h"
 /* Those are for the the gedit_document_loader_new() factory */
 #include "gedit-gio-document-loader.h"
 

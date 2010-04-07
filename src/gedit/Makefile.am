@@ -10,8 +10,10 @@ INCLUDES =								\
 
 LIBS = @ALL_NEEDED_LIBS@
 
+$(top_srcdir)/src/marshller.h:$(top_srcdir)/src/marshller.define
+	cd $(top_builddir)/src && $(MAKE) marshller.h
+
 NOINST_H_FILES =			\
-	gedit-marshal.h \
 	gedit-language-manager.h	\
 	gedit-style-scheme-manager.h	\
 	gedit-plugin-info.h		\
@@ -66,7 +68,8 @@ INST_H_FILES = \
 	gedit-window.h 
 
 
-libgedit_a_SOURCES = 			\
+libgedit_a_SOURCES =
+	$(top_srcdir)/src/marshller.h  			\
 	gedit-local-document-saver.c	\
 	gedit-convert.c			\
 	gedit-debug.c			\

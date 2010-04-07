@@ -49,7 +49,7 @@
 #include "gedit-style-scheme-manager.h"
 #include "gedit-document-loader.h"
 #include "gedit-document-saver.h"
-#include "gedit-marshal.h"
+#include "../marshller.h"
 #include "gedit-enum-types.h"
 #include "gedittextregion.h"
 
