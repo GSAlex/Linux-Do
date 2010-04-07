@@ -19,9 +19,9 @@ autocompletion_SRC = $(srcdir)/scaner.tab.c $(srcdir)/scaner.tab.h $(srcdir)/sca
 
 DISTCLEANFILES = $(autocompletion_SRC) marshller.c marshller.h
 
-linuxdo_SOURCES = misc.h Linuxdo.h ide.h callbacks.h TreeView.h About.h autotools.h xterm.h Editors.h scaner.h
-linuxdo_SOURCES += main.c linuxdo.c callbacks.c TreeView.c About.c autotools.c  xterm.c Editors.c scaner.c
-linuxdo_SOURCES += marshller.c marshller.h
+linuxdo_SOURCES = Linuxdo.h ide.h callbacks.h TreeView.h About.h autotools.h marshller.h xterm.h Editors.h
+linuxdo_SOURCES += main.c callbacks.c TreeView.c About.c autotools.c marshller.c xterm.c Editors.c
+
 linuxdo_SOURCES += $(autocompletion_SRC)
 
 $(srcdir)/scaner.lex.c $(srcdir)/scaner.lex.h : $(srcdir)/scaner.flex  $(srcdir)/scaner.tab.h

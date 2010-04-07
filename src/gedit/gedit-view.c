@@ -45,7 +45,7 @@
 #include "gedit-debug.h"
 #include "gedit-prefs-manager.h"
 #include "gedit-prefs-manager-app.h"
-#include "gedit-marshal.h"
+#include "../marshller.h"
 #include "gedit-utils.h"
 
 

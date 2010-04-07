@@ -29,7 +29,6 @@
 #include "callbacks.h"
 #include "Editors.h"
 #include "About.h"
-#include "misc.h"
 #include "xterm.h"
 
 void LinuxDoIDE_show_about_menu_callback(GtkWidget * item , gpointer callback_data)
