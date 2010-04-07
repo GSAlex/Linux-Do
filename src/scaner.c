@@ -180,12 +180,12 @@ int auto_complete_scaner_yywrap(AutoCompleteScaner * yy_obj)
 	return 1;
 }
 
-int yywrap (yyscan_t yyscanner )
+extern int yywrap (yyscan_t yyscanner )
 {
 	return 1;
 }
 
-void yyerror(yyscan_t scanner,void *private_data,char *msg)
+extern void yyerror(yyscan_t scanner,void *private_data,char *msg)
 {
 	AutoCompleteScaner * obj = private_data;
 	fprintf(stderr,"%s",msg);
