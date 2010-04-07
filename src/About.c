@@ -27,7 +27,6 @@
 
 #include "Linuxdo.h"
 #include "About.h"
-#include "misc.h"
 
 //the GPLv3 license
 static const gchar * GPLv3 =
@@ -725,8 +724,6 @@ void LinuxDoIDE_show_about(GtkWidget* parent)
     gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(dialog),_(comments));
     gtk_window_set_icon(GTK_WINDOW(dialog),gtk_window_get_icon(GTK_WINDOW(parent)));
 
-    gtk_widget_disable(parent);
     gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_enable(parent);
     gtk_widget_destroy(dialog);
 }

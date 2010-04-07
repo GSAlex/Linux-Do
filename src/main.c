@@ -29,7 +29,6 @@
 #include "Editors.h"
 #include "ide.h"
 #include "callbacks.h"
-#include "misc.h"
 #include "xterm.h"
 
 #include "../icons/LinuxDo.icon.h"
