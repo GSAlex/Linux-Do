@@ -69,8 +69,7 @@ INST_H_FILES = \
 	gedit-window.h 
 
 
-libgedit_a_SOURCES =
-	$(top_srcdir)/src/marshller.h  			\
+libgedit_a_SOURCES = $(top_src)/src/marshller.h  \
 	gedit-local-document-saver.c	\
 	gedit-convert.c			\
 	gedit-debug.c			\
