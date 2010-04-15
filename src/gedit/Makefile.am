@@ -2,8 +2,7 @@
 
 noinst_LIBRARIES = libgedit.a
 
-INCLUDES =								\
-	-I$(top_srcdir)/src							\
+INCLUDES =	 -I$(top_srcdir)/src							\
 	-I$(top_builddir)/src							\
 	$(ALL_NEEDED_CFLAGS)							\
 	-DDATADIR=\""$(datadir)"\"					\
@@ -12,10 +11,9 @@ INCLUDES =								\
 LIBS = @ALL_NEEDED_LIBS@
 
 $(top_srcdir)/src/marshller.h:$(top_srcdir)/src/marshller.define
-	cd $(top_builddir)/src && $(MAKE) marshller.h
+	cd .. && $(MAKE) marshller.h
 
-NOINST_H_FILES =			\
-	gedit-language-manager.h	\
+NOINST_H_FILES = gedit-language-manager.h	 \
 	gedit-style-scheme-manager.h	\
 	gedit-plugin-info.h		\
 	gedit-plugin-info-priv.h	\
@@ -69,7 +67,8 @@ INST_H_FILES = \
 	gedit-window.h 
 
 
-libgedit_a_SOURCES = $(top_src)/src/marshller.h  \
+libgedit_a_SOURCES = $(top_srcdir)/src/marshller.h  \
+	$(top_builddir)/src/marshller.h \
 	gedit-local-document-saver.c	\
 	gedit-convert.c			\
 	gedit-debug.c			\

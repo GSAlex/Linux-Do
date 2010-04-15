@@ -1,4 +1,4 @@
-SUBDIRS=gedit
+SUBDIRS= . gedit
 
 FLEX=@PROG_FLEX@
 
@@ -24,10 +24,15 @@ linuxdo_SOURCES += main.c callbacks.c TreeView.c About.c autotools.c marshller.c
 
 linuxdo_SOURCES += $(autocompletion_SRC)
 
+linuxdo_DEPENDENCIES = gedit/libgedit.a
+
 $(srcdir)/scaner.lex.c $(srcdir)/scaner.lex.h : $(srcdir)/scaner.flex  $(srcdir)/scaner.tab.h
 	cd $(srcdir) && $(FLEX)	-o scaner.lex.c scaner.flex
 $(srcdir)/scaner.tab.c $(srcdir)/scaner.tab.h : $(srcdir)/scaner.bison
 	cd $(srcdir) && $(BISON) $< --defines=scaner.tab.h -o scaner.tab.c 
+
+gedit/libgedit.a :
+	cd gedit && $(MAKE) 
 
 autocomplete/libautocomplete.a : autocomplete/*
 	cd autocomplete && $(MAKE)
